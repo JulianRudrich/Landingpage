@@ -1,17 +1,19 @@
 ---
-// Gehört WP-09 (SEO & Meta). Die Props sind ein Vertrag: BaseLayout (WP-03) reicht sie unverändert durch.
-// Grundversion: WP-09 ergänzt Canonical-URL, Open Graph, Twitter-Card, Favicons, Manifest und JSON-LD.
-// JSON-LD `ProfessionalService` rendert diese Komponente selbst, wenn Astro.url.pathname === '/'.
+// Gehört WP-09 (SEO & Meta). `Props` ist der Vertrag für alle Seiten: BaseLayout (WP-03) übernimmt ihn
+// unverändert. Änderungen an den Props nur per Spec-Änderung (SPECS.md §16).
+// Grundversion: WP-09 ergänzt Canonical-URL, Open Graph, Twitter-Card, Apple-Touch-Icon, theme-color und
+// JSON-LD (nur auf der Startseite). Regeln: docs/pakete/WP-09-seo-meta.md
 import type { ImageMetadata } from 'astro';
 
 import { site } from '@/config/site';
+import { fill } from '@/i18n';
 
 export interface Props {
-  /** Seitentitel OHNE Markennamen; hier wird " | {site.name}" angehängt */
+  /** Seitentitel OHNE Markennamen; darf {name} und {region} enthalten */
   title: string;
-  /** Meta-Description, höchstens 155 Zeichen */
+  /** Meta-Description, höchstens 155 Zeichen; darf {name} und {region} enthalten */
   description: string;
-  /** true = Seite nicht indexieren (/danke, 404, /styleguide) */
+  /** true = Seite nicht indexieren (/danke/, 404, /styleguide/) */
   noindex?: boolean;
   /** Vorschaubild für Social Media; ohne Angabe wird public/og-image.png verwendet */
   image?: ImageMetadata;
@@ -22,9 +24,15 @@ export interface Props {
 }
 
 const { title, description, noindex = false } = Astro.props;
+
+/** Titel-Muster "{title} | {name}"; der Markenname entfällt, wenn der Titel sonst länger als 60 Zeichen würde. */
+const pageTitle = fill(title);
+const withBrand = `${pageTitle} | ${site.name}`;
+const fullTitle = withBrand.length <= 60 ? withBrand : pageTitle;
 ---
 
-<title>{`${title} | ${site.name}`}</title>
-<meta name="description" content={description} />
+<title>{fullTitle}</title>
+<meta name="description" content={fill(description)} />
 {noindex && <meta name="robots" content="noindex" />}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="manifest" href="/site.webmanifest" />

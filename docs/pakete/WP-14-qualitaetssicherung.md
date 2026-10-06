@@ -8,7 +8,7 @@
 | **Aufwand** | M (ca. 4–12 h) |
 | **Branch** | `tony/wp-14-qualitaetssicherung` |
 | **Issue** | [#17](https://github.com/JulianRudrich/Landingpage/issues/17) |
-| **Abhängig von** | WP-02 (CI); Start nach dem Go-live von V1.0 |
+| **Abhängig von** | WP-02 (CI), WP-12 (die geprüfte Detailseite muss existieren); Start nach dem Go-live von V1.0 |
 | **Blockiert** | – |
 | **Anforderungen** | NFA-01, NFA-02, NFA-03, NFA-05 (Audit), NFA-08 (Test) aus [SPECS.md](../../SPECS.md) |
 
@@ -18,23 +18,27 @@ Die Qualitätsziele aus der Spec **automatisch absichern**: Jeder PR wird auf Pe
 
 ## Umfang
 
-**Gehört dazu**
+**Gehört dazu** (alles festgelegt, keine Werkzeugwahl mehr nötig)
 
-1. **Workflow** `.github/workflows/quality.yml`, Auslöser `pull_request` auf `dev` und `main`
-   - Seite bauen und lokal ausliefern (z. B. `npm run build` + `npm run preview`)
-   - **Lighthouse CI** (`@lhci/cli`) mit `lighthouserc.json`
-     - URLs: `/`, `/impressum/`, `/datenschutz/` und eine Projektdetailseite (z. B. `/projekte/diese-website/`)
-     - Schwellen: Accessibility, Best Practices, SEO ≥ 0,95 als **Fehler**; Performance ≥ 0,95 als **Warnung**, weil CI-Runner schwanken
-     - Berichte als Artefakt hochladen oder per Link im PR
-   - **axe** (z. B. `@axe-core/cli` oder Playwright + `@axe-core/playwright`) auf denselben URLs; bricht bei Verstößen der Stufe `serious` oder `critical` ab
-   - **Link-Check** (z. B. lychee) über das gebaute HTML; externe Links mit Wiederholungsversuchen, damit kurzzeitige Ausfälle nicht stören
-2. **Manuelle Audit-Checkliste** `docs/qa/audit-checkliste.md`
+1. **Workflow** `.github/workflows/quality.yml`, Auslöser `pull_request` auf `dev` und `main`, **ein Job mit dem Namen `quality`** (Pflicht-Check im Branch-Schutz, wie `build` aus WP-02)
+   - Schritte: Checkout → Node aus `.nvmrc` mit npm-Cache → `npm ci` → `npm run build` → die drei Prüfungen unten → Berichte als Artefakt hochladen (`actions/upload-artifact`: `.lighthouseci/`, `playwright-report/`)
+2. **Lighthouse CI** mit `npx @lhci/cli autorun` und `lighthouserc.json`:
+   - `ci.collect.staticDistDir: "./dist"`, `numberOfRuns: 3`
+   - URLs (der Host wird durch den Testserver ersetzt): `http://localhost/`, `http://localhost/impressum/`, `http://localhost/datenschutz/`, `http://localhost/projekte/diese-website/`
+   - `ci.assert.assertions`: `categories:accessibility`, `categories:best-practices`, `categories:seo` je `["error", {"minScore": 0.95}]`; `categories:performance` `["warn", {"minScore": 0.95}]` (CI-Runner schwanken)
+   - `ci.upload.target: "temporary-public-storage"` (Link zum Bericht erscheint im Job-Log)
+3. **Barrierefreiheit** mit Playwright und `@axe-core/playwright`:
+   - `playwright.config.ts`: nur Chromium, `webServer` = `npm run preview -- --port 4321`, `baseURL` = `http://localhost:4321`
+   - `tests/a11y.spec.ts`: für jede der vier URLs `new AxeBuilder({ page }).analyze()`, Verstöße mit `impact` `serious` oder `critical` lassen den Test fehlschlagen; die Liste der Verstöße steht in der Fehlermeldung
+   - im Workflow vorher `npx playwright install --with-deps chromium`, dann `npx playwright test`
+4. **Link-Check** mit `lycheeverse/lychee-action` über `./dist/**/*.html`, Argumente `--root-dir ./dist --max-retries 3 --retry-wait-time 5 --accept 200..=299,429,999 --no-progress` (LinkedIn antwortet Bots mit 999)
+5. **Manuelle Audit-Checkliste** `docs/qa/audit-checkliste.md`
    - Kompletter Tastatur-Durchlauf (Tab-Reihenfolge, Fokus sichtbar, keine Falle)
    - Screenreader: VoiceOver (iOS/macOS) oder NVDA (Windows), TalkBack (Android)
    - Zoom auf 200 %, Schriftgröße am Handy auf groß
    - Echte Geräte und Browser laut NFA-08
-   - Ein Protokoll pro Release, z. B. `docs/qa/audit-v1.1.md`
-3. Julian (Admin) nimmt den neuen Job als **Pflicht-Check** in den Branch-Schutz auf.
+   - Ein Protokoll pro Release: `docs/qa/audit-v1.1.md`
+6. Julian (Admin) nimmt den Job `quality` als **Pflicht-Check** in den Branch-Schutz auf.
 
 **Gehört nicht dazu**
 
@@ -42,9 +46,9 @@ Die Qualitätsziele aus der Spec **automatisch absichern**: Jeder PR wird auf Pe
 
 ## Dateien
 
-> Diese Dateien sind reine Konfiguration ohne Schnittstelle und werden von WP-14 selbst angelegt. Ihre Ausgaben (`.lighthouseci/`, `playwright-report/`, `test-results/`) sind in `.gitignore` und ESLint schon ignoriert, WP-01-Dateien müssen also nicht angefasst werden. Neue Tool-Abhängigkeiten (`@lhci/cli`, axe) im Issue ankündigen.
+> Diese Dateien haben keine Schnittstelle und werden von WP-14 selbst angelegt. Ihre Ausgaben (`.lighthouseci/`, `playwright-report/`, `test-results/`) sind in `.gitignore` und ESLint schon ignoriert. Die Dev-Abhängigkeiten `@lhci/cli`, `@playwright/test` und `@axe-core/playwright` kommen über die Ausnahme für gemeinsame Dateien in `package.json`/`package-lock.json` dazu (im Issue ankündigen). Neue npm-Skripte sind nicht nötig, der Workflow ruft die Tools direkt auf.
 
-**Besitzt dieses Paket:** `.github/workflows/quality.yml`, `lighthouserc.json` (im Hauptordner), `docs/qa/*`
+**Besitzt dieses Paket:** `.github/workflows/quality.yml`, im Hauptordner `lighthouserc.json` und `playwright.config.ts`, `tests/a11y.spec.ts`, `docs/qa/*`
 
 **Liest/benutzt:** `package.json`-Skripte, `.github/workflows/ci.yml` (als Vorlage, nicht ändern)
 
@@ -52,8 +56,8 @@ Die Qualitätsziele aus der Spec **automatisch absichern**: Jeder PR wird auf Pe
 
 - [ ] Der Quality-Workflow läuft bei jedem PR; die Lighthouse-Berichte sind im PR erreichbar
 - [ ] Die Lighthouse-Schwellen laut NFA-01 sind hinterlegt (Accessibility, Best Practices, SEO hart; Performance mit Toleranz)
-- [ ] Der axe-Check bricht bei schweren oder kritischen Verstößen ab (im PR mit einem absichtlich fehlenden Alt-Text demonstriert)
+- [ ] Der axe-Check bricht bei schweren oder kritischen Verstößen ab (lokal mit einem absichtlich fehlenden Alt-Text gezeigt, Ausgabe im PR; die Änderung wird nicht committet)
 - [ ] Der Link-Check findet keine toten Links
 - [ ] Die Audit-Checkliste ist angelegt und für den aktuellen Stand einmal durchgeführt (Protokoll im Repo)
 - [ ] Der Workflow läuft in unter 10 Minuten
-- [ ] Der Job ist Pflicht-Check im Branch-Schutz
+- [ ] Der Job `quality` ist Pflicht-Check im Branch-Schutz

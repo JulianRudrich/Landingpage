@@ -26,7 +26,7 @@ Besucher finden sich auf jeder Seite sofort zurecht: Ein schlanker Header bringt
    - CTA-Button „Projekt anfragen“ → `/#kontakt`
    - `position: sticky; top: 0`, Höhe = `--header-height` aus WP-03, Hintergrund deckend (Text darunter darf nicht durchscheinen)
 2. **Mobile Navigation (FA-03)** unter 768 px
-   - Burger-Button mit `aria-controls`, `aria-expanded` und zugänglichem Namen („Menü öffnen“ / „Menü schließen“)
+   - Burger-Button als **eigenes** `<button type="button">` in `MobileNav.astro` (nicht der Baustein `Button`, der keine `aria-*`-Attribute durchreicht), mit `Icon` `menu` bzw. `x`, Token-Klassen nach dem Handy-Entwurf, `aria-controls`, `aria-expanded` und zugänglichem Namen (`t.navigation.menuOpen` / `menuClose`)
    - Schließt mit Esc, nach Klick auf einen Link und bei Klick außerhalb
    - Beim Öffnen springt der Fokus auf den ersten Link, beim Schließen zurück auf den Button
    - Kleines normales `<script>` in `MobileNav.astro`, ohne Framework (< 2 KB). **Kein** `is:inline`, **kein** `define:vars` ([SPECS §10](../../SPECS.md#feste-konventionen)).
@@ -36,7 +36,7 @@ Besucher finden sich auf jeder Seite sofort zurecht: Ein schlanker Header bringt
    - Kontakt: E-Mail und Telefon (falls gesetzt) aus `site.ts`
    - Navigation (wie im Header)
    - Rechtliches: `/impressum/`, `/datenschutz/`
-   - Profile (nur gesetzte Links aus `site.social`), Texte aus `t.navigation.footer.social`
+   - Profile (nur gesetzte Links aus `site.social`), Texte aus `t.navigation.footer.social`; öffnen wie alle externen Links im neuen Tab mit `rel="noopener noreferrer"` und dem Hinweis `t.common.externalLinkHint` für Screenreader
    - © {aktuelles Jahr} {site.name}. {`t.navigation.footer.copyright`}
 5. Alle Texte in `src/i18n/de/navigation.ts`.
 

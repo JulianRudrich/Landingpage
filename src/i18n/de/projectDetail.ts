@@ -4,6 +4,8 @@ export const projectDetail = {
   breadcrumbHome: 'Start',
   breadcrumbProjects: 'Projekte',
   demoLink: 'Demo ansehen',
+  /** Link zu `repoUrl`, nur wenn gesetzt */
+  repoLink: 'Code ansehen',
   inquiryLink: 'Ähnliches Projekt anfragen',
   techTitle: 'Eingesetzte Technik',
   galleryTitle: 'Einblicke',

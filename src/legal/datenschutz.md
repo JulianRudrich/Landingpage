@@ -1,9 +1,10 @@
-<!--
-  Gehört WP-10 (Impressum, Datenschutz & 404). Keine Rechtsberatung.
-  Text mit einem seriösen Datenschutz-Generator erstellen (R-03) und alle Angaben in [eckigen Klammern] ersetzen.
-  Die Gliederung entspricht dem, was die Website tatsächlich nutzt. Abschnitte 8 und 9 ergänzt WP-13 ab V1.1.
-  Die Überschrift "Datenschutzerklärung" (H1) setzt die Seite selbst, hier beginnen die Abschnitte mit H2.
--->
+---
+# Gehört WP-10 (Impressum, Datenschutz & 404). Keine Rechtsberatung.
+# Text mit einem seriösen Datenschutz-Generator erstellen (R-03) und alle Angaben in [eckigen Klammern] ersetzen.
+# Ausnahme von "Daten nur aus site.ts": Rechtstexte enthalten Namen, Anschrift und Kontakt im Wortlaut.
+# Abschnitte 8 und 9 haben für V1.0 einen festen Text (kein Platzhalter). WP-13 ersetzt ihn in V1.1.
+# Die Überschrift "Datenschutzerklärung" (H1) setzt die Seite selbst, hier beginnen die Abschnitte mit H2.
+---
 
 Stand: [Datum]
 
@@ -25,11 +26,11 @@ Stand: [Datum]
 
 ## 5. Kontaktformular
 
-[Felder (Name, E-Mail, Unternehmen, Projektart, Nachricht), Verarbeitung über Netlify Forms, Zweck, Rechtsgrundlage, Speicherdauer. Angaben von WP-08]
+[Felder (Name, E-Mail, Unternehmen, Projektart, Nachricht), Verarbeitung über Netlify Forms, Zweck, Rechtsgrundlage, Speicherdauer laut E-15. Angaben von WP-08]
 
 ## 6. Kontakt per E-Mail oder Telefon
 
-[Zweck, Rechtsgrundlage, Speicherdauer]
+[Zweck, Rechtsgrundlage, Speicherdauer laut E-15]
 
 ## 7. Schriften und Icons
 
@@ -37,11 +38,11 @@ Stand: [Datum]
 
 ## 8. Besucherstatistik
 
-[Ab V1.1, ergänzt WP-13: Anbieter, cookielos, Zweck, Rechtsgrundlage]
+Wir setzen derzeit keine Besucherstatistik ein.
 
 ## 9. Terminbuchung
 
-[Ab V1.1, ergänzt WP-13: externer Link zum Anbieter, Daten erst nach Klick]
+Eine Online-Terminbuchung bieten wir derzeit nicht an.
 
 ## 10. Ihre Rechte
 

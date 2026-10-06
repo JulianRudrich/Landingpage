@@ -9,6 +9,9 @@
 @import 'tailwindcss';
 
 @theme {
+  /* Tailwinds Standard-Farbpalette abschalten: Es gibt nur die Farben unten (keine bg-red-500 o. ä.). */
+  --color-*: initial;
+
   /* Flächen */
   --color-surface: #ffffff; /* Seitenhintergrund */
   --color-surface-muted: #f4f4f5; /* abgesetzte Sektionen (Section tone="muted") */

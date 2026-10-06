@@ -45,8 +45,8 @@ Die wichtigste Sektion für unser Geschäft: Aus einem Besucher wird eine Anfrag
    - Kleines normales `<script>` (kein `is:inline`, kein `define:vars`; Fehlertexte über `data-*`-Attribute an das Skript übergeben) für die Meldungen aus `t.contact.form` direkt am Feld (`aria-invalid`, `aria-describedby`); beim Absenden springt der Fokus auf das erste fehlerhafte Feld und `t.contact.form.errorSummary` wird angekündigt
    - Kein `fetch` nötig: Das normale POST geht an Netlify, das danach auf `/danke/` weiterleitet
 4. **Danke-Seite** `src/pages/danke.astro` (`noindex`, existiert): Texte `t.contact.thanks`, Icon `circle-check`, gestaltet nach Tonys Entwurf.
-5. **Netlify-Einstellungen**: Formular-Benachrichtigung per E-Mail an beide (oder an `hallo@` mit Weiterleitung), Spamfilter aktiv. Eingegangene Anfragen regelmäßig in Netlify löschen, nachdem sie im Postfach sind (Datensparsamkeit).
-6. **WP-10 informieren:** Im Issue [#13](https://github.com/JulianRudrich/Landingpage/issues/13) kommentieren, welche Daten das Formular erhebt und wo sie gespeichert werden (für die Datenschutzerklärung).
+5. **Netlify-Einstellungen**: Formular-Benachrichtigung per E-Mail an `hallo@` (leitet an beide weiter, E-03), Spamfilter aktiv. Eingegangene Anfragen in Netlify löschen, sobald sie im Postfach sind, spätestens nach 30 Tagen (E-15).
+6. **WP-10 informieren:** Im Issue [#13](https://github.com/JulianRudrich/Landingpage/issues/13) kommentieren, welche Daten das Formular erhebt, wo sie gespeichert werden und wie lange (Speicherdauer laut E-15), für die Datenschutzerklärung.
 
 **Gehört nicht dazu**
 

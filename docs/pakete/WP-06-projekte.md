@@ -46,24 +46,22 @@ Unsere Arbeit sichtbar machen, und zwar so, dass ein neues Projekt **nur eine ne
 
 ## Schnittstellen
 
-Das Schema steht **fertig** in `src/content.config.ts` (Astro 7: `z` aus `astro/zod`, URLs mit `z.url()`). Es ist ein **Vertrag mit WP-12** (Detailseiten) und ändert sich nur per Spec-Änderung.
+Das Schema steht **fertig** in `src/content.config.ts` (Astro 7: `z` aus `astro/zod`, URLs mit `z.url()`). Verstöße meldet `npm run build` mit einer verständlichen Meldung. Es ist ein **Vertrag mit WP-12** (Detailseiten) und ändert sich nur per Spec-Änderung.
 
 | Feld | Typ | Pflicht | Bedeutung |
 |---|---|---|---|
-| `title` | Text | ja | Projektname (Karte, Detailseite) |
-| `summary` | Text, ≤ 160 Zeichen | ja | Kartentext und Meta-Description |
+| `title` | Text, ≤ 60 − 3 − Länge von `site.name` Zeichen (bei „Tony & Julian“: 44) | ja | Projektname (Karte, Detailseite, Seitentitel) |
+| `summary` | Text, ≤ 155 Zeichen | ja | Kartentext und Meta-Description |
 | `industry` | Text | ja | Branche, z. B. „Gastronomie“ |
-| `services` | Liste aus `L1`–`L4` | ja, mind. 1 | gezeigte Leistungen |
 | `tech` | Liste von Texten | ja, mind. 1 | eingesetzte Technik |
 | `status` | `live`, `prototyp` oder `konzept` | ja | ehrliche Kennzeichnung (R-07) |
-| `cover` | Bild in `src/assets/projects/` | ja | Vorschaubild, mind. 1600 px breit |
+| `cover` | Bild in `src/assets/projects/`, **PNG, JPG oder WebP** (kein SVG) | ja | Vorschaubild, mind. 1600 px breit |
 | `coverAlt` | Text | ja | Alt-Text zum Cover |
-| `gallery` | Liste aus `{ src: Bild, alt: Text }` | nein (Standard: leer) | Galerie der Detailseite (WP-12) |
+| `gallery` | Liste aus `{ src: Bild, alt: Text }`, Bilder wie `cover` | nein (Standard: leer) | Galerie der Detailseite (WP-12) |
 | `demoUrl` | URL | nein | laufende Demo |
-| `repoUrl` | URL | nein | öffentlicher Code |
+| `repoUrl` | URL | nein | öffentlicher Code (Link „Code ansehen“ auf der Detailseite, WP-12) |
 | `featured` | ja/nein | nein (Standard: nein) | steht vorn |
 | `order` | ganze Zahl | nein (Standard: 100) | kleinere Zahl = weiter vorn |
-| `publishedAt` | Datum | ja | Veröffentlichung |
 
 **`ProjectCard`-Props** (Vertrag mit WP-12, das die Karte in „Weitere Projekte“ nutzt): `project: CollectionEntry<'projects'>`.
 
@@ -73,7 +71,7 @@ Der **Markdown-Inhalt** eines Projekts gliedert sich in `## Ausgangslage`, `## L
 
 ## Neues Projekt hinzufügen
 
-1. Bild nach `src/assets/projects/<slug>.png` (mind. 1600 px breit).
+1. Bild nach `src/assets/projects/<slug>.png` (PNG, JPG oder WebP, mind. 1600 px breit).
 2. Datei `src/content/projects/<slug>.md` anlegen:
 
    ```markdown
@@ -81,14 +79,12 @@ Der **Markdown-Inhalt** eines Projekts gliedert sich in `## Ausgangslage`, `## L
    title: Trattoria Demo – Online-Reservierung
    summary: Reservierungs-Web-App für ein Restaurant, auf Tablet und Handy nutzbar.
    industry: Gastronomie
-   services: [L2]
    tech: [Astro, TypeScript, Supabase]
    status: prototyp
    cover: ../../assets/projects/trattoria-demo.png
    coverAlt: Tablet mit geöffneter Tischübersicht der Reservierungs-App
    demoUrl: https://demo-trattoria.example.com
    order: 10
-   publishedAt: 2026-11-01
    ---
 
    ## Ausgangslage

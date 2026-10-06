@@ -1,5 +1,6 @@
 // Feste Icon-Liste der Website – gehört WP-03 (Design-System).
-// Nur diese Icons werden benutzt. Ein neues Icon ist eine Spec-Änderung (siehe CONTRIBUTING.md).
+// Nur diese Icons werden benutzt; Lucide direkt zu importieren verbietet ESLint.
+// Ein neues Icon ist eine Spec-Änderung (SPECS.md §16).
 // Quelle: Lucide (https://lucide.dev), beim Build als Inline-SVG gerendert, keine externen Requests.
 import ArrowLeft from '@lucide/astro/icons/arrow-left';
 import ArrowRight from '@lucide/astro/icons/arrow-right';

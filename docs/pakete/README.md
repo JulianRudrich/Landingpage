@@ -19,11 +19,11 @@ Hier steht, **wer was baut** und **welche Datei wem gehört**. Jedes Paket hat e
 | [WP-07](WP-07-ablauf-ueber-uns.md) | Ablauf & Über uns | Tony | Julian | V1.0 | M | WP-03 (+ Fotos aus WP-00) | [#10](https://github.com/JulianRudrich/Landingpage/issues/10) | `tony/wp-07-ablauf-ueber-uns` |
 | [WP-08](WP-08-kontakt.md) | Kontakt-Sektion & Formular | Julian | Tony | V1.0 | L | WP-03, WP-02 | [#11](https://github.com/JulianRudrich/Landingpage/issues/11) | `julian/wp-08-kontakt` |
 | [WP-09](WP-09-seo-meta.md) | SEO & Meta | Julian | Tony | V1.0 | M | WP-01 (+ Name/Region aus WP-00) | [#12](https://github.com/JulianRudrich/Landingpage/issues/12) | `julian/wp-09-seo-meta` |
-| [WP-10](WP-10-rechtliches-404.md) | Impressum, Datenschutz & 404 | Tony | Julian | V1.0 | M | WP-03 (+ Impressumsdaten aus WP-00) | [#13](https://github.com/JulianRudrich/Landingpage/issues/13) | `tony/wp-10-rechtliches-404` |
-| [WP-11](WP-11-faq.md) | FAQ | Julian | Tony | V1.1 | S | WP-03 | [#14](https://github.com/JulianRudrich/Landingpage/issues/14) | `julian/wp-11-faq` |
-| [WP-12](WP-12-projektdetailseiten.md) | Projektdetailseiten | Tony | Julian | V1.1 | M | WP-06 | [#15](https://github.com/JulianRudrich/Landingpage/issues/15) | `tony/wp-12-projektdetailseiten` |
+| [WP-10](WP-10-rechtliches-404.md) | Impressum, Datenschutz & 404 | Tony | Julian | V1.0 | M | WP-03, WP-08 (Formulardaten) (+ Impressumsdaten aus WP-00) | [#13](https://github.com/JulianRudrich/Landingpage/issues/13) | `tony/wp-10-rechtliches-404` |
+| [WP-11](WP-11-faq.md) | FAQ | Julian | Tony | V1.1 | S | WP-03 (inkl. Design V1.1) | [#14](https://github.com/JulianRudrich/Landingpage/issues/14) | `julian/wp-11-faq` |
+| [WP-12](WP-12-projektdetailseiten.md) | Projektdetailseiten | Tony | Julian | V1.1 | M | WP-06, WP-03 (inkl. Design V1.1) | [#15](https://github.com/JulianRudrich/Landingpage/issues/15) | `tony/wp-12-projektdetailseiten` |
 | [WP-13](WP-13-analytics-terminbuchung.md) | Analytics & Terminbuchung | Julian | Tony | V1.1 | S | WP-02 | [#16](https://github.com/JulianRudrich/Landingpage/issues/16) | `julian/wp-13-analytics-termin` |
-| [WP-14](WP-14-qualitaetssicherung.md) | Qualitätssicherung | Tony | Julian | V1.1 | M | WP-02 | [#17](https://github.com/JulianRudrich/Landingpage/issues/17) | `tony/wp-14-qualitaetssicherung` |
+| [WP-14](WP-14-qualitaetssicherung.md) | Qualitätssicherung | Tony | Julian | V1.1 | M | WP-02, WP-12 | [#17](https://github.com/JulianRudrich/Landingpage/issues/17) | `tony/wp-14-qualitaetssicherung` |
 
 **Release-Issues:** [#1 V1.0 – MVP / Go-live](https://github.com/JulianRudrich/Landingpage/issues/1) · [#2 V1.1 – Ausbau](https://github.com/JulianRudrich/Landingpage/issues/2). Dort sind die Pakete als Sub-Issues angehängt, mit Fortschrittsbalken.
 
@@ -66,11 +66,15 @@ graph TD
   WP01 --> WP03
   WP01 --> WP09
   WP00 -.-> GATE
+  WP00 -.-> WP02 & WP09
   WP03 -.->|Design-Entwurf| GATE
   GATE ==> WP04 & WP05 & WP06 & WP07 & WP08 & WP10
   WP03 --> WP04 & WP05 & WP06 & WP07 & WP08 & WP10 & WP11
   WP02 --> WP08 & WP13 & WP14
   WP06 --> WP12
+  WP08 -.->|Formulardaten| WP10
+  WP12 --> WP14
+  WP03 -.->|Design V1.1| WP11 & WP12
 
   classDef julian fill:#dbeafe,stroke:#1d4ed8,color:#0b1b3f
   classDef tony fill:#fde68a,stroke:#b45309,color:#3b2405
@@ -84,11 +88,11 @@ Durchgezogene Pfeile bedeuten „braucht den gemergten Code“, gestrichelte Pfe
 
 | Phase | Julian | Tony | Gemeinsam |
 |---|---|---|---|
-| **0 – Festlegen** | WP-01 Gerüst (mergen), danach WP-02 CI & Deployment und WP-09 SEO (beides ohne Design-Abhängigkeit) | WP-03 Teil A: Design-Entwurf nach der „Design-Abgabe“ in der WP-03-Spec | WP-00: Entscheidungen treffen, Textvorschläge bestätigen, Fotos und Bios liefern |
+| **0 – Festlegen** | WP-01 Gerüst (mergen), danach WP-02 CI & Deployment und WP-09 SEO (Favicon und Vorschaubild erst nach der Design-Abnahme) | WP-03 Teil A: Design-Entwurf nach der „Design-Abgabe“ in der WP-03-Spec | WP-00: Entscheidungen treffen, Textvorschläge bestätigen, Fotos und Bios liefern |
 | **🔒 Freigabe** | nimmt Tonys Design ab | – | Spec v1.0 festschreiben ([SPECS §16](../../SPECS.md#16-änderungsregeln)) |
-| **1 – Bauen** | WP-06 Projekte, WP-08 Kontakt | WP-03 Teil B: Tokens und Bausteine umsetzen, dann WP-04 Header & Footer, WP-05 Hero & Leistungen, WP-07 Ablauf & Über uns, WP-10 Rechtliches | gegenseitig reviewen |
-| **2 – Release V1.0** | Release-Checkliste ([SPECS §14](../../SPECS.md#14-definition-of-done)) | Release-Checkliste | Go-live 🚀 |
-| **3 – V1.1** | WP-11 FAQ, WP-13 Analytics & Terminbuchung | WP-12 Detailseiten, WP-14 Qualitätssicherung | – |
+| **1 – Bauen (V1.0)** | WP-06 Projekte, WP-08 Kontakt | WP-03 Teil B: Tokens und Bausteine umsetzen, dann WP-04 Header & Footer, WP-05 Hero & Leistungen, WP-07 Ablauf & Über uns, WP-10 Rechtliches | gegenseitig reviewen |
+| **🚀 Release V1.0** | Release-Checkliste ([SPECS §14](../../SPECS.md#14-definition-of-done)), danach Search Console (WP-09) | Release-Checkliste | Go-live |
+| **2 – Ausbau (V1.1)** | WP-11 FAQ, WP-13 Analytics & Terminbuchung | zuerst WP-03 Teil A2 (Design V1.1), dann WP-12 Detailseiten, danach WP-14 Qualitätssicherung | Julian nimmt Design V1.1 ab |
 
 ## Zuständigkeitsmatrix
 
@@ -97,7 +101,7 @@ Durchgezogene Pfeile bedeuten „braucht den gemergten Code“, gestrichelte Pfe
 1. **Jede Datei existiert schon.** WP-01 hat jede Datei von V1.0 und V1.1 mit fester Schnittstelle angelegt (Props, Content-Schema, Textschlüssel, Token-Namen). Die Pakete füllen ihre Dateien nur noch aus.
 2. **Jede Datei gehört genau einem Paket.** Nur dessen Owner ändert sie. Ausnahmen stehen in der Spalte „Hinweis“.
 3. **Keine neuen gemeinsamen Dateien oder Schnittstellen** ohne Spec-Änderung ([SPECS §16](../../SPECS.md#16-änderungsregeln)). Erlaubt sind nur interne Hilfsdateien eines Pakets in dessen eigenem Ordner (im PR erwähnen) und neue Inhalte (Projekte, Bilder).
-4. Reine Konfigurationsdateien ohne Schnittstelle (`netlify.toml`, Workflows, `lighthouserc.json`, `docs/qa/`) legt ihr Paket selbst an; der Inhalt ist in seiner Spec vorgegeben.
+4. Diese Dateien legt ihr Paket selbst an, weil sie keine Schnittstelle haben; der Inhalt ist in seiner Spec vorgegeben: Konfiguration (`netlify.toml`, Workflows, `lighthouserc.json`, `playwright.config.ts`, `tests/a11y.spec.ts`, `docs/qa/`) und Grafiken aus Tonys Design (`public/favicon.ico`, `public/apple-touch-icon.png`, `public/og-image.png`, Bilder in `src/assets/hero/` und `src/assets/team/`).
 
 ### Projekt & Konfiguration
 
@@ -109,7 +113,7 @@ Durchgezogene Pfeile bedeuten „braucht den gemergten Code“, gestrichelte Pfe
 | `src/config/site.ts` | WP-00 | beide | Werte aus WP-00, auch `url` (= Domain). Danach setzt WP-13 `bookingUrl` und `analytics`, WP-12 `features.projectDetails` |
 | `netlify.toml` | WP-02 | Julian | legt WP-02 an; CSP-Ergänzung für die Statistik durch WP-13 |
 | `.github/workflows/ci.yml` | WP-02 | Julian | legt WP-02 an |
-| `.github/workflows/quality.yml` und `lighthouserc.json` (im Hauptordner) | WP-14 | Tony | legt WP-14 an |
+| `.github/workflows/quality.yml` und im Hauptordner `lighthouserc.json`, `playwright.config.ts`, `tests/a11y.spec.ts` | WP-14 | Tony | legt WP-14 an; neue Dev-Abhängigkeiten im Issue ankündigen |
 
 ### Seiten (`src/pages/`)
 
@@ -118,7 +122,7 @@ Durchgezogene Pfeile bedeuten „braucht den gemergten Code“, gestrichelte Pfe
 | `index.astro` | WP-01 | Julian | Setzt nur die Sektionen zusammen, ändert sich danach nicht mehr |
 | `styleguide.astro` | WP-03 | Tony | `noindex`, nicht in der Sitemap; interne Beschriftungen dürfen im Code stehen |
 | `danke.astro` | WP-08 | Julian | |
-| `robots.txt.ts` | WP-09 | Julian | funktioniert bereits |
+| `robots.txt.ts`, `site.webmanifest.ts` | WP-09 | Julian | funktionieren bereits |
 | `impressum.astro`, `datenschutz.astro`, `404.astro` | WP-10 | Tony | |
 | `projekte/[slug].astro` | WP-12 | Tony | erzeugt bis V1.1 keine Seiten |
 
@@ -159,7 +163,8 @@ Durchgezogene Pfeile bedeuten „braucht den gemergten Code“, gestrichelte Pfe
 | `src/assets/hero/*` | WP-05 | Tony | |
 | `src/assets/team/*` | WP-07 | Tony | Fotos kommen aus WP-00 |
 | `src/styles/global.css` | WP-03 | Tony | Token-**Namen** fest, Werte aus Tonys Design |
-| `public/favicon.svg` und später `favicon.ico`, `apple-touch-icon.png`, `site.webmanifest`, `og-image.png` | WP-09 | Julian | Gestaltung nach Tonys Design |
+| `src/assets/styleguide/*` | WP-03 | Tony | Beispielbild für das Bild-Muster im Styleguide |
+| `public/favicon.svg` und später `favicon.ico`, `apple-touch-icon.png`, `og-image.png` | WP-09 | Julian | Gestaltung nach Tonys Design |
 
 ### Doku & GitHub
 

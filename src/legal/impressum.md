@@ -1,8 +1,9 @@
-<!--
-  Gehört WP-10 (Impressum, Datenschutz & 404). Keine Rechtsberatung.
-  Text mit einem seriösen Impressum-Generator erstellen (R-01) und alle Angaben in [eckigen Klammern] ersetzen.
-  Die Überschrift "Impressum" (H1) setzt die Seite selbst, hier beginnen die Abschnitte mit H2.
--->
+---
+# Gehört WP-10 (Impressum, Datenschutz & 404). Keine Rechtsberatung.
+# Text mit einem seriösen Impressum-Generator erstellen (R-01) und alle Angaben in [eckigen Klammern] ersetzen.
+# Ausnahme von "Daten nur aus site.ts": Rechtstexte enthalten Namen, Anschrift und Kontakt im Wortlaut.
+# Die Überschrift "Impressum" (H1) setzt die Seite selbst, hier beginnen die Abschnitte mit H2.
+---
 
 ## Angaben gemäß § 5 DDG
 

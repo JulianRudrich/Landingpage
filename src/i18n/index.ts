@@ -1,3 +1,5 @@
+import { site } from '@/config/site';
+
 import * as de from './de';
 
 /** Alle unterstützten Sprachen. Für Englisch (V2): 'en' ergänzen und src/i18n/en/ anlegen. */
@@ -47,4 +49,19 @@ function isLocale(value: string | undefined): value is Locale {
  */
 export function useTranslations(locale: string | undefined = defaultLocale): Dictionary {
   return dictionaries[isLocale(locale) ? locale : defaultLocale];
+}
+
+/** Platzhalter, die in Texten stehen dürfen. Die Werte kommen aus src/config/site.ts. */
+type Placeholder = 'name' | 'region';
+
+/**
+ * Setzt zentrale Daten in einen Text ein: `{name}` → site.name, `{region}` → site.region.
+ * So stehen Markenname und Region nie fest in einer Textdatei, sondern nur in site.ts.
+ *
+ * @example
+ * fill(t.seo.impressum.description); // "Impressum und Anbieterkennzeichnung von Tony & Julian."
+ */
+export function fill(text: string, values: Partial<Record<Placeholder, string>> = {}): string {
+  const all: Record<Placeholder, string> = { name: site.name, region: site.region, ...values };
+  return text.replace(/\{(name|region)\}/g, (_match, key: Placeholder) => all[key]);
 }

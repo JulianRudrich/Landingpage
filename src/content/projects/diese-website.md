@@ -1,16 +1,14 @@
 ---
 # Gehört WP-06 (Projekte). Erstes Projekt: die Landingpage selbst. Nach dem Go-live status auf "live" setzen
-# und das Cover durch einen echten Screenshot ersetzen (src/assets/projects/diese-website.png).
+# und das Platzhalter-Cover durch einen echten Screenshot ersetzen (gleicher Dateiname, PNG).
 title: Diese Website
 summary: Unsere eigene Landingpage – schnell, barrierefrei und ohne Cookie-Banner, gebaut mit Astro und Tailwind CSS.
 industry: Eigenes Projekt
-services: [L1]
 tech: [Astro, Tailwind CSS, TypeScript, Netlify]
 status: prototyp
-cover: ../../assets/projects/diese-website.svg
-coverAlt: Platzhalter-Vorschaubild der Landingpage von Tony & Julian
+cover: ../../assets/projects/diese-website.png
+coverAlt: Platzhalter-Vorschaubild unserer Landingpage
 order: 90
-publishedAt: 2026-10-06
 ---
 
 ## Ausgangslage

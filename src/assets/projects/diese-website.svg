@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
-  <rect width="1600" height="1000" fill="#e4e4e7"/>
-  <rect x="200" y="150" width="1200" height="700" rx="24" fill="#ffffff" stroke="#a1a1aa" stroke-width="4"/>
-  <rect x="200" y="150" width="1200" height="80" rx="24" fill="#d4d4d8"/>
-  <text x="800" y="560" font-family="system-ui, sans-serif" font-size="64" fill="#52525b" text-anchor="middle">Platzhalter</text>
-</svg>

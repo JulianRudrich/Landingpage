@@ -27,13 +27,15 @@ Die Seite darf rechtssicher online gehen: Impressum und Datenschutzerklärung pa
 3. **Datenschutzerklärung (R-03)**, mindestens:
    - Verantwortliche (beide, mit Kontakt)
    - Hosting bei Netlify inklusive Server-Logfiles und Übermittlung in die USA
-   - Kontaktformular (Netlify Forms) und Kontakt per E-Mail: welche Daten, Zweck, Rechtsgrundlage, Speicherdauer (Angaben von WP-08)
+   - Kontaktformular (Netlify Forms) und Kontakt per E-Mail: welche Daten, Zweck, Rechtsgrundlage (Angaben von WP-08), Speicherdauer laut E-15
    - Hinweis, dass Schriften und Icons lokal geladen werden und keine Cookies gesetzt werden
    - Rechte der Betroffenen, Beschwerderecht bei der Aufsichtsbehörde
    - Stand-Datum
-   - Ab V1.1 ergänzt WP-13 Statistik und Terminbuchung (Tony reviewt das)
+   - Abschnitte 8 (Besucherstatistik) und 9 (Terminbuchung) haben für V1.0 schon einen festen Text („derzeit nicht im Einsatz“). Er bleibt stehen und ist kein Platzhalter; ab V1.1 ersetzt WP-13 ihn (Tony reviewt).
 4. **404-Seite** `src/pages/404.astro` (existiert): Texte `t.legal.notFound`, Links zur Startseite und zum Kontakt, `noindex`; gestalten nach Tonys Entwurf.
 5. Kurze Texte (Seitenüberschriften, 404) stehen in `src/i18n/de/legal.ts`.
+
+Rechtstexte dürfen Namen, Anschrift und Kontakt im Wortlaut enthalten (Ausnahme von „Daten nur aus `site.ts`“, [SPECS §10](../../SPECS.md#feste-konventionen)). Die Hinweise für euch stehen als Kommentar im Kopf der Markdown-Dateien und erscheinen nicht auf der Website.
 
 **Gehört nicht dazu**
 
@@ -58,4 +60,4 @@ Die Seite darf rechtssicher online gehen: Impressum und Datenschutzerklärung pa
 - [ ] Die Texte sind mobil gut lesbar formatiert
 - [ ] Eine nicht existierende URL (z. B. `/gibt-es-nicht`) zeigt in der Deploy-Preview die 404-Seite, mit Links zu Start und Kontakt
 - [ ] Die 404-Seite hat `noindex`
-- [ ] Vor dem Release sind keine Platzhalter mehr enthalten
+- [ ] Vor dem Release sind keine Platzhalter in eckigen Klammern mehr enthalten (die festen V1.0-Texte in den Abschnitten 8 und 9 sind keine Platzhalter)

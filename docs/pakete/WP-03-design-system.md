@@ -8,8 +8,8 @@
 | **Aufwand** | L (ca. 12–24 h) |
 | **Branch** | `tony/wp-03-design-system` (für Teil B; Teil A wird im Issue abgegeben) |
 | **Issue** | [#6](https://github.com/JulianRudrich/Landingpage/issues/6) |
-| **Abhängig von** | Teil A: nichts, kann sofort starten. Teil B: WP-01 und Freigabe der Spec v1.0 |
-| **Blockiert** | Die Freigabe der Spec v1.0 und damit alle Sektions-Pakete (WP-04 bis WP-08, WP-10, WP-11) |
+| **Abhängig von** | Teil A: nichts, kann sofort starten. Teil B: WP-01 und Freigabe der Spec v1.0. Teil A2 (Design V1.1): Go-live von V1.0 |
+| **Blockiert** | Teil A: die Freigabe der Spec v1.0 und damit alle Sektions-Pakete (WP-04 bis WP-08, WP-10). Teil A2: WP-11 und WP-12 |
 | **Anforderungen** | D-01 bis D-05, D-07 bis D-09, NFA-04, NFA-05, NFA-06, NFA-07, NFA-14, R-05 aus [SPECS.md](../../SPECS.md) |
 
 ## Ziel
@@ -35,8 +35,16 @@ Die **Namen** stehen fest in `src/styles/global.css`. Für jeden Namen einen Wer
 | Schriften | `font-sans` (Text), `font-display` (Überschriften; darf dieselbe sein). Höchstens 2 Familien, beide müssen bei [Fontsource](https://fontsource.org) verfügbar sein. Benötigte Schriftstärken angeben. |
 | Formen | `radius-control` (Buttons, Felder), `radius-card` (Karten), `shadow-card` |
 | Raster | `container-site` (max. Inhaltsbreite), `spacing-section` (Abstand je Sektion), `--header-height` |
+| Browserleiste | `themeColor` (Hex-Wert für `theme-color` und Web-Manifest; wird in `src/config/site.ts` eingetragen) |
 
-**Pflicht-Kontraste ≥ 4,5 : 1** (mit einem Kontrast-Checker prüfen und in der Abgabe nennen): `ink` auf `surface` und auf `surface-muted`, `ink-muted` auf `surface`, `ink-inverted` auf `surface-inverted`, `on-primary` auf `primary` und auf `primary-hover`, `on-accent` auf `accent`, `primary` als Linkfarbe auf `surface`, `warning` als Fehlertext auf `surface`. `focus` muss sich von allen Flächen deutlich abheben (≥ 3 : 1).
+**Pflicht-Kontraste ≥ 4,5 : 1** (mit einem Kontrast-Checker prüfen und in der Abgabe nennen):
+
+- auf `surface` **und** auf `surface-muted`: `ink`, `ink-muted`, `primary` (Links), `warning` (Fehlertexte), `success` (Badge „Live“)
+- auf `surface-inverted`: `ink-inverted` (Text **und** Links, z. B. im Footer)
+- `on-primary` auf `primary` und auf `primary-hover`, `on-accent` auf `accent`
+- `focus` muss sich von allen Flächen deutlich abheben (≥ 3 : 1)
+
+Festgelegt: Links und Nebentext auf dunklen Flächen (`surface-inverted`) verwenden `ink-inverted`, nicht `primary` oder `ink-muted`.
 
 ### 2. Bildschirme
 
@@ -48,7 +56,7 @@ Jeweils **Handy (360 px)** und **Desktop (1280 px)**:
 | Menü geöffnet | nur Handy: Burger-Menü offen |
 | Formular-Zustände | leer, Fokus, Fehler mit Meldung am Feld |
 | Unterseiten | Impressum (langer Text in `Prose`), Danke-Seite, 404-Seite |
-| V1.1 (darf später kommen) | Projektdetailseite, FAQ-Sektion (Akkordeon) |
+| V1.1 (eigene Abgabe, siehe Teil A2) | Projektdetailseite, FAQ-Sektion (Akkordeon) |
 
 Dazu für jede Sektion: welcher Hintergrund (`Section tone`: `default`, `muted` oder `inverted`).
 
@@ -65,19 +73,29 @@ Button `primary` / `secondary` / `ghost` in den Zuständen normal, Hover, Fokus.
 ### Abnahme Teil A
 
 - [ ] Alle Token-Werte geliefert, Pflicht-Kontraste erfüllt (Liste in der Abgabe)
-- [ ] Alle Bildschirme aus Punkt 2 für Handy und Desktop vorhanden (V1.1 darf fehlen)
+- [ ] Alle Bildschirme aus Punkt 2 für Handy und Desktop vorhanden (ohne die V1.1-Zeile)
+- [ ] `themeColor` geliefert
 - [ ] Bausteine und Bilder aus Punkt 3 und 4 vorhanden
 - [ ] Julian hat im Issue zugestimmt. Zusammen mit WP-00 ist damit die Spec v1.0 freigegeben ([SPECS §12](../../SPECS.md#12-releases--scope)).
+
+## Teil A2: Design-Abgabe V1.1 (vor Phase 2)
+
+Nach dem Go-live von V1.0 und **bevor** WP-11 und WP-12 starten, liefert Tony nach denselben Regeln wie in Teil A:
+
+- Projektdetailseite (Handy und Desktop): Breadcrumb, Kopfbereich, Cover, Text, Technik, Galerie, „Weitere Projekte“, Abschluss-Box
+- FAQ-Sektion (Handy und Desktop): geschlossen, eine Antwort offen, Fokus
+
+Abnahme durch Julian im Issue [#6](https://github.com/JulianRudrich/Landingpage/issues/6) (eigene Checkbox), danach können WP-11 und WP-12 starten.
 
 ## Teil B: Umsetzung (Phase 1)
 
 1. **Token-Werte** aus Teil A in `src/styles/global.css` eintragen (nur Werte ändern, Namen bleiben).
-2. **Schriften** über Fontsource installieren (`@fontsource-variable/…`; Abhängigkeit im Issue ankündigen) und in `global.css` einbinden, `font-display: swap`.
+2. **Schriften** über Fontsource installieren: die variable Version `@fontsource-variable/<name>`, wenn es sie gibt, sonst `@fontsource/<name>` mit den Schriftstärken aus der Abgabe. Abhängigkeit im Issue ankündigen, in `global.css` einbinden, `font-display: swap`.
 3. **Bausteine gestalten** in `src/components/ui/` nach dem Entwurf. Die Props bleiben, wie sie sind (siehe Schnittstellen).
 4. **`Prose`** gestalten: Überschriften, Absätze, Listen, Links und Zeilenlänge für Markdown (Rechtstexte WP-10, Fallstudien WP-12).
 5. **`BaseLayout`** gestalten (Skip-Link sichtbar bei Fokus). Die Props bleiben die von `SEO.astro`.
 6. **Styleguide** (`/styleguide/`) zeigt alle Bausteine in allen Varianten, damit die anderen Pakete nachsehen können.
-7. **Bild-Muster** im Styleguide dokumentieren: `<Picture>` aus `astro:assets`, Formate AVIF/WebP, `widths` und `sizes`, `loading`.
+7. **Bild-Muster** im Styleguide zeigen, mit dem Beispielbild `src/assets/styleguide/beispiel.png`: `<Picture>` aus `astro:assets`, `formats={['avif', 'webp']}`, `widths` und `sizes`, `loading="lazy"` (nur das LCP-Bild im Hero bekommt `loading="eager"` und `fetchpriority="high"`). Bilder immer als PNG, JPG oder WebP, nie als SVG.
 
 **Gehört nicht dazu:** Aufbau und Logik von Header und Footer (WP-04), Inhalte der Sektionen (WP-05 bis WP-08).
 

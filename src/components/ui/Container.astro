@@ -1,5 +1,5 @@
 ---
-// Gehört WP-03 (Design-System). Props sind ein Vertrag mit allen Paketen: Änderungen vorher ankündigen.
+// Gehört WP-03 (Design-System). Props sind ein Vertrag mit allen Paketen: Änderungen nur per Spec-Änderung (SPECS.md §16).
 // Grundversion: WP-03 gestaltet sie nach Tonys Entwurf. Max. Breite kommt aus dem Token --container-site.
 
 interface Props {
@@ -11,6 +11,6 @@ interface Props {
 const { as: Tag = 'div', class: className } = Astro.props;
 ---
 
-<Tag class:list={['max-w-site mx-auto w-full px-4', className]}>
+<Tag class:list={['mx-auto w-full max-w-site px-4', className]}>
   <slot />
 </Tag>

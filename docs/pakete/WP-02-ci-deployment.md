@@ -36,6 +36,7 @@ Das Paket darf in **zwei PRs** geliefert werden:
    - Security-Header für `/*` (Vorschlag unten)
    - Cache-Header für `/_astro/*`: `public, max-age=31536000, immutable`
 4. **Branch-Schutz** einrichten, wie in [CONTRIBUTING.md](../../CONTRIBUTING.md#einmalige-einrichtung) beschrieben (Julian ist Admin). Den Pflicht-Check `build` erst hinzufügen, nachdem die CI einmal gelaufen ist.
+5. **Nichts extra für die Statistik:** Netlify setzt beim Build die Variable `CONTEXT` (`production`, `deploy-preview`, `branch-deploy`). WP-13 nutzt sie, damit die Statistik nur auf der Live-Seite zählt.
 
 **Vorschlag Security-Header** (in der Deploy-Preview prüfen, dass die Browser-Konsole keine CSP-Fehler zeigt):
 
@@ -88,7 +89,6 @@ Das Paket darf in **zwei PRs** geliefert werden:
 - [ ] Branch-Schutz für `main` und `dev` ist aktiv, inklusive Pflicht-Check `build`
 
 **Teil B**
-- [ ] Domain ist verbunden, HTTPS aktiv, `www` leitet um
-- [ ] `main` ist unter der Domain erreichbar
+- [ ] Domain ist in Netlify verbunden, HTTPS aktiv, `www.<domain>` leitet auf `<domain>` um (die Seite selbst ist erst nach dem Release-PR `dev` → `main` live; das prüft die Release-Checkliste in [SPECS §14](../../SPECS.md#14-definition-of-done))
 - [ ] SPF, DKIM und DMARC sind gesetzt; mail-tester.com zeigt ≥ 9/10
 - [ ] `url` in `src/config/site.ts` zeigt auf die echte Domain (Sitemap und Canonical-URLs nutzen sie)

@@ -18,8 +18,5 @@ const year = new Date().getFullYear();
       </li>
     </ul>
   </nav>
-  <p>
-    © {year}
-    {site.name}. {t.navigation.footer.copyright}
-  </p>
+  <p>{`© ${year} ${site.name}. ${t.navigation.footer.copyright}`}</p>
 </footer>

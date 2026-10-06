@@ -10,7 +10,7 @@ Closes #<!-- Issue-Nummer; bei Teil-PRs stattdessen: Refs #… -->
 
 - [ ] Ziel-Branch ist `dev` (bzw. `main` nur beim Release-PR)
 - [ ] Akzeptanzkriterien aus der Paket-Spec sind erfüllt (oder offene Punkte unten genannt)
-- [ ] Nur Dateien meines Pakets geändert, laut [Zuständigkeitsmatrix](https://github.com/JulianRudrich/Landingpage/blob/dev/docs/pakete/README.md#zuständigkeitsmatrix) (Abweichungen unten begründet)
+- [ ] Nur Dateien meines Pakets geändert, laut [Zuständigkeitsmatrix](https://github.com/JulianRudrich/Landingpage/blob/dev/docs/pakete/README.md#zuständigkeitsmatrix) (Ausnahmen nur, wenn Paket-Spec oder Matrix sie nennen)
 - [ ] `npm run check`, `npm run lint`, `npm run format:check`, `npm run build` sind lokal grün
 - [ ] Keine fest eingebauten Texte (alles in `src/i18n/de/`), keine Farbwerte außerhalb der Tokens
 - [ ] In der Deploy-Preview mobil (360 px) und am Desktop geprüft

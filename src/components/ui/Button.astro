@@ -1,31 +1,41 @@
 ---
-// Gehört WP-03 (Design-System). Props sind ein Vertrag mit allen Paketen: Änderungen vorher ankündigen.
+// Gehört WP-03 (Design-System). Props sind ein Vertrag mit allen Paketen: Änderungen nur per Spec-Änderung (SPECS.md §16).
 // Grundversion: WP-03 gestaltet die Varianten nach Tonys Entwurf (Tokens primary, on-primary, …).
+// Button reicht KEINE weiteren HTML-Attribute durch (aria-*, data-*, id). Wer so etwas braucht (z. B. der
+// Burger-Button in WP-04), baut ein eigenes <button> mit Token-Klassen.
 import { useTranslations } from '@/i18n';
 
 import Icon from './Icon.astro';
 import type { IconName } from './icons';
 
-interface Props {
-  /** Mit `href` wird ein Link (<a>) gerendert, ohne `href` ein <button> */
-  href?: string;
+/** Link-Variante: mit `href`, optional `external` (neuer Tab + Screenreader-Hinweis) */
+interface LinkProps {
+  href: string;
+  external?: boolean;
+  type?: never;
+}
+
+/** Button-Variante: ohne `href`, `type` = 'submit' in Formularen */
+interface ActionProps {
+  href?: never;
+  external?: never;
+  type?: 'button' | 'submit';
+}
+
+type Props = (LinkProps | ActionProps) & {
   variant?: 'primary' | 'secondary' | 'ghost';
   size?: 'md' | 'lg';
-  /** Nur für <button>: 'submit' in Formularen */
-  type?: 'button' | 'submit';
-  /** Öffnet in neuem Tab (target="_blank", rel="noopener noreferrer") und ergänzt einen Screenreader-Hinweis */
-  external?: boolean;
   /** Optionales Icon hinter dem Text */
   icon?: IconName;
   class?: string;
-}
+};
 
 const {
   href,
+  external = false,
+  type = 'button',
   variant = 'primary',
   size = 'md',
-  type = 'button',
-  external = false,
   icon,
   class: className,
 } = Astro.props;

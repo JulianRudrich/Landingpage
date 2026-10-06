@@ -9,7 +9,7 @@
 | **Branch** | `julian/wp-01-projekt-setup` |
 | **Issue** | [#4](https://github.com/JulianRudrich/Landingpage/issues/4) |
 | **Abhängig von** | – |
-| **Blockiert** | alle anderen Pakete |
+| **Blockiert** | alle Pakete außer WP-00 und WP-03 Teil A (Design-Entwurf) |
 | **Anforderungen** | FA-01, FA-20, NFA-16, NFA-18 aus [SPECS.md](../../SPECS.md) |
 
 ## Ziel
@@ -27,13 +27,14 @@ Das Projekt aufsetzen und das **vollständige Gerüst** anlegen: **jede Datei vo
    - i18n (`de` ohne URL-Präfix)
    - Sitemap ohne `/danke/` und `/styleguide/`
    - Skripte werden immer als Datei ausgeliefert, nie inline (für die CSP aus WP-02)
-3. ESLint 10 (`eslint-plugin-astro`, `typescript-eslint`, Barrierefreiheits-Regeln über `eslint-plugin-jsx-a11y-x`) und Prettier (Astro- und Tailwind-Plugin; Markdown ausgenommen).
-4. npm-Skripte (siehe unten), `.nvmrc` mit Node 24, `engines` passend zur strengsten Abhängigkeit, Alias `@/*` → `src/*`.
-5. `.editorconfig`, `.gitignore` (inkl. Ausgaben der Qualitäts-Tools aus WP-14 und `.claude/worktrees/`), `.vscode/extensions.json`.
-6. Icon-Paket `@lucide/astro` (für die feste Icon-Liste von WP-03).
-7. **Das vollständige Gerüst** (Tabelle unten), mit allen Texten als Vorschlag (Ansprache „Sie“).
-8. i18n-Grundlage mit Schutz gegen `as const` (siehe Schnittstellen).
-9. `README.md`: Abschnitt „Lokale Entwicklung“.
+3. ESLint 10 (`eslint-plugin-astro`, `typescript-eslint`, Barrierefreiheits-Regeln über `eslint-plugin-jsx-a11y-x`) und Prettier (Astro-Plugin; Markdown ausgenommen). `npm run format` führt danach `eslint --fix` aus.
+4. **Guards für die festen Konventionen** ([SPECS §10](../../SPECS.md#feste-konventionen)) über `eslint-plugin-better-tailwindcss` und ESLint-Regeln: unbekannte Klassen, Farbwerte in eckigen Klammern, doppelte oder widersprüchliche Klassen, falsche Klassen-Reihenfolge, `is:inline`, `define:vars`, direkte Lucide-Importe. In `global.css` ist Tailwinds Standard-Farbpalette abgeschaltet.
+5. npm-Skripte (siehe unten), `.nvmrc` mit Node 24, `engines` passend zur strengsten Abhängigkeit, Alias `@/*` → `src/*`.
+6. `.editorconfig`, `.gitignore` (inkl. Ausgaben der Qualitäts-Tools aus WP-14 und `.claude/worktrees/`), `.vscode/extensions.json`.
+7. Icon-Paket `@lucide/astro` (für die feste Icon-Liste von WP-03).
+8. **Das vollständige Gerüst** (Tabelle unten), mit allen Texten als Vorschlag (Ansprache „Sie“).
+9. i18n-Grundlage mit Schutz gegen `as const` und dem Helfer `fill()` für `{name}`/`{region}` (siehe Schnittstellen).
+10. `README.md`: Abschnitt „Lokale Entwicklung“.
 
 **Gehört nicht dazu**
 
@@ -59,13 +60,14 @@ Das Projekt aufsetzen und das **vollständige Gerüst** anlegen: **jede Datei vo
 | `src/components/sections/Services.astro` | WP-05 | Grundversion: Überschrift |
 | `src/components/sections/Projects.astro`, `src/components/projects/ProjectCard.astro` | WP-06 | Grundversion: Projektliste aus der Collection |
 | `src/content.config.ts` | WP-06 | **fertiges** Schema (Vertrag mit WP-12) |
-| `src/content/projects/diese-website.md`, `src/assets/projects/diese-website.svg` | WP-06 | erstes Projekt mit Platzhalterbild |
+| `src/content/projects/diese-website.md`, `src/assets/projects/diese-website.png` | WP-06 | erstes Projekt mit Platzhalterbild (PNG) |
+| `src/assets/styleguide/beispiel.png` | WP-03 | Beispielbild für das Bild-Muster |
 | `src/components/sections/Process.astro`, `About.astro` | WP-07 | Grundversion: Überschrift |
 | `src/components/sections/Contact.astro` | WP-08 | Grundversion: Überschrift, bindet `ContactForm` ein |
 | `src/components/contact/ContactForm.astro` | WP-08 | Platzhalter |
 | `src/pages/danke.astro` | WP-08 | Grundversion, `noindex` |
 | `src/components/layout/SEO.astro` | WP-09 | Grundversion: Titel mit Markenname, Description, `noindex`, Favicon; **endgültige Props** |
-| `src/pages/robots.txt.ts` | WP-09 | funktioniert bereits |
+| `src/pages/robots.txt.ts`, `src/pages/site.webmanifest.ts` | WP-09 | funktionieren bereits (Werte aus `site.ts`) |
 | `public/favicon.svg` | WP-09 | Platzhalter-Monogramm |
 | `src/pages/impressum.astro`, `datenschutz.astro` | WP-10 | Grundversion: H1 + Markdown in `Prose` |
 | `src/legal/impressum.md`, `datenschutz.md` | WP-10 | Gliederung mit markierten Lücken |
@@ -109,7 +111,9 @@ const t = useTranslations(Astro.currentLocale);
 
 Bereichsdateien **ohne** `as const`, sonst wären die Typen die deutschen Texte selbst und eine englische Fassung könnte den Typ `Dictionary` nie erfüllen. `src/i18n/index.ts` prüft das: Bei `as const` meldet `npm run check` einen Fehler. Für Englisch (V2) kommen `'en'` in `locales` (`src/i18n/index.ts` und `astro.config.mjs`) und `src/i18n/en/` dazu.
 
-**`src/config/site.ts`:** `site` mit Typ `SiteConfig`: `name`, `url`, `email`, `phone`, `region`, `social`, `bookingUrl`, `analytics.domain`, `features.projectDetails`. Leere Strings bedeuten „nicht anzeigen“.
+**`src/config/site.ts`:** `site` mit Typ `SiteConfig`: `name`, `legalName`, `url`, `email`, `phone`, `region`, `address` (`street`, `postalCode`, `locality`), `founders`, `social` (`linkedinTony`, `linkedinJulian`, `github`), `themeColor`, `bookingUrl`, `analytics` (`scriptUrl`, `siteId`), `features.projectDetails`. Leere Strings bedeuten „nicht anzeigen“.
+
+**`fill(text)`** aus `src/i18n` ersetzt `{name}` und `{region}` durch die Werte aus `site.ts`. Markenname und Region stehen so nie fest in Textdateien; `SEO.astro` wendet `fill()` auf Titel und Description an.
 
 **Konventionen** (URLs mit `/` am Ende, keine Inline-Skripte, feste Icons, nur Token-Klassen): [SPECS §10](../../SPECS.md#feste-konventionen).
 
@@ -132,7 +136,9 @@ Bereichsdateien **ohne** `as const`, sonst wären die Typen die deutschen Texte 
 - [ ] Jede Datei aus der Tabelle oben existiert mit der beschriebenen Schnittstelle
 - [ ] Alle Anker aus [SPECS §6](../../SPECS.md#6-aufbau-der-startseite) funktionieren (z. B. springt `/#kontakt` zur Kontakt-Sektion)
 - [ ] Keine sichtbaren Texte fest in Komponenten (Ausnahme: interne Beschriftungen im Styleguide)
-- [ ] `as const` in einer Textdatei lässt `npm run check` fehlschlagen
+- [ ] `as const` in einer Textdatei, ein unbekannter Icon-Name, `<Button external>` ohne `href` und ein zu langer Projekttitel lassen `npm run check` bzw. `npm run build` fehlschlagen
+- [ ] Eine unbekannte Klasse (z. B. `bg-surfce`, `bg-red-500`), ein Farbwert wie `text-[#123456]`, `is:inline`, `define:vars` und ein direkter Lucide-Import lassen `npm run lint` fehlschlagen
+- [ ] Ein SVG als Projekt-Cover wird mit einer verständlichen Meldung abgelehnt
 - [ ] Ein Komponenten-`<script>` wird im Build als Datei unter `/_astro/` ausgeliefert, nicht inline
 - [ ] Die Sitemap enthält `/`, `/impressum/`, `/datenschutz/`, aber nicht `/danke/`, `/styleguide/` und 404; `/robots.txt` verweist auf die Sitemap
 - [ ] Das README erklärt die lokale Entwicklung

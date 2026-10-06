@@ -103,11 +103,11 @@ Jede Datei gehört genau einem Paket, siehe [Zuständigkeitsmatrix](docs/pakete/
 | Fall | Regel |
 |---|---|
 | **Eigene Dateien** | frei ändern |
-| **Fremde Dateien** | nur nach Absprache im Issue des Owners (ein kurzer Kommentar reicht), dann als kleiner, eigener Commit |
+| **Fremde Dateien** | nur, wenn die eigene Paket-Spec (Abschnitt „Ändert nach Absprache“) oder die Zuständigkeitsmatrix (Spalte „Hinweis“) es ausdrücklich erlaubt; dann im Issue des Owners kurz Bescheid geben und als kleinen, eigenen Commit. Sonst: Issue mit Label `spec-frage` |
 | **Gemeinsame Dateien** (`package.json`, `package-lock.json`, `astro.config.mjs`, `SPECS.md`, `CONTRIBUTING.md`, `docs/`) | Änderung im PR-Text erwähnen |
 | **Neue npm-Pakete** | vorher im eigenen Issue ankündigen, damit der andere nicht dasselbe Problem anders löst |
-| **UI-Bausteine** (`src/components/ui/`) | Props sind eine Schnittstelle: Änderungen vorher mit Tony (WP-03) absprechen |
-| **Content-Schema** (`src/content.config.ts`) | Schnittstelle: Änderungen vorher mit Julian (WP-06) absprechen |
+| **UI-Bausteine** (`src/components/ui/`) | Props und Icon-Liste sind Schnittstellen: Änderungen nur per Spec-Änderung (`spec:`-PR, beide geben frei) |
+| **Content-Schema** (`src/content.config.ts`) | Schnittstelle: Änderungen nur per Spec-Änderung (`spec:`-PR, beide geben frei) |
 | **Neue Projekte** (`src/content/projects/`) | darf jeder anlegen, neue Datei = kein Konflikt |
 
 ## Code-Regeln
@@ -115,11 +115,12 @@ Jede Datei gehört genau einem Paket, siehe [Zuständigkeitsmatrix](docs/pakete/
 Die festen Konventionen stehen in [SPECS §10](SPECS.md#feste-konventionen). Die wichtigsten für den Alltag:
 
 - **Nur ausfüllen, nicht neu erfinden:** Jede Datei existiert schon mit fester Schnittstelle. Keine neuen gemeinsamen Bausteine, Props, Textschlüssel, Token-Namen oder Icons ohne Spec-Änderung.
-- **Texte** nur aus `src/i18n/de/<bereich>.ts`, **Daten** (Name, E-Mail, URLs) nur aus `src/config/site.ts`.
-- **Gestaltung** nur mit Token-Klassen (`bg-surface`, `text-ink`, `bg-primary` …), keine Farbwerte im Code.
+- **Texte** nur aus `src/i18n/de/<bereich>.ts`, **Daten** (Name, E-Mail, URLs) nur aus `src/config/site.ts`. Markenname und Region in Texten als `{name}` / `{region}`, eingesetzt mit `fill()`.
+- **Gestaltung** nur mit Token-Klassen (`bg-surface`, `text-ink`, `bg-primary` …), keine Farbwerte im Code. `npm run lint` meldet unbekannte Klassen und Farbwerte; `npm run format` sortiert die Klassen.
 - **Interne Links** enden mit `/`: `/impressum/`, `/datenschutz/`, `/#kontakt`.
 - **Skripte** als normales `<script>` in der Komponente, **kein** `is:inline` und **kein** `define:vars` (sonst blockiert die Sicherheitsrichtlinie das Skript auf der Live-Seite). Daten über `data-*`-Attribute übergeben.
-- **Bilder** über `<Picture>` aus `astro:assets`, nie als `<img>` ohne Größe.
+- **Bilder** über `<Picture>` aus `astro:assets`, nie als `<img>` ohne Größe; immer PNG, JPG oder WebP, nie SVG.
+- **Icons** nur über `<Icon name="…" />` aus der festen Liste; Lucide direkt zu importieren meldet `npm run lint`.
 
 ## Spec ändern und neue Ideen
 
@@ -243,7 +244,7 @@ Diese Schritte macht **Julian** (Admin des Repos) einmal in den GitHub-Einstellu
 - Target branches: `main` und `dev` hinzufügen
 - ✅ Restrict deletions
 - ✅ Require a pull request before merging → Required approvals: **1**
-- ✅ Require status checks to pass → Check `build` hinzufügen (erst möglich, nachdem die CI aus WP-02 einmal gelaufen ist; ab V1.1 auch den Quality-Check aus WP-14)
+- ✅ Require status checks to pass → Check `build` hinzufügen (erst möglich, nachdem die CI aus WP-02 einmal gelaufen ist; ab V1.1 auch `quality` aus WP-14)
 - ✅ Block force pushes
 - Bypass: für Notfälle darf der Repo-Admin umgehen, nur nach Absprache
 

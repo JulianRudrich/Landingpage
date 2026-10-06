@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | 0.2 (Entwurf, Phase 0 „Festlegen“) |
+| **Version** | 0.3 (Entwurf, Phase 0 „Festlegen“) |
 | **Stand** | 06.10.2026 |
 | **Autoren** | Tony ([@tonytonym21](https://github.com/tonytonym21)), Julian ([@JulianRudrich](https://github.com/JulianRudrich)) |
 | **Status** | Alle Vorschläge stehen. Wird als **v1.0 festgeschrieben**, sobald die Entscheidungen in [WP-00](docs/pakete/WP-00-entscheidungen-inhalte.md) getroffen und Tonys Design-Entwurf ([WP-03](docs/pakete/WP-03-design-system.md)) abgenommen sind. |
@@ -85,7 +85,7 @@ Die Landingpage ist unser digitales Aushängeschild und das Ziel jeder Akquise: 
 
 ## 3. Positionierung & Tonalität
 
-**Kernbotschaft** (Entwurf, wird in [WP-05](docs/pakete/WP-05-hero-leistungen.md) finalisiert):
+**Kernbotschaft** (Vorschlag, wird in [WP-00](docs/pakete/WP-00-entscheidungen-inhalte.md) bestätigt; Text in `src/i18n/de/hero.ts`):
 
 > **Digitale Lösungen für Gastronomie und lokale Betriebe – von der Website bis zur eigenen App.**
 
@@ -141,10 +141,10 @@ Wir können vieles. Für eine klare Botschaft in der Akquise führen **L1 bis L3
 | 1 | Header | – | Wortmarke, Navigation (Leistungen, Projekte, Ablauf, Über uns, Kontakt), CTA „Projekt anfragen“ | WP-04 |
 | 2 | Hero | `#start` | Headline, Subline, CTA „Kostenloses Erstgespräch“ → `#kontakt`, CTA „Projekte ansehen“ → `#projekte`, Visual | WP-05 |
 | 3 | Leistungen | `#leistungen` | L1 bis L4 als Karten | WP-05 |
-| 4 | Projekte | `#projekte` | 2–6 Projektkarten aus der Content Collection | WP-06 |
+| 4 | Projekte | `#projekte` | 1–6 Projektkarten aus der Content Collection | WP-06 |
 | 5 | Ablauf | `#ablauf` | 4 Schritte vom Erstgespräch bis zur Betreuung | WP-07 |
 | 6 | Über uns | `#ueber-uns` | Tony & Julian: Foto, Rolle, Kurzbio, Links | WP-07 |
-| 7 | FAQ | `#faq` | 6–8 Fragen als Akkordeon (ab V1.1) | WP-11 |
+| 7 | FAQ | `#faq` | 8 Fragen als Akkordeon (ab V1.1) | WP-11 |
 | 8 | Kontakt | `#kontakt` | Formular, E-Mail, Telefon, ab V1.1 Terminbuchung | WP-08 |
 | 9 | Footer | – | Kontakt, Navigation, Impressum, Datenschutz, © | WP-04 |
 
@@ -169,20 +169,20 @@ Priorität nach MoSCoW: **M** = Must, **S** = Should, **C** = Could, **W** = Won
 | FA-10 | Über uns mit Foto, Name, Rolle, Kurzbio und Profil-Links für beide | M | Beide gleichwertig dargestellt; Fotos mit Alt-Text | WP-07 |
 | FA-11 | Kontaktformular: Name\*, E-Mail\*, Unternehmen, Projektart (Auswahl), Nachricht\* | M | Pflichtfelder werden validiert, Fehlermeldungen stehen am Feld (`aria-describedby`), Formular ist per Tastatur bedienbar | WP-08 |
 | FA-12 | Spam-Schutz ohne Captcha-Drittanbieter | M | Honeypot-Feld + Netlify-Spamfilter; kein reCAPTCHA/hCaptcha | WP-08 |
-| FA-13 | Nach dem Absenden Weiterleitung auf `/danke`, Benachrichtigung per E-Mail an beide | M | Eine Testanfrage kommt bei Tony und Julian an | WP-08 |
-| FA-14 | Datenschutzhinweis mit Link direkt am Formular | M | Hinweis über dem Absenden-Button, Link auf `/datenschutz` | WP-08 |
+| FA-13 | Nach dem Absenden Weiterleitung auf `/danke/`, Benachrichtigung per E-Mail an beide | M | Eine Testanfrage kommt bei Tony und Julian an | WP-08 |
+| FA-14 | Datenschutzhinweis mit Link direkt am Formular | M | Hinweis über dem Absenden-Button, Link auf `/datenschutz/` | WP-08 |
 | FA-15 | Direkte Kontaktwege: E-Mail (`mailto:`) und Telefon (`tel:`, falls öffentlich) | M | Links funktionieren auf dem Smartphone | WP-08 |
 | FA-16 | Footer mit Kontakt, Navigation, Impressum, Datenschutz, Copyright | M | Impressum und Datenschutz sind von jeder Seite mit 1 Klick erreichbar | WP-04 |
-| FA-17 | Seite `/impressum` | M | Enthält alle Pflichtangaben laut R-01 | WP-10 |
-| FA-18 | Seite `/datenschutz` | M | Deckt alle tatsächlich genutzten Dienste ab (R-03) | WP-10 |
+| FA-17 | Seite `/impressum/` | M | Enthält alle Pflichtangaben laut R-01 | WP-10 |
+| FA-18 | Seite `/datenschutz/` | M | Deckt alle tatsächlich genutzten Dienste ab (R-03) | WP-10 |
 | FA-19 | Eigene 404-Seite | M | Freundlicher Text, Links zur Startseite und zum Kontakt | WP-10 |
 | FA-20 | Mehrsprachigkeit vorbereitet | M | Astro-i18n konfiguriert (`de` ohne URL-Präfix); **keine** sichtbaren Texte fest in Komponenten, alle in `src/i18n/de/*.ts` | WP-01 (Grundlage), alle (Einhaltung) |
 | FA-21 | FAQ-Sektion als Akkordeon | S | Natives `<details>`/`<summary>` oder gleichwertig barrierefrei | WP-11 |
-| FA-22 | Projektdetailseiten `/projekte/<slug>` | S | Werden für jedes Projekt automatisch aus der Content Collection erzeugt | WP-12 |
+| FA-22 | Projektdetailseiten `/projekte/<id>/` | S | Werden für jedes Projekt automatisch aus der Content Collection erzeugt | WP-12 |
 | FA-23 | Terminbuchung für das Erstgespräch | S | Externer Link (kein Embed), Button in der Kontakt-Sektion | WP-13 |
 | FA-24 | Cookielose Besucherstatistik | S | Seitenaufrufe und Formular-Absendungen messbar; kein Cookie, kein Banner | WP-13 |
 | FA-25 | Englische Version unter `/en/` | C | – | V2 |
-| FA-26 | Branchen-Landingpage `/gastronomie` | C | – | V2 |
+| FA-26 | Branchen-Landingpage `/gastronomie/` | C | – | V2 |
 | FA-27 | Kundenstimmen (nur echte, mit Einverständnis) | C | – | V2 |
 | FA-28 | Blog | C | – | V2 |
 | FA-29 | Dark Mode | W | – | – |
@@ -219,15 +219,15 @@ Priorität nach MoSCoW: **M** = Must, **S** = Should, **C** = Could, **W** = Won
 
 | ID | Anforderung | Prio | Paket |
 |---|---|---|---|
-| D-01 | Design-Tokens (Farben, Schriften, Schriftgrößen, Abstände, Radien, Schatten) zentral im Tailwind-Theme in `src/styles/global.css`; keine Hex-Werte oder Magic Numbers in Komponenten | M | WP-03 |
+| D-01 | Design-Tokens (Farben, Schriften, Abstände, Radien, Schatten) zentral im Tailwind-Theme in `src/styles/global.css`; keine Hex-Werte oder Magic Numbers in Komponenten. Schriftgrößen: Tailwinds Standardskala (`text-sm` … `text-6xl`), keine eigenen Größen-Tokens | M | WP-03 |
 | D-02 | Farbpalette: 1 Primärfarbe, 1 Akzentfarbe, Neutraltöne (warmes Off-White als Hintergrund, fast schwarzer Text); alle Text-Kombinationen mit Kontrast ≥ 4,5 : 1 | M | WP-03 |
 | D-03 | Höchstens 2 Schriftfamilien (gut lesbare Sans für Text, optional eine charaktervolle Display-Schrift für Überschriften), selbst gehostet über Fontsource, `font-display: swap` | M | WP-03 |
 | D-04 | Logo vorerst als Text-Wortmarke, später austauschbar | S | WP-03 |
 | D-05 | Einheitliches Raster: Container max. ca. 1200 px, einheitliche Sektionsabstände, 8-px-Abstandsskala | M | WP-03 |
 | D-06 | Bildsprache: echte Fotos von Tony & Julian, Projekt-Screenshots in Geräterahmen; keine generischen Stockfotos | S | WP-05, WP-06, WP-07 |
-| D-07 | Icons aus einem einheitlichen Set (z. B. Lucide), als lokales SVG eingebunden | S | WP-03 |
+| D-07 | Icons aus Lucide, nur die feste Liste in `src/components/ui/icons.ts`, als Inline-SVG gerendert | S | WP-03 |
 | D-08 | Animationen dezent (≤ 300 ms, nur `opacity`/`transform`), Inhalte nie nur per Animation sichtbar | C | WP-03 |
-| D-09 | Vor der Umsetzung ein Design-Entwurf der Startseite für Mobil und Desktop (Figma o. ä. oder Skizze), vom anderen abgenommen | S | WP-03 |
+| D-09 | Vor der Umsetzung ein vollständiger Design-Entwurf für Mobil und Desktop (WP-03 Teil A „Design-Abgabe“), vom anderen abgenommen; für V1.1 eine eigene Abgabe vor Phase 2 | M | WP-03 |
 
 ## 10. Technische Architektur
 
@@ -296,12 +296,15 @@ Das Gerüst aus WP-01 enthält **jede Datei von V1.0 und V1.1** mit fester Schni
 
 | Thema | Regel | Warum |
 |---|---|---|
-| **Schnittstellen** | Props aller Komponenten, das Content-Schema, alle Textschlüssel und die Token-Namen stehen im Gerüst fest. Wer sie ändern will, braucht eine Spec-Änderung ([Abschnitt 16](#16-änderungsregeln)). | Niemand muss Dateien anderer anfassen; TypeScript meldet Abweichungen. |
+| **Schnittstellen** | Props aller Komponenten, das Content-Schema, alle Textschlüssel und die Token-Namen stehen im Gerüst fest. Wer sie ändern will, braucht eine Spec-Änderung ([Abschnitt 16](#16-änderungsregeln)). | Niemand muss Dateien anderer anfassen. Falsche Props, Icons und Schema-Werte meldet `npm run check`. |
 | **Dateien** | Neue Dateien nur als interne Hilfsdatei des eigenen Pakets in dessen Ordner (im PR erwähnen) oder als Inhalt (neues Projekt, Bild). Keine neuen gemeinsamen Bausteine ohne Spec-Änderung. | Die Struktur bleibt so, wie sie geplant ist. |
 | **URLs** | Jede Seite endet mit `/` (`trailingSlash: 'always'`), interne Links genau so schreiben: `/impressum/`, `/#kontakt`. Im Dev-Server ergibt `/impressum` ohne `/` absichtlich 404. | Einheitliche Canonical-URLs, Sitemap und Links. |
 | **Skripte** | Normale `<script>`-Tags in Komponenten, **kein** `is:inline` und **kein** `define:vars`; Daten über `data-*`-Attribute übergeben. `astro.config.mjs` sorgt dafür, dass Skripte immer als Datei ausgeliefert werden. | Die Content-Security-Policy `script-src 'self'` (WP-02) bleibt gültig. |
-| **Icons** | Nur die feste Liste aus `src/components/ui/icons.ts`. Profil-Links (LinkedIn, GitHub) als Text, ohne Markenlogos. | Einheitliches Bild; Lucide enthält keine Markenlogos. |
-| **Design** | Nur Token-Klassen aus `src/styles/global.css` (z. B. `bg-surface`, `text-ink`, `bg-primary`), keine Farbwerte im Code. | Ein Design-Wechsel passiert an genau einer Stelle. |
+| **Icons** | Nur die feste Liste aus `src/components/ui/icons.ts`; Lucide direkt zu importieren meldet `npm run lint`. Profil-Links (LinkedIn, GitHub) als Text, ohne Markenlogos. | Einheitliches Bild; Lucide enthält keine Markenlogos. |
+| **Design** | Nur Token-Klassen aus `src/styles/global.css` (z. B. `bg-surface`, `text-ink`, `bg-primary`), keine Farbwerte im Code. Tailwinds Standard-Farbpalette ist abgeschaltet; unbekannte Klassen, Farbwerte in eckigen Klammern und eine falsche Klassen-Reihenfolge meldet `npm run lint` (`npm run format` sortiert automatisch). | Ein Design-Wechsel passiert an genau einer Stelle. |
+| **Markenname und Region in Texten** | Nie fest eintragen, sondern als Platzhalter `{name}` bzw. `{region}`; `fill()` aus `src/i18n` setzt die Werte aus `site.ts` ein (`SEO.astro` macht das für Titel und Description automatisch). | Die Daten stehen nur in `site.ts`. |
+| **Rechtstexte** | Ausnahme: `src/legal/*.md` enthält Namen, Anschrift und Kontakt im Wortlaut (aus WP-00), weil Rechtstexte als Dokument gepflegt werden. | Generator-Texte bleiben unverändert prüfbar. |
+| **Statistik** | Das Skript läuft nur auf der Live-Seite: `Analytics.astro` prüft die Netlify-Variable `CONTEXT === 'production'`, nicht nur `import.meta.env.PROD` (das gilt auch für Deploy-Previews und Staging). | Tests und Previews verfälschen die Zahlen nicht. |
 
 ### Texte & Mehrsprachigkeit
 
@@ -335,11 +338,11 @@ Das Gerüst aus WP-01 enthält **jede Datei von V1.0 und V1.1** mit fester Schni
 
 | Phase | Was passiert | Ergebnis |
 |---|---|---|
-| **0 – Festlegen** | WP-00: alle Entscheidungen treffen und die Textvorschläge bestätigen. WP-03, Teil A: Tony liefert den Design-Entwurf, Julian nimmt ihn ab. Parallel dazu ohne Design-Abhängigkeit: WP-01 (Gerüst), WP-02 (CI & Deployment), WP-09 (SEO). | **Spec v1.0 festgeschrieben** |
-| **1 – Bauen (V1.0)** | Alle übrigen V1.0-Pakete füllen das Gerüst aus, genau nach Spec und Design. | Release V1.0, Go-live |
-| **2 – Ausbau (V1.1)** | WP-11 bis WP-14 | Release V1.1 |
+| **0 – Festlegen** | WP-00: alle Entscheidungen treffen und die Textvorschläge bestätigen. WP-03 Teil A: Tony liefert den Design-Entwurf, Julian nimmt ihn ab. Parallel: WP-01 (Gerüst), WP-02 (CI, Netlify, Domain und E-Mail-DNS), WP-09 (SEO; Favicon und Vorschaubild erst nach der Design-Abnahme). | **🔒 Spec v1.0 festgeschrieben** |
+| **1 – Bauen (V1.0)** | Alle übrigen V1.0-Pakete füllen das Gerüst aus, genau nach Spec und Design. Danach die Release-Checkliste ([Abschnitt 14](#14-definition-of-done)) und der Release-PR `dev` → `main`. | **🚀 Release V1.0, Go-live** |
+| **2 – Ausbau (V1.1)** | Zuerst WP-03 Teil A2 (Design-Abgabe V1.1: FAQ und Projektdetailseite), dann WP-11 bis WP-14 (WP-14 nach WP-12). | **Release V1.1** |
 
-Kein Paket der Phase 1 beginnt mit dem Gestalten von Sektionen, bevor der Design-Entwurf abgenommen ist.
+Kein Paket der Phase 1 beginnt mit dem Gestalten von Sektionen, bevor der Design-Entwurf abgenommen ist. Aufgaben, die die Live-Seite brauchen (Domain auf `main`, Search Console), stehen in der Release-Checkliste und nicht in den Paketen.
 
 ### Releases
 
@@ -357,7 +360,7 @@ Jede Anforderung ist mindestens einem Paket zugeordnet, damit nichts verloren ge
 
 | Paket | Owner | Deckt ab |
 |---|---|---|
-| [WP-00](docs/pakete/WP-00-entscheidungen-inhalte.md) Entscheidungen & Inhalte | beide | E-01 bis E-09, E-12 bis E-14, R-06, R-09 |
+| [WP-00](docs/pakete/WP-00-entscheidungen-inhalte.md) Entscheidungen & Inhalte | beide | E-01 bis E-09, E-12 bis E-15, R-06, R-09 |
 | [WP-01](docs/pakete/WP-01-projekt-setup.md) Projekt-Setup & Gerüst | Julian | FA-01, FA-20, NFA-16, NFA-18 |
 | [WP-02](docs/pakete/WP-02-ci-deployment.md) CI & Deployment | Julian | NFA-15, NFA-16, NFA-17, NFA-19 |
 | [WP-03](docs/pakete/WP-03-design-system.md) Design-System & BaseLayout | Tony | D-01 bis D-05, D-07 bis D-09, NFA-04, NFA-05, NFA-06, NFA-07, NFA-14, R-05 |
@@ -382,7 +385,7 @@ Jede Anforderung ist mindestens einem Paket zugeordnet, damit nichts verloren ge
 ### Pro Paket (jeder Pull Request)
 
 - [ ] Alle Akzeptanzkriterien der Paket-Spec sind erfüllt
-- [ ] Nur Dateien geändert, die dem Paket gehören (oder Abweichung im Issue abgesprochen)
+- [ ] Nur Dateien geändert, die dem Paket gehören (Ausnahmen nur, wenn die Paket-Spec oder die Zuständigkeitsmatrix sie nennt)
 - [ ] `npm run check`, `npm run lint`, `npm run format:check` und `npm run build` sind lokal und in der CI grün
 - [ ] Keine fest eingebauten sichtbaren Texte (FA-20), keine Farbwerte außerhalb der Tokens (D-01)
 - [ ] In der Deploy-Preview mobil (360 px) und am Desktop geprüft
@@ -399,8 +402,10 @@ Jede Anforderung ist mindestens einem Paket zugeordnet, damit nichts verloren ge
 - [ ] Network-Tab: keine Requests an Drittanbieter; Application-Tab: keine Cookies
 - [ ] Alle Links funktionieren, keine Platzhalter („Lorem ipsum“, „TODO“) mehr sichtbar
 - [ ] Impressum und Datenschutzerklärung sind final
-- [ ] Domain mit HTTPS ist live, `www` leitet auf die Hauptdomain um (oder umgekehrt)
+- [ ] Abschnitte 8 und 9 der Datenschutzerklärung entsprechen dem, was wirklich läuft (V1.0: „derzeit nicht im Einsatz“)
 - [ ] Release-PR `dev` → `main` ist gemerged und getaggt (z. B. `v1.0.0`)
+- [ ] Die Seite ist unter der Domain mit HTTPS erreichbar, `www.<domain>` leitet auf `<domain>` um
+- [ ] Nach dem Go-live (WP-09): Google Search Console eingerichtet (Domain per DNS bestätigt), Sitemap eingereicht, Google-Unternehmensprofil mit der Website verknüpft
 
 ## 15. Offene Entscheidungen
 
@@ -409,7 +414,7 @@ Zu jeder Frage steht ein konkreter Vorschlag; die Texte im Gerüst (`src/i18n/de
 | ID | Frage | Vorschlag | Entscheidet in |
 |---|---|---|---|
 | E-01 | Markenname / Wortmarke | **Eure Wahl.** Kurz, merkbar, Domain frei. Bis dahin Arbeitstitel „Tony & Julian“. | WP-00 |
-| E-02 | Domain | **Eure Wahl.** `.de`-Domain bei einem Anbieter mit einfacher DNS-Verwaltung. | WP-00 |
+| E-02 | Domain | **Eure Wahl.** `.de`-Domain bei einem Anbieter mit einfacher DNS-Verwaltung. Hauptadresse ohne `www` (`https://<domain>`), `www` leitet dorthin um. | WP-00 |
 | E-03 | E-Mail-Anbieter und Adressen | Postfächer auf der eigenen Domain: `hallo@` (öffentlich, Formular-Benachrichtigungen, leitet an beide weiter), `tony@`, `julian@` | WP-00 |
 | E-04 | Ansprache „Sie“ oder „du“ | „Sie“, passend zu lokalen Betrieben (alle Texte sind so geschrieben) | WP-00 |
 | E-05 | Region bzw. Stadt für lokales SEO | eure Heimatstadt plus ca. 50 km Umkreis | WP-00 |
@@ -422,6 +427,7 @@ Zu jeder Frage steht ein konkreter Vorschlag; die Texte im Gerüst (`src/i18n/de
 | E-12 | Versprochene Antwortzeit auf Anfragen | „innerhalb von 1–2 Werktagen“ (steht in Kontakt-Sektion und Danke-Seite) | WP-00 |
 | E-13 | Angebotsform und Rechte am Ergebnis | Festpreis-Angebot nach dem Erstgespräch; Kunden erhalten nach Bezahlung die Rechte an der für sie entwickelten Lösung (steht in Ablauf und FAQ) | WP-00 |
 | E-14 | Rollen und Kurzbios von Tony und Julian | **Eure Angaben** (in `src/i18n/de/about.ts` sind dafür Lücken markiert) | WP-00 |
+| E-15 | Speicherdauer von Anfragen (für die Datenschutzerklärung) | Eingänge in Netlify löschen, sobald sie im Postfach sind, spätestens nach 30 Tagen. E-Mails zu Anfragen ohne Auftrag 6 Monate nach dem letzten Kontakt löschen; mit Auftrag gelten die gesetzlichen Aufbewahrungsfristen. (Keine Rechtsberatung.) | WP-00 |
 
 ## 16. Änderungsregeln
 
@@ -438,3 +444,4 @@ Ab Version 1.0 ist diese Spec **festgeschrieben**. So bleibt die Umsetzung bei d
 |---|---|---|
 | 0.1 | 06.10.2026 | Erster Entwurf: Anforderungen, Arbeitspakete, Workflow |
 | 0.2 | 06.10.2026 | Grundprinzip „erst festlegen, dann bauen“: vollständiges Gerüst mit festen Schnittstellen, feste Konventionen, Phase 0, Vorschläge zu allen Entscheidungen (E-12 bis E-14 neu), Änderungsregeln |
+| 0.3 | 06.10.2026 | Ergebnisse der unabhängigen Prüfung: Konventionen werden per Lint/Check erzwungen, Datenquellen für SEO und Statistik festgelegt, offene Punkte in WP-04 und WP-09 bis WP-14 entschieden, E-15 neu, Design-Abgabe V1.1, Phasen und Release-Checkliste präzisiert |
