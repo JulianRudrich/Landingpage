@@ -10,6 +10,8 @@ Diese Regeln sorgen dafür, dass wir zu zweit parallel arbeiten können, ohne un
 4. Zurück nach `dev` geht es **nur per Pull Request** mit Review vom anderen.
 5. `main` ist die Live-Seite und bekommt Änderungen nur per Release-PR aus `dev`.
 
+**Mit Claude arbeiten:** Claude liest automatisch [`CLAUDE.md`](CLAUDE.md), dort stehen dieselben Regeln in Kurzform. Gebt eurem Claude immer das Paket mit, z. B.: „Arbeite an WP-03 (Issue #6) laut `docs/pakete/WP-03-design-system.md`.“
+
 ## Inhalt
 
 - [Branches](#branches)

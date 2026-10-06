@@ -156,7 +156,7 @@ Durchgezogene Pfeile bedeuten „braucht den gemergten Code“, gestrichelte Pfe
 
 | Datei / Ordner | Paket | Owner | Hinweis |
 |---|---|---|---|
-| `SPECS.md`, `CONTRIBUTING.md`, `README.md`, `docs/pakete/*` | Team | beide | Änderungen per PR, Review vom anderen |
+| `SPECS.md`, `CONTRIBUTING.md`, `CLAUDE.md`, `README.md`, `docs/pakete/*` | Team | beide | Änderungen per PR, Review vom anderen |
 | `.github/CODEOWNERS`, `.github/pull_request_template.md`, `.github/ISSUE_TEMPLATE/*` | Team | beide | |
 | `docs/qa/*` | WP-14 | Tony | Audit-Checkliste und Protokolle |
 
