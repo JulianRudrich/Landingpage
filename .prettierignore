@@ -1,0 +1,9 @@
+dist/
+.astro/
+node_modules/
+.netlify/
+package-lock.json
+
+# Markdown (Specs, Doku, Inhalte) wird von Hand formatiert,
+# damit Prettier die Tabellen nicht bei jeder Änderung neu ausrichtet.
+*.md

@@ -1,0 +1,11 @@
+---
+// Platzhalter – gehört WP-05 (Hero & Leistungen). Enthält die einzige H1 der Startseite.
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<section id="start" aria-labelledby="start-titel">
+  <h1 id="start-titel">{t.hero.title}</h1>
+  <p>{t.hero.placeholder}</p>
+</section>

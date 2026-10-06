@@ -56,7 +56,7 @@ Falls Astro Skripte inline ausgibt und die CSP sie blockiert: Hashes ergänzen o
 
 5. Domain in Netlify verbinden (Netlify-DNS oder A/CNAME beim Registrar), HTTPS über Let's Encrypt aktivieren, `www` auf die Hauptdomain umleiten (oder umgekehrt, Hauptsache einheitlich).
 6. E-Mail-DNS laut Anbieter aus WP-00: **SPF**, **DKIM**, **DMARC**. DMARC zunächst mit `p=none` und Berichtsadresse, nach 2–4 Wochen ohne Probleme auf `p=quarantine`.
-7. In `astro.config.mjs` `site` auf die echte Domain setzen (abgesprochene Ausnahme, die Datei gehört WP-01).
+7. Prüfen, dass `url` in `src/config/site.ts` die echte Domain enthält (trägt normalerweise WP-00 ein). `astro.config.mjs` übernimmt den Wert automatisch als `site`.
 8. Im README einen kurzen Abschnitt „Deployment“ ergänzen (welcher Branch wohin deployt).
 
 **Gehört nicht dazu**
@@ -69,7 +69,7 @@ Falls Astro Skripte inline ausgibt und die CSP sie blockiert: Hashes ergänzen o
 
 **Besitzt dieses Paket:** `.github/workflows/ci.yml`, `netlify.toml`
 
-**Ändert nach Absprache:** `astro.config.mjs` (nur `site`), `README.md` (Abschnitt „Deployment“)
+**Ändert nach Absprache:** `src/config/site.ts` (nur `url`, falls WP-00 sie noch nicht eingetragen hat), `README.md` (Abschnitt „Deployment“)
 
 ## Schnittstellen
 
@@ -89,4 +89,4 @@ Falls Astro Skripte inline ausgibt und die CSP sie blockiert: Hashes ergänzen o
 - [ ] Domain ist verbunden, HTTPS aktiv, `www` leitet um
 - [ ] `main` ist unter der Domain erreichbar
 - [ ] SPF, DKIM und DMARC sind gesetzt; mail-tester.com zeigt ≥ 9/10
-- [ ] `site` in `astro.config.mjs` zeigt auf die echte Domain
+- [ ] `url` in `src/config/site.ts` zeigt auf die echte Domain (Sitemap und Canonical-URLs nutzen sie)

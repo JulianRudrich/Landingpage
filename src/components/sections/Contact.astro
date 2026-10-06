@@ -1,0 +1,11 @@
+---
+// Platzhalter – gehört WP-08 (Kontakt-Sektion & Formular).
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<section id="kontakt" aria-labelledby="kontakt-titel">
+  <h2 id="kontakt-titel">{t.contact.title}</h2>
+  <p>{t.contact.placeholder}</p>
+</section>

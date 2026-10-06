@@ -233,7 +233,7 @@ Priorität nach MoSCoW: **M** = Must, **S** = Should, **C** = Could, **W** = Won
 | Framework | Astro (aktuelle stabile Version) | Liefert statisches HTML mit kaum JavaScript, dadurch schnell und SEO-stark; Content Collections für Projekte; i18n eingebaut |
 | Styling | Tailwind CSS | Design-Tokens an einer Stelle, schnelle Umsetzung, kein CSS-Wildwuchs |
 | Sprache | TypeScript (`strict`) | Fehler früh finden; Props von Komponenten sind dokumentiert |
-| Paketmanager | npm; Node-LTS-Version in `.nvmrc` festgehalten | Standard, keine Extra-Installation |
+| Paketmanager | npm; Node 24 (LTS), festgehalten in `.nvmrc` | Standard, keine Extra-Installation |
 | Code-Qualität | ESLint (mit `eslint-plugin-astro` und Barrierefreiheits-Regeln), Prettier (mit Astro- und Tailwind-Plugin) | Einheitlicher Stil, keine Format-Diskussionen im Review |
 | Hosting | Netlify | Kostenloser Tarif, Auto-Deploy aus GitHub, Deploy-Preview pro PR, integrierte Formulare, AVV verfügbar |
 | Formulare | Netlify Forms | Kein eigenes Backend nötig, Spamfilter, E-Mail-Benachrichtigung |
@@ -292,7 +292,7 @@ WP-01 legt diese Struktur als Gerüst mit Platzhaltern an. Welche Datei welchem 
 
 ### Zentrale Daten
 
-`src/config/site.ts` enthält Markenname, Domain, E-Mail, Telefon, Social-Links und die Terminbuchungs-URL. Diese Daten werden einmal gepflegt und überall genutzt; keine Komponente schreibt eine E-Mail-Adresse oder URL selbst hinein.
+`src/config/site.ts` enthält Markenname, Domain, E-Mail, Telefon, Social-Links und die Terminbuchungs-URL. Diese Daten werden einmal gepflegt und überall genutzt; keine Komponente schreibt eine E-Mail-Adresse oder URL selbst hinein. Auch `astro.config.mjs` liest die Domain von dort, sie steht also nur an einer Stelle.
 
 ## 11. Rechtliches (Deutschland)
 

@@ -1,0 +1,11 @@
+---
+// Platzhalter – gehört WP-07 (Ablauf & Über uns).
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<section id="ablauf" aria-labelledby="ablauf-titel">
+  <h2 id="ablauf-titel">{t.process.title}</h2>
+  <p>{t.process.placeholder}</p>
+</section>

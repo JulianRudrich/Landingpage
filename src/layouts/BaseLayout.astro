@@ -1,0 +1,42 @@
+---
+// Grundgerüst jeder Seite – gestaltet WP-03 (Design-System & BaseLayout).
+import Analytics from '@/components/layout/Analytics.astro';
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import SEO from '@/components/layout/SEO.astro';
+import { defaultLocale, useTranslations } from '@/i18n';
+import '@/styles/global.css';
+
+interface Props {
+  /** Seitentitel (ohne Markenname, den ergänzt WP-09) */
+  title: string;
+  /** Meta-Description, höchstens 155 Zeichen */
+  description: string;
+  /** true = Seite nicht indexieren, z. B. /danke und 404 */
+  noindex?: boolean;
+}
+
+const { title, description, noindex = false } = Astro.props;
+const lang = Astro.currentLocale ?? defaultLocale;
+const t = useTranslations(Astro.currentLocale);
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <SEO title={title} description={description} noindex={noindex} />
+    <Analytics />
+  </head>
+  <body>
+    <a href="#inhalt" class="sr-only focus:not-sr-only">
+      {t.common.skipLink}
+    </a>
+    <Header />
+    <main id="inhalt" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

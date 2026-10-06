@@ -22,16 +22,16 @@ Astro + Tailwind + TypeScript aufsetzen und das **komplette Gerüst mit Platzhal
 
 **Gehört dazu**
 
-1. Astro-Projekt im Repo-Root (Vorlage „minimal“, TypeScript `strict`).
-2. Tailwind CSS einbinden (`npx astro add tailwind`); `src/styles/global.css` mit dem Tailwind-Import als Platzhalter.
-3. Sitemap-Integration (`npx astro add sitemap`) mit Filter, der `/danke` und `/styleguide` ausschließt.
+1. Astro-Projekt im Repo-Root, TypeScript `strict` (`astro/tsconfigs/strict`). Versionen exakt gepinnt.
+2. Tailwind CSS über `@tailwindcss/vite`; `src/styles/global.css` mit dem Tailwind-Import als Platzhalter.
+3. Sitemap-Integration (`@astrojs/sitemap`) mit Filter, der `/danke` und `/styleguide` ausschließt.
 4. i18n in `astro.config.mjs`: `locales: ['de']`, `defaultLocale: 'de'`, `routing: { prefixDefaultLocale: false }`.
-5. `site` in `astro.config.mjs` als Platzhalter (`https://example.com`); die echte Domain setzt WP-02.
-6. ESLint (Flat Config) mit `eslint-plugin-astro`, `typescript-eslint` und Barrierefreiheits-Regeln (`jsx-a11y`-Konfiguration aus `eslint-plugin-astro`); Prettier mit `prettier-plugin-astro` und `prettier-plugin-tailwindcss`.
+5. `site` in `astro.config.mjs` liest `url` aus `src/config/site.ts`. Die Domain wird damit **nur an einer Stelle** gepflegt (Platzhalter `https://example.com`, die echte trägt WP-00 bzw. WP-02 in `site.ts` ein).
+6. ESLint 10 (Flat Config) mit `eslint-plugin-astro`, `typescript-eslint` und Barrierefreiheits-Regeln (`jsx-a11y-recommended` aus `eslint-plugin-astro`, über den ESLint-10-kompatiblen Fork `eslint-plugin-jsx-a11y-x`); Prettier mit `prettier-plugin-astro` und `prettier-plugin-tailwindcss`. Markdown ist von Prettier ausgenommen, damit die Spec-Tabellen nicht ständig neu ausgerichtet werden.
 7. npm-Skripte (siehe Schnittstellen).
-8. `.nvmrc` mit der aktuellen Node-LTS-Hauptversion, passendes `engines`-Feld in `package.json`.
+8. `.nvmrc` mit **Node 24 (LTS)**; `engines` in `package.json` entspricht der strengsten Abhängigkeit (`eslint-plugin-astro`: `^22.22.3 || ^24.16.0 || >=26.3.0`).
 9. Pfad-Alias `@/*` → `src/*` in `tsconfig.json`.
-10. `.editorconfig`, `.gitignore` (`node_modules`, `dist`, `.astro`, `.env*`, `.netlify`).
+10. `.editorconfig`, `.gitignore` (`node_modules`, `dist`, `.astro`, `.env*`, `.netlify`), `.vscode/extensions.json` (empfohlene Editor-Erweiterungen).
 11. Das **Gerüst mit Platzhaltern** (Tabelle unten).
 12. i18n-Grundlage: `src/i18n/index.ts` mit `useTranslations()`, `src/i18n/de/index.ts` als Sammeldatei, eine Platzhalterdatei pro Bereich.
 13. `src/config/site.ts` mit Typ und Platzhalterwerten.
@@ -45,7 +45,7 @@ Astro + Tailwind + TypeScript aufsetzen und das **komplette Gerüst mit Platzhal
 
 ## Dateien
 
-**Besitzt dieses Paket:** `package.json`, `package-lock.json`, `astro.config.mjs`, `tsconfig.json`, `eslint.config.js`, `.prettierrc`, `.prettierignore`, `.editorconfig`, `.nvmrc`, `.gitignore`, `src/pages/index.astro`, `src/i18n/index.ts`, `src/i18n/de/index.ts`
+**Besitzt dieses Paket:** `package.json`, `package-lock.json`, `astro.config.mjs`, `tsconfig.json`, `eslint.config.js`, `.prettierrc`, `.prettierignore`, `.editorconfig`, `.nvmrc`, `.gitignore`, `.vscode/extensions.json`, `src/pages/index.astro`, `src/i18n/index.ts`, `src/i18n/de/index.ts`
 
 **Legt als Platzhalter an** (gehören danach dem genannten Paket):
 
@@ -73,109 +73,43 @@ Jede Platzhalter-Sektion rendert schon ihr `<section id="…">` mit einer H2 aus
 
 ## Schnittstellen
 
-**`src/pages/index.astro`** (danach praktisch nie mehr ändern):
+Die Dateien sind umgesetzt; hier steht, was andere Pakete davon wissen müssen. Im Zweifel gilt der Code.
+
+**`src/pages/index.astro`** setzt nur die Sektionen zusammen (Hero, Services, Projects, Process, About, Faq, Contact) und muss danach praktisch nie mehr geändert werden. Jede Sektion ist eine eigene Komponente in `src/components/sections/`.
+
+**`BaseLayout.astro`**, Props (WP-03 gestaltet das Layout, die Props bleiben):
+
+| Prop | Typ | Bedeutung |
+|---|---|---|
+| `title` | `string` | Seitentitel (den Markennamen ergänzt WP-09 in `SEO.astro`) |
+| `description` | `string` | Meta-Description, höchstens 155 Zeichen |
+| `noindex` | `boolean`, optional | `true` für `/danke` und die 404-Seite |
+
+Das Layout bindet `SEO`, `Analytics`, `Header`, `Footer` und den Skip-Link ein; der Inhalt landet in `<main id="inhalt">`.
+
+**Texte (i18n):** In jeder Komponente stehen dieselben zwei Zeilen, danach sind alle Texte typisiert verfügbar:
 
 ```astro
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import Hero from '@/components/sections/Hero.astro';
-import Services from '@/components/sections/Services.astro';
-import Projects from '@/components/sections/Projects.astro';
-import Process from '@/components/sections/Process.astro';
-import About from '@/components/sections/About.astro';
-import Faq from '@/components/sections/Faq.astro';
-import Contact from '@/components/sections/Contact.astro';
 import { useTranslations } from '@/i18n';
-
-const t = useTranslations('de');
+const t = useTranslations(Astro.currentLocale);
 ---
-
-<BaseLayout title={t.seo.home.title} description={t.seo.home.description}>
-  <Hero />
-  <Services />
-  <Projects />
-  <Process />
-  <About />
-  <Faq />
-  <Contact />
-</BaseLayout>
+<h2>{t.services.title}</h2>
 ```
 
-**`BaseLayout.astro`, Props und Grundgerüst** (WP-03 gestaltet es danach):
-
-```astro
----
-import SEO from '@/components/layout/SEO.astro';
-import Analytics from '@/components/layout/Analytics.astro';
-import Header from '@/components/layout/Header.astro';
-import Footer from '@/components/layout/Footer.astro';
-import '@/styles/global.css';
-
-interface Props {
-  title: string;
-  description: string;
-  noindex?: boolean;
-}
-const { title, description, noindex = false } = Astro.props;
----
-
-<!doctype html>
-<html lang="de">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <SEO title={title} description={description} noindex={noindex} />
-    <Analytics />
-  </head>
-  <body>
-    <!-- Skip-Link (Text aus common.ts) -->
-    <Header />
-    <main id="inhalt"><slot /></main>
-    <Footer />
-  </body>
-</html>
-```
-
-**i18n:**
+Eine Bereichsdatei sieht so aus. **Kein `as const`**, sonst wären die Typen die deutschen Texte selbst und eine englische Fassung könnte den Typ `Dictionary` nie erfüllen:
 
 ```ts
-// src/i18n/de/hero.ts – eine Datei pro Bereich, gehört dem jeweiligen Paket
-export const hero = {
-  title: 'Platzhalter: Headline (WP-05)',
-} as const;
-
-// src/i18n/de/index.ts – Sammeldatei (WP-01)
-export { common } from './common';
-export { hero } from './hero';
-// … alle Bereiche
-
-// src/i18n/index.ts
-import * as de from './de';
-export type Locale = 'de';
-export type Dictionary = typeof de;
-const dictionaries: Record<Locale, Dictionary> = { de };
-export function useTranslations(locale: Locale = 'de'): Dictionary {
-  return dictionaries[locale];
-}
+// src/i18n/de/services.ts – gehört WP-05
+export const services = {
+  title: 'Leistungen',
+  items: [{ title: 'Websites & Online-Präsenz', text: '…' }],
+};
 ```
 
-Für Englisch (V2) kommen `'en'` und `src/i18n/en/` dazu; der Typ `Dictionary` erzwingt vollständige Übersetzungen.
+Für Englisch (V2) kommen `'en'` in `locales` (`src/i18n/index.ts` und `astro.config.mjs`) und der Ordner `src/i18n/en/` dazu. Der Typ `Dictionary` erzwingt, dass jeder Schlüssel übersetzt ist.
 
-**`src/config/site.ts`:**
-
-```ts
-export const site = {
-  name: 'Tony & Julian',            // E-01
-  url: 'https://example.com',        // E-02
-  email: 'hallo@example.com',        // E-03
-  phone: '',                         // E-09, leer = nicht anzeigen
-  region: '',                        // E-05
-  social: { linkedinTony: '', linkedinJulian: '', github: '' },
-  bookingUrl: '',                    // WP-13, leer = Button ausblenden
-  analytics: { domain: '' },         // WP-13
-  features: { projectDetails: false }, // WP-12 setzt auf true
-} as const;
-```
+**`src/config/site.ts`** exportiert `site` mit dem Typ `SiteConfig`: `name`, `url`, `email`, `phone`, `region`, `social`, `bookingUrl`, `analytics.domain`, `features.projectDetails`. Leere Strings bedeuten „nicht anzeigen“. `url` ist gleichzeitig `site` in `astro.config.mjs`.
 
 **npm-Skripte:**
 

@@ -1,0 +1,11 @@
+---
+// Platzhalter – gehört WP-05 (Hero & Leistungen).
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<section id="leistungen" aria-labelledby="leistungen-titel">
+  <h2 id="leistungen-titel">{t.services.title}</h2>
+  <p>{t.services.placeholder}</p>
+</section>

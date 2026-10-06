@@ -1,0 +1,15 @@
+---
+// Platzhalter – gehört WP-09 (SEO & Meta). Dort kommen Canonical, Open Graph, JSON-LD und Favicons dazu.
+
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+}
+
+const { title, description, noindex = false } = Astro.props;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+{noindex && <meta name="robots" content="noindex" />}

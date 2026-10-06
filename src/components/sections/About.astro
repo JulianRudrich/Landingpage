@@ -1,0 +1,11 @@
+---
+// Platzhalter – gehört WP-07 (Ablauf & Über uns).
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<section id="ueber-uns" aria-labelledby="ueber-uns-titel">
+  <h2 id="ueber-uns-titel">{t.about.title}</h2>
+  <p>{t.about.placeholder}</p>
+</section>

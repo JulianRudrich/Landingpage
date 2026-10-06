@@ -1,0 +1,15 @@
+---
+// Platzhalter – gehört WP-10 (Impressum, Datenschutz & 404).
+import { useTranslations } from '@/i18n';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<BaseLayout title={t.seo.notFound.title} description={t.seo.notFound.description} noindex>
+  <h1>{t.legal.notFound.title}</h1>
+  <p>{t.legal.notFound.text}</p>
+  <p>
+    <a href="/">{t.legal.notFound.homeLink}</a>
+  </p>
+</BaseLayout>

@@ -1,0 +1,11 @@
+---
+// Platzhalter – gehört WP-06 (Projekte).
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<section id="projekte" aria-labelledby="projekte-titel">
+  <h2 id="projekte-titel">{t.projects.title}</h2>
+  <p>{t.projects.placeholder}</p>
+</section>

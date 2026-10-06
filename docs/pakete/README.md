@@ -95,9 +95,9 @@ Durchgezogene Pfeile bedeuten „braucht den gemergten Code“, gestrichelte Pfe
 | Datei / Ordner | Paket | Owner | Hinweis |
 |---|---|---|---|
 | `package.json`, `package-lock.json` | WP-01 | Julian | Gemeinsam genutzt: Neue Abhängigkeiten im eigenen Issue ankündigen; Lockfile-Konflikte nach [CONTRIBUTING](../../CONTRIBUTING.md#merge-konflikte-lösen) lösen |
-| `astro.config.mjs` | WP-01 | Julian | `site` (echte Domain) setzt WP-02 |
-| `tsconfig.json`, `eslint.config.js`, `.prettierrc`, `.prettierignore`, `.editorconfig`, `.nvmrc`, `.gitignore` | WP-01 | Julian | |
-| `src/config/site.ts` | WP-00 | beide | Gerüst von WP-01; Werte aus WP-00; `bookingUrl` und `analytics` setzt WP-13, `features.projectDetails` setzt WP-12 |
+| `astro.config.mjs` | WP-01 | Julian | `site` kommt aus `src/config/site.ts` (`url`), hier nicht eintragen |
+| `tsconfig.json`, `eslint.config.js`, `.prettierrc`, `.prettierignore`, `.editorconfig`, `.nvmrc`, `.gitignore`, `.vscode/extensions.json` | WP-01 | Julian | |
+| `src/config/site.ts` | WP-00 | beide | Gerüst von WP-01; Werte aus WP-00 (inkl. `url` = Domain); `url` prüft WP-02, `bookingUrl` und `analytics` setzt WP-13, `features.projectDetails` setzt WP-12 |
 | `netlify.toml` | WP-02 | Julian | CSP-Ergänzung für die Statistik durch WP-13 |
 | `.github/workflows/ci.yml` | WP-02 | Julian | |
 | `.github/workflows/quality.yml`, `lighthouserc.json` | WP-14 | Tony | |

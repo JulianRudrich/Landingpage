@@ -1,0 +1,24 @@
+---
+// Platzhalter – gehört WP-04 (Header & Footer).
+import { site } from '@/config/site';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+const year = new Date().getFullYear();
+---
+
+<footer>
+  <nav aria-label={t.navigation.legal.label}>
+    <ul>
+      <li>
+        <a href="/impressum">{t.navigation.legal.impressum}</a>
+      </li>
+      <li>
+        <a href="/datenschutz">{t.navigation.legal.datenschutz}</a>
+      </li>
+    </ul>
+  </nav>
+  <p>
+    © {year} {site.name}
+  </p>
+</footer>
