@@ -1,0 +1,3 @@
+# Bei jedem Pull Request wird automatisch der jeweils andere als Reviewer angefragt
+# (GitHub fragt den Autor eines PRs nie selbst an).
+* @JulianRudrich @tonytonym21
