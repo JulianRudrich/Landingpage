@@ -1,0 +1,28 @@
+---
+// Gehört WP-03 (Design-System). Props sind ein Vertrag mit allen Paketen: Änderungen vorher ankündigen.
+// Jede Startseiten-Sektion ist eine <Section> mit Anker-ID und einer Überschrift (SectionHeading) mit `labelledby`-ID.
+import Container from './Container.astro';
+
+interface Props {
+  /** Anker-ID der Sektion, z. B. "leistungen" (SPECS.md, Abschnitt 6) */
+  id: string;
+  /** ID der Überschrift, die die Sektion benennt (Barrierefreiheit) */
+  labelledby: string;
+  /** Hintergrund-Variante aus den Design-Tokens */
+  tone?: 'default' | 'muted' | 'inverted';
+  class?: string;
+}
+
+const { id, labelledby, tone = 'default', class: className } = Astro.props;
+---
+
+<section
+  id={id}
+  aria-labelledby={labelledby}
+  data-tone={tone}
+  class:list={['py-section', className]}
+>
+  <Container>
+    <slot />
+  </Container>
+</section>

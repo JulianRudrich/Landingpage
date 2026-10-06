@@ -60,72 +60,81 @@ graph TD
   WP13["WP-13 Analytics & Termin<br/>Julian · V1.1"]
   WP14["WP-14 Qualitätssicherung<br/>Tony · V1.1"]
 
+  GATE{{"Spec v1.0 festgeschrieben<br/>Design abgenommen"}}
+
   WP01 --> WP02
   WP01 --> WP03
   WP01 --> WP09
+  WP00 -.-> GATE
+  WP03 -.->|Design-Entwurf| GATE
+  GATE ==> WP04 & WP05 & WP06 & WP07 & WP08 & WP10
   WP03 --> WP04 & WP05 & WP06 & WP07 & WP08 & WP10 & WP11
   WP02 --> WP08 & WP13 & WP14
   WP06 --> WP12
-  WP00 -.-> WP02 & WP07 & WP09 & WP10
 
   classDef julian fill:#dbeafe,stroke:#1d4ed8,color:#0b1b3f
   classDef tony fill:#fde68a,stroke:#b45309,color:#3b2405
   classDef both fill:#e5e7eb,stroke:#374151,color:#111827
   class WP01,WP02,WP06,WP08,WP09,WP11,WP13 julian
   class WP03,WP04,WP05,WP07,WP10,WP12,WP14 tony
-  class WP00 both
+  class WP00,GATE both
 ```
 
-Durchgezogene Pfeile bedeuten „braucht den gemergten Code“, gestrichelte Pfeile „braucht Inhalte oder Entscheidungen“.
+Durchgezogene Pfeile bedeuten „braucht den gemergten Code“, gestrichelte Pfeile „liefert Entscheidungen oder Design“. Die Sektionen werden erst gebaut, wenn die Spec festgeschrieben und Tonys Design abgenommen ist ([SPECS §12](../../SPECS.md#12-releases--scope)).
 
 | Phase | Julian | Tony | Gemeinsam |
 |---|---|---|---|
-| **0 – sofort** | WP-01 Setup | Design-Entwurf für WP-03 (noch ohne Code, D-09) | WP-00 starten |
-| **1 – nach WP-01** | WP-02 CI & Deployment, WP-09 SEO | WP-03 Design-System | WP-00 weiter |
-| **2 – nach WP-03** | WP-06 Projekte, WP-08 Kontakt | WP-04 Header & Footer, WP-05 Hero & Leistungen, WP-07 Ablauf & Über uns, WP-10 Rechtliches | Inhalte liefern, gegenseitig reviewen |
-| **3 – Release V1.0** | Release-Checkliste ([SPECS §14](../../SPECS.md#14-definition-of-done)) | Release-Checkliste | Go-live 🚀 |
-| **4 – V1.1** | WP-11 FAQ, WP-13 Analytics & Terminbuchung | WP-12 Detailseiten, WP-14 Qualitätssicherung | – |
+| **0 – Festlegen** | WP-01 Gerüst (mergen), danach WP-02 CI & Deployment und WP-09 SEO (beides ohne Design-Abhängigkeit) | WP-03 Teil A: Design-Entwurf nach der „Design-Abgabe“ in der WP-03-Spec | WP-00: Entscheidungen treffen, Textvorschläge bestätigen, Fotos und Bios liefern |
+| **🔒 Freigabe** | nimmt Tonys Design ab | – | Spec v1.0 festschreiben ([SPECS §16](../../SPECS.md#16-änderungsregeln)) |
+| **1 – Bauen** | WP-06 Projekte, WP-08 Kontakt | WP-03 Teil B: Tokens und Bausteine umsetzen, dann WP-04 Header & Footer, WP-05 Hero & Leistungen, WP-07 Ablauf & Über uns, WP-10 Rechtliches | gegenseitig reviewen |
+| **2 – Release V1.0** | Release-Checkliste ([SPECS §14](../../SPECS.md#14-definition-of-done)) | Release-Checkliste | Go-live 🚀 |
+| **3 – V1.1** | WP-11 FAQ, WP-13 Analytics & Terminbuchung | WP-12 Detailseiten, WP-14 Qualitätssicherung | – |
 
 ## Zuständigkeitsmatrix
 
-**Regel:** Jede Datei gehört genau einem Paket. Nur der Owner dieses Pakets ändert sie. Ausnahmen stehen in der Spalte „Hinweis“ und werden im Issue abgesprochen. WP-01 legt alle Dateien zunächst als Platzhalter an, danach übernimmt das jeweilige Paket.
+**Regeln**
+
+1. **Jede Datei existiert schon.** WP-01 hat jede Datei von V1.0 und V1.1 mit fester Schnittstelle angelegt (Props, Content-Schema, Textschlüssel, Token-Namen). Die Pakete füllen ihre Dateien nur noch aus.
+2. **Jede Datei gehört genau einem Paket.** Nur dessen Owner ändert sie. Ausnahmen stehen in der Spalte „Hinweis“.
+3. **Keine neuen gemeinsamen Dateien oder Schnittstellen** ohne Spec-Änderung ([SPECS §16](../../SPECS.md#16-änderungsregeln)). Erlaubt sind nur interne Hilfsdateien eines Pakets in dessen eigenem Ordner (im PR erwähnen) und neue Inhalte (Projekte, Bilder).
+4. Reine Konfigurationsdateien ohne Schnittstelle (`netlify.toml`, Workflows, `lighthouserc.json`, `docs/qa/`) legt ihr Paket selbst an; der Inhalt ist in seiner Spec vorgegeben.
 
 ### Projekt & Konfiguration
 
 | Datei / Ordner | Paket | Owner | Hinweis |
 |---|---|---|---|
-| `package.json`, `package-lock.json` | WP-01 | Julian | Gemeinsam genutzt: Neue Abhängigkeiten im eigenen Issue ankündigen; Lockfile-Konflikte nach [CONTRIBUTING](../../CONTRIBUTING.md#merge-konflikte-lösen) lösen |
-| `astro.config.mjs` | WP-01 | Julian | `site` kommt aus `src/config/site.ts` (`url`), hier nicht eintragen |
-| `tsconfig.json`, `eslint.config.js`, `.prettierrc`, `.prettierignore`, `.editorconfig`, `.nvmrc`, `.gitignore`, `.vscode/extensions.json` | WP-01 | Julian | |
-| `src/config/site.ts` | WP-00 | beide | Gerüst von WP-01; Werte aus WP-00 (inkl. `url` = Domain); `url` prüft WP-02, `bookingUrl` und `analytics` setzt WP-13, `features.projectDetails` setzt WP-12 |
-| `netlify.toml` | WP-02 | Julian | CSP-Ergänzung für die Statistik durch WP-13 |
-| `.github/workflows/ci.yml` | WP-02 | Julian | |
-| `.github/workflows/quality.yml`, `lighthouserc.json` | WP-14 | Tony | |
+| `package.json`, `package-lock.json` | WP-01 | Julian | Gemeinsam genutzt: Neue Abhängigkeiten (z. B. Schriften in WP-03) im eigenen Issue ankündigen; Lockfile-Konflikte nach [CONTRIBUTING](../../CONTRIBUTING.md#merge-konflikte-lösen) lösen |
+| `astro.config.mjs` | WP-01 | Julian | `site` kommt aus `src/config/site.ts` (`url`); Skripte werden immer als Datei ausgeliefert (CSP) |
+| `tsconfig.json`, `eslint.config.js`, `.prettierrc`, `.prettierignore`, `.editorconfig`, `.nvmrc`, `.gitignore`, `.vscode/extensions.json` | WP-01 | Julian | Ausgaben der Qualitäts-Tools (WP-14) sind schon ignoriert |
+| `src/config/site.ts` | WP-00 | beide | Werte aus WP-00, auch `url` (= Domain). Danach setzt WP-13 `bookingUrl` und `analytics`, WP-12 `features.projectDetails` |
+| `netlify.toml` | WP-02 | Julian | legt WP-02 an; CSP-Ergänzung für die Statistik durch WP-13 |
+| `.github/workflows/ci.yml` | WP-02 | Julian | legt WP-02 an |
+| `.github/workflows/quality.yml` und `lighthouserc.json` (im Hauptordner) | WP-14 | Tony | legt WP-14 an |
 
 ### Seiten (`src/pages/`)
 
 | Datei | Paket | Owner | Hinweis |
 |---|---|---|---|
-| `index.astro` | WP-01 | Julian | Setzt nur Sektionen zusammen und ändert sich danach praktisch nie |
-| `styleguide.astro` | WP-03 | Tony | optional, `noindex` |
+| `index.astro` | WP-01 | Julian | Setzt nur die Sektionen zusammen, ändert sich danach nicht mehr |
+| `styleguide.astro` | WP-03 | Tony | `noindex`, nicht in der Sitemap; interne Beschriftungen dürfen im Code stehen |
 | `danke.astro` | WP-08 | Julian | |
-| `robots.txt.ts` | WP-09 | Julian | |
+| `robots.txt.ts` | WP-09 | Julian | funktioniert bereits |
 | `impressum.astro`, `datenschutz.astro`, `404.astro` | WP-10 | Tony | |
-| `projekte/[slug].astro` | WP-12 | Tony | |
+| `projekte/[slug].astro` | WP-12 | Tony | erzeugt bis V1.1 keine Seiten |
 
 ### Layout & Komponenten (`src/layouts/`, `src/components/`)
 
 | Datei / Ordner | Paket | Owner | Hinweis |
 |---|---|---|---|
-| `layouts/BaseLayout.astro` | WP-03 | Tony | Bindet `SEO`, `Analytics`, `Header`, `Footer` ein (Gerüst von WP-01) |
-| `components/ui/*` | WP-03 | Tony | Props sind eine Schnittstelle: Änderungen vorher ankündigen |
-| `components/layout/Header.astro`, `Footer.astro` (+ ggf. `MobileNav.astro`) | WP-04 | Tony | |
-| `components/layout/SEO.astro` | WP-09 | Julian | |
+| `layouts/BaseLayout.astro` | WP-03 | Tony | Props = Props von `SEO.astro`, unverändert durchgereicht; Slot `head` für seitenspezifische Head-Inhalte |
+| `components/ui/Container.astro`, `Section.astro`, `SectionHeading.astro`, `Button.astro`, `Card.astro`, `Badge.astro`, `Icon.astro`, `icons.ts`, `Logo.astro`, `Prose.astro` | WP-03 | Tony | Props und Icon-Liste sind Schnittstellen für alle Pakete |
+| `components/layout/Header.astro`, `MobileNav.astro`, `Footer.astro` | WP-04 | Tony | |
+| `components/layout/SEO.astro` | WP-09 | Julian | `export interface Props` ist der Vertrag für alle Seiten |
 | `components/layout/Analytics.astro` | WP-13 | Julian | |
 | `components/sections/Hero.astro`, `Services.astro` | WP-05 | Tony | |
-| `components/sections/Projects.astro`, `components/projects/ProjectCard.astro` | WP-06 | Julian | |
+| `components/sections/Projects.astro`, `components/projects/ProjectCard.astro` | WP-06 | Julian | `ProjectCard` nutzt auch WP-12 (Props = Vertrag) |
 | `components/sections/Process.astro`, `About.astro` | WP-07 | Tony | |
-| `components/sections/Contact.astro`, `components/contact/*` | WP-08 | Julian | |
+| `components/sections/Contact.astro`, `components/contact/ContactForm.astro` | WP-08 | Julian | |
 | `components/sections/Faq.astro` | WP-11 | Julian | |
 | `components/projects/ProjectHeader.astro`, `ProjectGallery.astro` | WP-12 | Tony | |
 
@@ -133,24 +142,24 @@ Durchgezogene Pfeile bedeuten „braucht den gemergten Code“, gestrichelte Pfe
 
 | Datei / Ordner | Paket | Owner | Hinweis |
 |---|---|---|---|
-| `src/i18n/index.ts`, `src/i18n/de/index.ts` | WP-01 | Julian | Hilfsfunktion und Sammeldatei aller Bereiche |
-| `src/i18n/de/common.ts` | WP-03 | Tony | allgemeine Texte (Skip-Link, „Mehr erfahren“ …) |
-| `src/i18n/de/navigation.ts` | WP-04 | Tony | Menü- und Footer-Texte |
+| `src/i18n/index.ts`, `src/i18n/de/index.ts` | WP-01 | Julian | Hilfsfunktion, Sammeldatei, Schutz gegen `as const` |
+| `src/i18n/de/common.ts` | WP-03 | Tony | |
+| `src/i18n/de/navigation.ts` | WP-04 | Tony | |
 | `src/i18n/de/hero.ts`, `services.ts` | WP-05 | Tony | |
 | `src/i18n/de/projects.ts` | WP-06 | Julian | |
-| `src/i18n/de/process.ts`, `about.ts` | WP-07 | Tony | |
+| `src/i18n/de/process.ts`, `about.ts` | WP-07 | Tony | Rollen und Bios aus WP-00 (E-14) |
 | `src/i18n/de/contact.ts` | WP-08 | Julian | |
-| `src/i18n/de/seo.ts` | WP-09 | Julian | Titel und Descriptions aller Seiten |
-| `src/i18n/de/legal.ts` | WP-10 | Tony | kurze Texte für Rechtsseiten und 404 |
+| `src/i18n/de/seo.ts` | WP-09 | Julian | Titel und Descriptions **aller** Seiten, auch Styleguide |
+| `src/i18n/de/legal.ts` | WP-10 | Tony | |
 | `src/i18n/de/faq.ts` | WP-11 | Julian | |
 | `src/i18n/de/projectDetail.ts` | WP-12 | Tony | |
-| `src/legal/impressum.md`, `src/legal/datenschutz.md` | WP-10 | Tony | Datenschutz-Ergänzung durch WP-13, Review durch Tony |
-| `src/content.config.ts` | WP-06 | Julian | Schema ist eine Schnittstelle zu WP-12 |
+| `src/legal/impressum.md`, `src/legal/datenschutz.md` | WP-10 | Tony | Abschnitte 8 und 9 der Datenschutzerklärung ergänzt WP-13, Review durch Tony |
+| `src/content.config.ts` | WP-06 | Julian | Schema ist der Vertrag mit WP-12 |
 | `src/content/projects/*.md`, `src/assets/projects/*` | WP-06 | Julian | **Neue** Projektdateien darf jeder anlegen (neue Datei = kein Konflikt) |
 | `src/assets/hero/*` | WP-05 | Tony | |
 | `src/assets/team/*` | WP-07 | Tony | Fotos kommen aus WP-00 |
-| `src/styles/global.css` | WP-03 | Tony | Design-Tokens |
-| `public/favicon.svg`, `favicon.ico`, `apple-touch-icon.png`, `site.webmanifest`, `og-image.png` | WP-09 | Julian | Gestaltung in Absprache mit Tony |
+| `src/styles/global.css` | WP-03 | Tony | Token-**Namen** fest, Werte aus Tonys Design |
+| `public/favicon.svg` und später `favicon.ico`, `apple-touch-icon.png`, `site.webmanifest`, `og-image.png` | WP-09 | Julian | Gestaltung nach Tonys Design |
 
 ### Doku & GitHub
 

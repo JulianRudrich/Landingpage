@@ -1,0 +1,25 @@
+---
+// Gehört WP-03 (Design-System). Props sind ein Vertrag mit allen Paketen: Änderungen vorher ankündigen.
+
+interface Props {
+  /** ID der Überschrift; dieselbe ID bekommt die umgebende Section als `labelledby` */
+  id: string;
+  /** Kleine Dachzeile über der Überschrift */
+  eyebrow?: string;
+  title: string;
+  /** Einleitungssatz unter der Überschrift */
+  lead?: string;
+  align?: 'left' | 'center';
+  /** 2 für Sektionen (Standard), 1 nur für den Seitentitel von Unterseiten */
+  level?: 1 | 2;
+}
+
+const { id, eyebrow, title, lead, align = 'left', level = 2 } = Astro.props;
+const Heading = level === 1 ? 'h1' : 'h2';
+---
+
+<div data-align={align}>
+  {eyebrow && <p>{eyebrow}</p>}
+  <Heading id={id}>{title}</Heading>
+  {lead && <p>{lead}</p>}
+</div>

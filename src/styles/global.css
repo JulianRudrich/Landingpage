@@ -1,2 +1,88 @@
-/* Globale Styles und Design-Tokens – gehört WP-03 (Design-System). Bis dahin nur Tailwind. */
+/*
+ * Globale Styles und Design-Tokens – gehört WP-03 (Design-System).
+ *
+ * Die NAMEN der Tokens sind ein Vertrag mit allen Paketen: Komponenten benutzen nur diese Klassen
+ * (z. B. bg-surface, text-ink, bg-primary, text-on-primary, rounded-card, max-w-site, py-section).
+ * Die WERTE unten sind neutrale Platzhalter. Tony ersetzt sie durch die Werte aus seinem Design-Entwurf
+ * (siehe docs/pakete/WP-03-design-system.md, "Design-Abgabe").
+ */
 @import 'tailwindcss';
+
+@theme {
+  /* Flächen */
+  --color-surface: #ffffff; /* Seitenhintergrund */
+  --color-surface-muted: #f4f4f5; /* abgesetzte Sektionen (Section tone="muted") */
+  --color-surface-inverted: #18181b; /* dunkle Sektionen (Section tone="inverted"), Footer */
+
+  /* Text */
+  --color-ink: #18181b; /* Fließtext und Überschriften */
+  --color-ink-muted: #52525b; /* Nebentext, Dachzeilen */
+  --color-ink-inverted: #fafafa; /* Text auf surface-inverted */
+
+  /* Marke */
+  --color-primary: #27272a; /* Haupt-Buttons, Links */
+  --color-primary-hover: #3f3f46;
+  --color-on-primary: #ffffff; /* Text auf primary */
+  --color-accent: #71717a; /* Akzente, Hervorhebungen */
+  --color-on-accent: #ffffff; /* Text auf accent */
+
+  /* Linien, Zustände */
+  --color-border: #e4e4e7;
+  --color-success: #15803d; /* Badge "Live" */
+  --color-warning: #b45309; /* Badge "Prototyp", Formularfehler */
+  --color-focus: #2563eb; /* Fokus-Rahmen (Barrierefreiheit) */
+
+  /* Schriften: höchstens 2 Familien, selbst gehostet über Fontsource (D-03) */
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-display: ui-sans-serif, system-ui, sans-serif;
+
+  /* Formen */
+  --radius-control: 0.5rem; /* Buttons, Eingabefelder → rounded-control */
+  --radius-card: 1rem; /* Karten → rounded-card */
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.06), 0 1px 3px rgb(0 0 0 / 0.1); /* → shadow-card */
+
+  /* Raster */
+  --container-site: 75rem; /* maximale Inhaltsbreite → max-w-site */
+  --spacing-section: 5rem; /* vertikaler Abstand je Sektion → py-section */
+}
+
+:root {
+  /* Höhe des Sticky-Headers (WP-04); hält angesprungene Sektionen frei von Überdeckung */
+  --header-height: 4rem;
+}
+
+@layer base {
+  html {
+    scroll-padding-top: var(--header-height);
+  }
+
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  /* Sichtbarer Fokus für alle interaktiven Elemente (NFA-05) */
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  /* Keine Animationen für Menschen, die das im System abgeschaltet haben (NFA-06) */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

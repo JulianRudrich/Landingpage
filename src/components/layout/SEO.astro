@@ -1,15 +1,30 @@
 ---
-// Platzhalter – gehört WP-09 (SEO & Meta). Dort kommen Canonical, Open Graph, JSON-LD und Favicons dazu.
+// Gehört WP-09 (SEO & Meta). Die Props sind ein Vertrag: BaseLayout (WP-03) reicht sie unverändert durch.
+// Grundversion: WP-09 ergänzt Canonical-URL, Open Graph, Twitter-Card, Favicons, Manifest und JSON-LD.
+// JSON-LD `ProfessionalService` rendert diese Komponente selbst, wenn Astro.url.pathname === '/'.
+import type { ImageMetadata } from 'astro';
 
-interface Props {
+import { site } from '@/config/site';
+
+export interface Props {
+  /** Seitentitel OHNE Markennamen; hier wird " | {site.name}" angehängt */
   title: string;
+  /** Meta-Description, höchstens 155 Zeichen */
   description: string;
+  /** true = Seite nicht indexieren (/danke, 404, /styleguide) */
   noindex?: boolean;
+  /** Vorschaubild für Social Media; ohne Angabe wird public/og-image.png verwendet */
+  image?: ImageMetadata;
+  /** Alt-Text zu `image` */
+  imageAlt?: string;
+  /** 'article' für Projektdetailseiten, sonst 'website' */
+  type?: 'website' | 'article';
 }
 
 const { title, description, noindex = false } = Astro.props;
 ---
 
-<title>{title}</title>
+<title>{`${title} | ${site.name}`}</title>
 <meta name="description" content={description} />
 {noindex && <meta name="robots" content="noindex" />}
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />

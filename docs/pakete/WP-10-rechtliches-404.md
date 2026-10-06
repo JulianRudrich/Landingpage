@@ -4,11 +4,11 @@
 |---|---|
 | **Owner** | Tony ([@tonytonym21](https://github.com/tonytonym21)) |
 | **Reviewer** | Julian ([@JulianRudrich](https://github.com/JulianRudrich)) |
-| **Release** | V1.0 |
+| **Release** | V1.0, Phase 1 (nach Freigabe der Spec v1.0) |
 | **Aufwand** | M (ca. 4–12 h) |
 | **Branch** | `tony/wp-10-rechtliches-404` |
 | **Issue** | [#13](https://github.com/JulianRudrich/Landingpage/issues/13) |
-| **Abhängig von** | WP-03; Impressumsdaten und Rechtsform aus WP-00; Angaben zum Formular aus WP-08 |
+| **Abhängig von** | Freigabe der Spec v1.0 (WP-00 + Design aus WP-03 Teil A); WP-03; Impressumsdaten und Rechtsform aus WP-00; Angaben zum Formular aus WP-08 |
 | **Blockiert** | – (aber Pflicht für den Go-live) |
 | **Anforderungen** | FA-17, FA-18, FA-19, R-01, R-03 aus [SPECS.md](../../SPECS.md) |
 
@@ -22,7 +22,7 @@ Die Seite darf rechtssicher online gehen: Impressum und Datenschutzerklärung pa
 
 **Gehört dazu**
 
-1. **Rechtstexte als Markdown** in `src/legal/impressum.md` und `src/legal/datenschutz.md`, eingebunden in `src/pages/impressum.astro` bzw. `datenschutz.astro` (z. B. `import { Content } from '@/legal/impressum.md'`). Gut lesbar gestaltet: Überschriften-Hierarchie, Abstände, angenehme Zeilenlänge.
+1. **Rechtstexte** in `src/legal/impressum.md` und `src/legal/datenschutz.md` ausfüllen. Die Gliederung und die Einbindung in die Seiten (`<Prose><Content /></Prose>`) stehen schon. Die Gestaltung liefert `Prose` aus WP-03; hier nichts selbst stylen. Die Seiten setzen die H1, die Markdown-Dateien beginnen mit H2.
 2. **Impressum (R-01):** Namen beider Inhaber, ladungsfähige Anschrift (kein Postfach), E-Mail, schnelle Kontaktmöglichkeit (z. B. Telefon), Rechtsform (z. B. GbR), ggf. USt-IdNr.
 3. **Datenschutzerklärung (R-03)**, mindestens:
    - Verantwortliche (beide, mit Kontakt)
@@ -32,8 +32,8 @@ Die Seite darf rechtssicher online gehen: Impressum und Datenschutzerklärung pa
    - Rechte der Betroffenen, Beschwerderecht bei der Aufsichtsbehörde
    - Stand-Datum
    - Ab V1.1 ergänzt WP-13 Statistik und Terminbuchung (Tony reviewt das)
-4. **404-Seite** `src/pages/404.astro`: freundlicher Text (Entwurf: „Diese Seite gibt es leider nicht. Vielleicht hilft Ihnen einer dieser Links weiter:“), Links zur Startseite und zum Kontakt, `noindex`, nutzt `BaseLayout`.
-5. Kurze Texte (Seitenüberschriften, 404) in `src/i18n/de/legal.ts`.
+4. **404-Seite** `src/pages/404.astro` (existiert): Texte `t.legal.notFound`, Links zur Startseite und zum Kontakt, `noindex`; gestalten nach Tonys Entwurf.
+5. Kurze Texte (Seitenüberschriften, 404) stehen in `src/i18n/de/legal.ts`.
 
 **Gehört nicht dazu**
 
@@ -42,9 +42,11 @@ Die Seite darf rechtssicher online gehen: Impressum und Datenschutzerklärung pa
 
 ## Dateien
 
+> Alle Dateien existieren schon im Gerüst (WP-01) als Grundversion mit fester Schnittstelle; die Texte stehen schon in den Textdateien. Neue gemeinsame Dateien oder Schnittstellen nur per Spec-Änderung ([SPECS §16](../../SPECS.md#16-änderungsregeln)).
+
 **Besitzt dieses Paket:** `src/pages/impressum.astro`, `src/pages/datenschutz.astro`, `src/pages/404.astro`, `src/legal/impressum.md`, `src/legal/datenschutz.md`, `src/i18n/de/legal.ts`
 
-**Liest/benutzt:** `src/layouts/BaseLayout.astro`, `src/components/ui/*`, `src/config/site.ts`
+**Liest/benutzt:** `src/layouts/BaseLayout.astro`, `src/components/ui/*` (u. a. `Prose`, `Container`), `src/config/site.ts`
 
 **Wird nach Absprache ergänzt von:** WP-13 (`src/legal/datenschutz.md`)
 

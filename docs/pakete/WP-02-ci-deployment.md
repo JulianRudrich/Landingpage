@@ -4,7 +4,7 @@
 |---|---|
 | **Owner** | Julian ([@JulianRudrich](https://github.com/JulianRudrich)) |
 | **Reviewer** | Tony ([@tonytonym21](https://github.com/tonytonym21)) |
-| **Release** | V1.0 |
+| **Release** | V1.0, Phase 0 (Festlegen; keine Design-Abhängigkeit) |
 | **Aufwand** | M (ca. 4–12 h) |
 | **Branch** | `julian/wp-02-ci-deployment` |
 | **Issue** | [#5](https://github.com/JulianRudrich/Landingpage/issues/5) |
@@ -50,13 +50,13 @@ Das Paket darf in **zwei PRs** geliefert werden:
     Content-Security-Policy = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'"
 ```
 
-Falls Astro Skripte inline ausgibt und die CSP sie blockiert: Hashes ergänzen oder Astros eigene CSP-Unterstützung nutzen, statt `'unsafe-inline'` für Skripte zu erlauben. Die Statistik-Domain ergänzt später WP-13.
+`script-src 'self'` funktioniert, weil das Gerüst (WP-01) in `astro.config.mjs` dafür sorgt, dass Astro Skripte immer als Datei unter `/_astro/` ausliefert und nie inline ins HTML schreibt. Voraussetzung ist die Konvention „kein `is:inline`, kein `define:vars`“ ([SPECS §10](../../SPECS.md#feste-konventionen)). **Nicht** `'unsafe-inline'` für Skripte erlauben und **keine** Skript-Hashes pflegen. Astros eigene CSP-Unterstützung hilft hier nicht: Sie setzt nur ein zusätzliches `<meta>`-Tag, der Header gilt trotzdem. Die Statistik-Domain ergänzt später WP-13.
 
 ### Teil B – Domain & E-Mail
 
 5. Domain in Netlify verbinden (Netlify-DNS oder A/CNAME beim Registrar), HTTPS über Let's Encrypt aktivieren, `www` auf die Hauptdomain umleiten (oder umgekehrt, Hauptsache einheitlich).
 6. E-Mail-DNS laut Anbieter aus WP-00: **SPF**, **DKIM**, **DMARC**. DMARC zunächst mit `p=none` und Berichtsadresse, nach 2–4 Wochen ohne Probleme auf `p=quarantine`.
-7. Prüfen, dass `url` in `src/config/site.ts` die echte Domain enthält (trägt normalerweise WP-00 ein). `astro.config.mjs` übernimmt den Wert automatisch als `site`.
+7. Prüfen, dass `url` in `src/config/site.ts` die echte Domain enthält. **Eingetragen wird sie nur von WP-00**; WP-02 ändert `site.ts` nicht (sonst Merge-Konflikt mit WP-00, die Zeilen liegen direkt nebeneinander). `astro.config.mjs` übernimmt den Wert automatisch als `site`.
 8. Im README einen kurzen Abschnitt „Deployment“ ergänzen (welcher Branch wohin deployt).
 
 **Gehört nicht dazu**
@@ -69,7 +69,9 @@ Falls Astro Skripte inline ausgibt und die CSP sie blockiert: Hashes ergänzen o
 
 **Besitzt dieses Paket:** `.github/workflows/ci.yml`, `netlify.toml`
 
-**Ändert nach Absprache:** `src/config/site.ts` (nur `url`, falls WP-00 sie noch nicht eingetragen hat), `README.md` (Abschnitt „Deployment“)
+**Ändert nach Absprache:** `README.md` (Abschnitt „Deployment“)
+
+**Liest/benutzt:** `src/config/site.ts` (`url`), `.nvmrc`, `package.json`-Skripte
 
 ## Schnittstellen
 

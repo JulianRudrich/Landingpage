@@ -11,6 +11,27 @@ export const defaultLocale: Locale = 'de';
  */
 export type Dictionary = typeof de;
 
+/** Macht aus Literal-Typen ihre Grundtypen, z. B. 'Hallo' → string. */
+type Widen<T> = T extends string
+  ? string
+  : T extends number
+    ? number
+    : T extends boolean
+      ? boolean
+      : T extends readonly (infer U)[]
+        ? Widen<U>[]
+        : { -readonly [K in keyof T]: Widen<T[K]> };
+
+/**
+ * Schutz für die Mehrsprachigkeit: Schreibt jemand eine Textdatei mit `as const`, wären ihre Typen
+ * die deutschen Texte selbst, und eine englische Fassung könnte `Dictionary` nie erfüllen.
+ * Dann meldet `npm run check` hier sofort einen Fehler ("Type 'false' does not satisfy ...").
+ */
+type AssertTrue<T extends true> = T;
+export type DictionaryIsTranslatable = AssertTrue<
+  Widen<Dictionary> extends Dictionary ? true : false
+>;
+
 const dictionaries: Record<Locale, Dictionary> = { de };
 
 function isLocale(value: string | undefined): value is Locale {

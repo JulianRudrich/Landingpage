@@ -1,11 +1,18 @@
 ---
-// Platzhalter – gehört WP-07 (Ablauf & Über uns).
+// Grundversion – gehört WP-07 (Ablauf & Über uns). WP-07 rendert hier t.process.steps als <ol> (FA-09).
+// Icons je Schritt (fest): 1 message-circle, 2 clipboard-list, 3 hammer, 4 rocket.
+import Section from '@/components/ui/Section.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
 import { useTranslations } from '@/i18n';
 
 const t = useTranslations(Astro.currentLocale);
 ---
 
-<section id="ablauf" aria-labelledby="ablauf-titel">
-  <h2 id="ablauf-titel">{t.process.title}</h2>
-  <p>{t.process.placeholder}</p>
-</section>
+<Section id="ablauf" labelledby="ablauf-titel">
+  <SectionHeading
+    id="ablauf-titel"
+    eyebrow={t.process.eyebrow}
+    title={t.process.title}
+    lead={t.process.lead}
+  />
+</Section>

@@ -1,12 +1,19 @@
 ---
-// Platzhalter – gehört WP-10 (Impressum, Datenschutz & 404).
+// Gehört WP-10 (Impressum, Datenschutz & 404). Der Rechtstext steht in src/legal/datenschutz.md.
+import Container from '@/components/ui/Container.astro';
+import Prose from '@/components/ui/Prose.astro';
 import { useTranslations } from '@/i18n';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Content } from '@/legal/datenschutz.md';
 
 const t = useTranslations(Astro.currentLocale);
 ---
 
 <BaseLayout title={t.seo.datenschutz.title} description={t.seo.datenschutz.description}>
-  <h1>{t.legal.datenschutz.title}</h1>
-  <p>{t.legal.placeholder}</p>
+  <Container>
+    <h1>{t.legal.datenschutz.title}</h1>
+    <Prose>
+      <Content />
+    </Prose>
+  </Container>
 </BaseLayout>

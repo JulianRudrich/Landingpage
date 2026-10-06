@@ -15,6 +15,8 @@ Diese Regeln sorgen dafür, dass wir zu zweit parallel arbeiten können, ohne un
 - [Branches](#branches)
 - [Ablauf für ein Paket](#ablauf-für-ein-paket)
 - [Wem gehört welche Datei?](#wem-gehört-welche-datei)
+- [Code-Regeln](#code-regeln)
+- [Spec ändern und neue Ideen](#spec-ändern-und-neue-ideen)
 - [Merge-Konflikte lösen](#merge-konflikte-lösen)
 - [Commit-Nachrichten](#commit-nachrichten)
 - [Reviews](#reviews)
@@ -108,6 +110,28 @@ Jede Datei gehört genau einem Paket, siehe [Zuständigkeitsmatrix](docs/pakete/
 | **Content-Schema** (`src/content.config.ts`) | Schnittstelle: Änderungen vorher mit Julian (WP-06) absprechen |
 | **Neue Projekte** (`src/content/projects/`) | darf jeder anlegen, neue Datei = kein Konflikt |
 
+## Code-Regeln
+
+Die festen Konventionen stehen in [SPECS §10](SPECS.md#feste-konventionen). Die wichtigsten für den Alltag:
+
+- **Nur ausfüllen, nicht neu erfinden:** Jede Datei existiert schon mit fester Schnittstelle. Keine neuen gemeinsamen Bausteine, Props, Textschlüssel, Token-Namen oder Icons ohne Spec-Änderung.
+- **Texte** nur aus `src/i18n/de/<bereich>.ts`, **Daten** (Name, E-Mail, URLs) nur aus `src/config/site.ts`.
+- **Gestaltung** nur mit Token-Klassen (`bg-surface`, `text-ink`, `bg-primary` …), keine Farbwerte im Code.
+- **Interne Links** enden mit `/`: `/impressum/`, `/datenschutz/`, `/#kontakt`.
+- **Skripte** als normales `<script>` in der Komponente, **kein** `is:inline` und **kein** `define:vars` (sonst blockiert die Sicherheitsrichtlinie das Skript auf der Live-Seite). Daten über `data-*`-Attribute übergeben.
+- **Bilder** über `<Picture>` aus `astro:assets`, nie als `<img>` ohne Größe.
+
+## Spec ändern und neue Ideen
+
+Ab Spec-Version 1.0 gilt [SPECS §16](SPECS.md#16-änderungsregeln):
+
+| Situation | Was tun |
+|---|---|
+| Neue Idee, auch eine kleine | Issue mit Label `idee` anlegen. Sie wird **nicht** in das laufende Paket eingebaut, sondern für V2 gesammelt. |
+| Die Spec passt nicht (Lücke, Widerspruch, technisch nicht möglich) | An der Stelle anhalten, Issue mit Label `spec-frage` anlegen, gemeinsam entscheiden. Erst die Spec per PR ändern, dann den Code. |
+| Spec-Änderung (auch Props, Textschlüssel, Token-Namen, Dateiliste) | PR mit Titel `spec: …`, **beide** geben frei, Version in SPECS.md hochzählen und in der Änderungshistorie eintragen. |
+| Tippfehler im eigenen Text, neues Projekt, Bugfix ohne Schnittstellenänderung | normaler PR, keine Spec-Änderung nötig |
+
 ## Merge-Konflikte lösen
 
 1. `dev` in deinen Branch holen:
@@ -193,6 +217,8 @@ docs(specs): Entscheidungen aus WP-00 eintragen
 | `design` | Schwerpunkt Gestaltung/UI |
 | `inhalt` | Schwerpunkt Texte, Bilder, Recht |
 | `blockiert` | wartet auf etwas; den Grund als Kommentar ins Issue schreiben |
+| `idee` | neue Idee für V2, wird nicht sofort umgesetzt |
+| `spec-frage` | die Spec passt an einer Stelle nicht, muss gemeinsam entschieden werden |
 | `v1.0`, `v1.1` | gehört zu diesem Release |
 
 ## Release: dev → main
@@ -231,7 +257,7 @@ Diese Schritte macht **Julian** (Admin des Repos) einmal in den GitHub-Einstellu
 
 ### Labels
 
-Die Labels `paket`, `orga`, `technik`, `design`, `inhalt`, `v1.0` und `v1.1` existieren bereits. **`blockiert`** einmal unter **Issues → Labels → New label** anlegen.
+Die Labels `paket`, `orga`, `technik`, `design`, `inhalt`, `v1.0` und `v1.1` existieren bereits. **`blockiert`**, **`idee`** und **`spec-frage`** einmal unter **Issues → Labels → New label** anlegen.
 
 ### Project-Board
 

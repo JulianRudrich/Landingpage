@@ -6,7 +6,16 @@ import tseslint from 'typescript-eslint';
 
 export default [
   {
-    ignores: ['dist/', '.astro/', 'node_modules/', '.netlify/'],
+    ignores: [
+      'dist/',
+      '.astro/',
+      'node_modules/',
+      '.netlify/',
+      '.lighthouseci/',
+      'playwright-report/',
+      'test-results/',
+      '.claude/worktrees/',
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

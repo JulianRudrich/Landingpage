@@ -1,0 +1,23 @@
+---
+// Gehört WP-03 (Design-System). Props sind ein Vertrag mit allen Paketen: Änderungen vorher ankündigen.
+import { icons, type IconName } from './icons';
+
+interface Props {
+  /** Name aus der festen Liste in ./icons.ts */
+  name: IconName;
+  /** Kantenlänge in Pixeln */
+  size?: number;
+  /** Nur setzen, wenn das Icon allein Information trägt. Ohne `label` ist es dekorativ und für Screenreader unsichtbar. */
+  label?: string;
+  class?: string;
+}
+
+const { name, size = 24, label, class: className } = Astro.props;
+const Svg = icons[name];
+---
+
+{label ? (
+  <Svg size={size} class={className} role="img" aria-label={label} focusable="false" />
+) : (
+  <Svg size={size} class={className} aria-hidden="true" focusable="false" />
+)}

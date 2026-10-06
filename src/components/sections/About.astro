@@ -1,11 +1,18 @@
 ---
-// Platzhalter – gehört WP-07 (Ablauf & Über uns).
+// Grundversion – gehört WP-07 (Ablauf & Über uns). WP-07 rendert hier t.about.team als zwei gleichwertige
+// Karten (FA-10): Foto aus src/assets/team/<id>.jpg, Name, Rolle, Bio, LinkedIn aus site.social.
+import Section from '@/components/ui/Section.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
 import { useTranslations } from '@/i18n';
 
 const t = useTranslations(Astro.currentLocale);
 ---
 
-<section id="ueber-uns" aria-labelledby="ueber-uns-titel">
-  <h2 id="ueber-uns-titel">{t.about.title}</h2>
-  <p>{t.about.placeholder}</p>
-</section>
+<Section id="ueber-uns" labelledby="ueber-uns-titel">
+  <SectionHeading
+    id="ueber-uns-titel"
+    eyebrow={t.about.eyebrow}
+    title={t.about.title}
+    lead={t.about.lead}
+  />
+</Section>

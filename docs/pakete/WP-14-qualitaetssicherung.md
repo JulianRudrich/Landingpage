@@ -23,7 +23,7 @@ Die Qualitätsziele aus der Spec **automatisch absichern**: Jeder PR wird auf Pe
 1. **Workflow** `.github/workflows/quality.yml`, Auslöser `pull_request` auf `dev` und `main`
    - Seite bauen und lokal ausliefern (z. B. `npm run build` + `npm run preview`)
    - **Lighthouse CI** (`@lhci/cli`) mit `lighthouserc.json`
-     - URLs: `/`, `/impressum`, `/datenschutz` und eine Projektdetailseite
+     - URLs: `/`, `/impressum/`, `/datenschutz/` und eine Projektdetailseite (z. B. `/projekte/diese-website/`)
      - Schwellen: Accessibility, Best Practices, SEO ≥ 0,95 als **Fehler**; Performance ≥ 0,95 als **Warnung**, weil CI-Runner schwanken
      - Berichte als Artefakt hochladen oder per Link im PR
    - **axe** (z. B. `@axe-core/cli` oder Playwright + `@axe-core/playwright`) auf denselben URLs; bricht bei Verstößen der Stufe `serious` oder `critical` ab
@@ -42,7 +42,9 @@ Die Qualitätsziele aus der Spec **automatisch absichern**: Jeder PR wird auf Pe
 
 ## Dateien
 
-**Besitzt dieses Paket:** `.github/workflows/quality.yml`, `lighthouserc.json`, `docs/qa/*`
+> Diese Dateien sind reine Konfiguration ohne Schnittstelle und werden von WP-14 selbst angelegt. Ihre Ausgaben (`.lighthouseci/`, `playwright-report/`, `test-results/`) sind in `.gitignore` und ESLint schon ignoriert, WP-01-Dateien müssen also nicht angefasst werden. Neue Tool-Abhängigkeiten (`@lhci/cli`, axe) im Issue ankündigen.
+
+**Besitzt dieses Paket:** `.github/workflows/quality.yml`, `lighthouserc.json` (im Hauptordner), `docs/qa/*`
 
 **Liest/benutzt:** `package.json`-Skripte, `.github/workflows/ci.yml` (als Vorlage, nicht ändern)
 

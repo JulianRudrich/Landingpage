@@ -2,14 +2,16 @@
 
 | | |
 |---|---|
-| **Version** | 0.1 (Entwurf) |
+| **Version** | 0.2 (Entwurf, Phase 0 „Festlegen“) |
 | **Stand** | 06.10.2026 |
 | **Autoren** | Tony ([@tonytonym21](https://github.com/tonytonym21)), Julian ([@JulianRudrich](https://github.com/JulianRudrich)) |
-| **Status** | Entwurf, wird mit [WP-00](docs/pakete/WP-00-entscheidungen-inhalte.md) finalisiert |
+| **Status** | Alle Vorschläge stehen. Wird als **v1.0 festgeschrieben**, sobald die Entscheidungen in [WP-00](docs/pakete/WP-00-entscheidungen-inhalte.md) getroffen und Tonys Design-Entwurf ([WP-03](docs/pakete/WP-03-design-system.md)) abgenommen sind. |
 
 Dieses Dokument beschreibt, **was** die Website können muss und **warum**.
 **Wer** was baut und **welche Dateien** wem gehören, steht in den [Arbeitspaketen](docs/pakete/README.md).
 **Wie** wir auf GitHub zusammenarbeiten, steht in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+> **Grundprinzip: erst festlegen, dann bauen.** Alles wird vor dem Programmieren entschieden: Anforderungen, Texte, Design, jede Datei und jede Schnittstelle. Das Gerüst aus WP-01 enthält bereits jede Datei mit fester Schnittstelle. Beim Bauen wird nur noch ausgefüllt, nichts Neues erfunden. Neue Ideen kommen nach V2 (siehe [Abschnitt 16](#16-änderungsregeln)).
 
 Änderungen an dieser Spec laufen wie Code: per Pull Request mit Review durch den anderen.
 
@@ -30,7 +32,8 @@ Dieses Dokument beschreibt, **was** die Website können muss und **warum**.
 13. [Arbeitspakete & Zuordnung der Anforderungen](#13-arbeitspakete--zuordnung-der-anforderungen)
 14. [Definition of Done](#14-definition-of-done)
 15. [Offene Entscheidungen](#15-offene-entscheidungen)
-16. [Änderungshistorie](#16-änderungshistorie)
+16. [Änderungsregeln](#16-änderungsregeln)
+17. [Änderungshistorie](#17-änderungshistorie)
 
 ---
 
@@ -118,12 +121,14 @@ Wir können vieles. Für eine klare Botschaft in der Akquise führen **L1 bis L3
 | Pfad | Inhalt | Release | Indexierung | Paket |
 |---|---|---|---|---|
 | `/` | Startseite (One-Pager) | V1.0 | ja | WP-01 (Gerüst) + Sektionen |
-| `/danke` | Bestätigung nach Kontaktanfrage | V1.0 | `noindex` | WP-08 |
-| `/impressum` | Impressum | V1.0 | ja | WP-10 |
-| `/datenschutz` | Datenschutzerklärung | V1.0 | ja | WP-10 |
-| `/404` | Fehlerseite | V1.0 | `noindex` | WP-10 |
-| `/projekte/<slug>` | Projekt-Detailseite (Case Study) | V1.1 | ja | WP-12 |
-| `/gastronomie` | Branchen-Landingpage für gezielte Akquise | V2 | ja | – |
+| `/robots.txt` | Hinweise für Suchmaschinen, verweist auf die Sitemap | V1.0 | – | WP-09 |
+| `/styleguide/` | interne Übersicht der UI-Bausteine | V1.0 | `noindex` | WP-03 |
+| `/danke/` | Bestätigung nach Kontaktanfrage | V1.0 | `noindex` | WP-08 |
+| `/impressum/` | Impressum | V1.0 | ja | WP-10 |
+| `/datenschutz/` | Datenschutzerklärung | V1.0 | ja | WP-10 |
+| `/404.html` | Fehlerseite für alle unbekannten URLs | V1.0 | `noindex` | WP-10 |
+| `/projekte/<slug>/` | Projekt-Detailseite (Case Study) | V1.1 | ja | WP-12 |
+| `/gastronomie/` | Branchen-Landingpage für gezielte Akquise | V2 | ja | – |
 | `/en/…` | Englische Version | V2 | ja | – |
 | `/blog/…` | Artikel für SEO | V2 | ja | – |
 
@@ -251,7 +256,7 @@ Priorität nach MoSCoW: **M** = Must, **S** = Should, **C** = Could, **W** = Won
 
 ### Ordnerstruktur (Zielbild)
 
-WP-01 legt diese Struktur als Gerüst mit Platzhaltern an. Welche Datei welchem Paket gehört, steht in der [Zuständigkeitsmatrix](docs/pakete/README.md#zuständigkeitsmatrix).
+Das Gerüst aus WP-01 enthält **jede Datei von V1.0 und V1.1** mit fester Schnittstelle. Welche Datei welchem Paket gehört, steht in der [Zuständigkeitsmatrix](docs/pakete/README.md#zuständigkeitsmatrix). Nur reine Konfigurationsdateien ohne Schnittstelle (`netlify.toml`, Workflows unter `.github/workflows/`, `lighthouserc.json`) legt ihr Paket selbst an; ihr Inhalt ist in der jeweiligen Paket-Spec vorgegeben.
 
 ```text
 .
@@ -261,28 +266,42 @@ WP-01 legt diese Struktur als Gerüst mit Platzhaltern an. Welche Datei welchem 
 │   ├── CODEOWNERS            Reviewer werden automatisch eingetragen
 │   └── pull_request_template.md
 ├── docs/pakete/              eine Spec pro Arbeitspaket
-├── public/                   Favicons, robots.txt, OG-Bild
+├── public/                   favicon.svg, später weitere Icons und OG-Bild (WP-09)
 ├── src/
-│   ├── assets/               Bilder (werden von Astro optimiert)
+│   ├── assets/               Bilder: hero/, team/, projects/ (werden von Astro optimiert)
 │   ├── components/
-│   │   ├── layout/           Header, Footer, SEO, Analytics
-│   │   ├── sections/         eine Datei pro Startseiten-Sektion
-│   │   ├── ui/               Button, Container, Section, Card, Icon, Logo …
-│   │   ├── projects/         Projektkarte, Bausteine der Detailseite
-│   │   └── contact/          Kontaktformular
-│   ├── config/site.ts        zentrale Daten: Name, Domain, E-Mail, Links
+│   │   ├── layout/           Header, MobileNav, Footer, SEO, Analytics
+│   │   ├── sections/         Hero, Services, Projects, Process, About, Faq, Contact
+│   │   ├── ui/               Container, Section, SectionHeading, Button, Card, Badge,
+│   │   │                     Icon (+ feste Icon-Liste icons.ts), Logo, Prose
+│   │   ├── projects/         ProjectCard, ProjectHeader, ProjectGallery
+│   │   └── contact/          ContactForm
+│   ├── config/site.ts        zentrale Daten: Name, Domain, E-Mail, Links, Schalter
 │   ├── content/projects/     ein Projekt = eine Markdown-Datei
-│   ├── content.config.ts     Schema der Content Collections
-│   ├── i18n/                 Texte, eine Datei pro Bereich
+│   ├── content.config.ts     Schema der Projekte
+│   ├── i18n/                 alle Texte, eine Datei pro Bereich
 │   ├── layouts/              BaseLayout
-│   ├── pages/                Routen (index, impressum, datenschutz, danke, 404, projekte/…)
+│   ├── legal/                Impressum und Datenschutzerklärung als Markdown
+│   ├── pages/                index, impressum, datenschutz, danke, 404, styleguide,
+│   │                         robots.txt, projekte/[slug]
 │   └── styles/global.css     Tailwind + Design-Tokens
 ├── astro.config.mjs
-├── netlify.toml
+├── netlify.toml              (WP-02)
 ├── package.json
 ├── SPECS.md
 └── CONTRIBUTING.md
 ```
+
+### Feste Konventionen
+
+| Thema | Regel | Warum |
+|---|---|---|
+| **Schnittstellen** | Props aller Komponenten, das Content-Schema, alle Textschlüssel und die Token-Namen stehen im Gerüst fest. Wer sie ändern will, braucht eine Spec-Änderung ([Abschnitt 16](#16-änderungsregeln)). | Niemand muss Dateien anderer anfassen; TypeScript meldet Abweichungen. |
+| **Dateien** | Neue Dateien nur als interne Hilfsdatei des eigenen Pakets in dessen Ordner (im PR erwähnen) oder als Inhalt (neues Projekt, Bild). Keine neuen gemeinsamen Bausteine ohne Spec-Änderung. | Die Struktur bleibt so, wie sie geplant ist. |
+| **URLs** | Jede Seite endet mit `/` (`trailingSlash: 'always'`), interne Links genau so schreiben: `/impressum/`, `/#kontakt`. Im Dev-Server ergibt `/impressum` ohne `/` absichtlich 404. | Einheitliche Canonical-URLs, Sitemap und Links. |
+| **Skripte** | Normale `<script>`-Tags in Komponenten, **kein** `is:inline` und **kein** `define:vars`; Daten über `data-*`-Attribute übergeben. `astro.config.mjs` sorgt dafür, dass Skripte immer als Datei ausgeliefert werden. | Die Content-Security-Policy `script-src 'self'` (WP-02) bleibt gültig. |
+| **Icons** | Nur die feste Liste aus `src/components/ui/icons.ts`. Profil-Links (LinkedIn, GitHub) als Text, ohne Markenlogos. | Einheitliches Bild; Lucide enthält keine Markenlogos. |
+| **Design** | Nur Token-Klassen aus `src/styles/global.css` (z. B. `bg-surface`, `text-ink`, `bg-primary`), keine Farbwerte im Code. | Ein Design-Wechsel passiert an genau einer Stelle. |
 
 ### Texte & Mehrsprachigkeit
 
@@ -312,6 +331,18 @@ WP-01 legt diese Struktur als Gerüst mit Platzhaltern an. Welche Datei welchem 
 
 ## 12. Releases & Scope
 
+### Phasen
+
+| Phase | Was passiert | Ergebnis |
+|---|---|---|
+| **0 – Festlegen** | WP-00: alle Entscheidungen treffen und die Textvorschläge bestätigen. WP-03, Teil A: Tony liefert den Design-Entwurf, Julian nimmt ihn ab. Parallel dazu ohne Design-Abhängigkeit: WP-01 (Gerüst), WP-02 (CI & Deployment), WP-09 (SEO). | **Spec v1.0 festgeschrieben** |
+| **1 – Bauen (V1.0)** | Alle übrigen V1.0-Pakete füllen das Gerüst aus, genau nach Spec und Design. | Release V1.0, Go-live |
+| **2 – Ausbau (V1.1)** | WP-11 bis WP-14 | Release V1.1 |
+
+Kein Paket der Phase 1 beginnt mit dem Gestalten von Sektionen, bevor der Design-Entwurf abgenommen ist.
+
+### Releases
+
 | Release | Inhalt | Pakete | Issue |
 |---|---|---|---|
 | **V1.0 – MVP / Go-live** | One-Pager mit allen Sektionen außer FAQ, Kontaktformular, Rechtsseiten, 404, SEO-Grundlagen, CI und Deployment auf eigener Domain | WP-00 bis WP-10 | [#1](https://github.com/JulianRudrich/Landingpage/issues/1) |
@@ -326,7 +357,7 @@ Jede Anforderung ist mindestens einem Paket zugeordnet, damit nichts verloren ge
 
 | Paket | Owner | Deckt ab |
 |---|---|---|
-| [WP-00](docs/pakete/WP-00-entscheidungen-inhalte.md) Entscheidungen & Inhalte | beide | E-01 bis E-09, R-06, R-09 |
+| [WP-00](docs/pakete/WP-00-entscheidungen-inhalte.md) Entscheidungen & Inhalte | beide | E-01 bis E-09, E-12 bis E-14, R-06, R-09 |
 | [WP-01](docs/pakete/WP-01-projekt-setup.md) Projekt-Setup & Gerüst | Julian | FA-01, FA-20, NFA-16, NFA-18 |
 | [WP-02](docs/pakete/WP-02-ci-deployment.md) CI & Deployment | Julian | NFA-15, NFA-16, NFA-17, NFA-19 |
 | [WP-03](docs/pakete/WP-03-design-system.md) Design-System & BaseLayout | Tony | D-01 bis D-05, D-07 bis D-09, NFA-04, NFA-05, NFA-06, NFA-07, NFA-14, R-05 |
@@ -373,22 +404,37 @@ Jede Anforderung ist mindestens einem Paket zugeordnet, damit nichts verloren ge
 
 ## 15. Offene Entscheidungen
 
-| ID | Frage | Empfehlung | Entscheidet in |
-|---|---|---|---|
-| E-01 | Markenname / Wortmarke | kurz, merkbar, Domain frei; Arbeitstitel „Tony & Julian“ | WP-00 |
-| E-02 | Domain | `.de`-Domain bei einem Anbieter mit einfacher DNS-Verwaltung | WP-00 |
-| E-03 | E-Mail-Anbieter und Adressen | Postfächer auf der eigenen Domain, z. B. `hallo@`, `tony@`, `julian@` | WP-00 |
-| E-04 | Ansprache „Sie“ oder „du“ | „Sie“, passend zu lokalen Betrieben | WP-00 |
-| E-05 | Region bzw. Stadt für lokales SEO | eigene Heimatregion plus Umkreis | WP-00 |
-| E-06 | Preise auf der Seite zeigen? | V1.0 ohne Preise; ab V2 „ab“-Preise für Standardpakete | WP-00 |
-| E-07 | Rechtsform und Gewerbeanmeldung | z. B. GbR; vorher bei IHK oder Steuerberatung informieren | WP-00 |
-| E-08 | Erstes Gastro-Demo: Mobile-, Desktop- oder Web-App (PWA)? | Web-App (PWA): eine Codebasis für Tablet, PC und Handy, kein App-Store | WP-00 |
-| E-09 | Telefonnummer öffentlich zeigen? | Optional; erhöht Vertrauen bei lokalen Betrieben | WP-00 |
-| E-10 | Statistik-Tool | Plausible (EU) oder Umami | WP-13 |
-| E-11 | Terminbuchungs-Tool | Cal.com oder Calendly | WP-13 |
+Zu jeder Frage steht ein konkreter Vorschlag; die Texte im Gerüst (`src/i18n/de/`) sind bereits danach geschrieben. Bestätigen oder ändern in [WP-00](docs/pakete/WP-00-entscheidungen-inhalte.md). Name und Domain wählt ihr selbst.
 
-## 16. Änderungshistorie
+| ID | Frage | Vorschlag | Entscheidet in |
+|---|---|---|---|
+| E-01 | Markenname / Wortmarke | **Eure Wahl.** Kurz, merkbar, Domain frei. Bis dahin Arbeitstitel „Tony & Julian“. | WP-00 |
+| E-02 | Domain | **Eure Wahl.** `.de`-Domain bei einem Anbieter mit einfacher DNS-Verwaltung. | WP-00 |
+| E-03 | E-Mail-Anbieter und Adressen | Postfächer auf der eigenen Domain: `hallo@` (öffentlich, Formular-Benachrichtigungen, leitet an beide weiter), `tony@`, `julian@` | WP-00 |
+| E-04 | Ansprache „Sie“ oder „du“ | „Sie“, passend zu lokalen Betrieben (alle Texte sind so geschrieben) | WP-00 |
+| E-05 | Region bzw. Stadt für lokales SEO | eure Heimatstadt plus ca. 50 km Umkreis | WP-00 |
+| E-06 | Preise auf der Seite zeigen? | V1.0 ohne Preise; FAQ verweist auf ein transparentes Angebot nach dem Erstgespräch. „Ab“-Preise frühestens in V2. | WP-00 |
+| E-07 | Rechtsform und Gewerbeanmeldung | GbR; vorher bei IHK oder Steuerberatung informieren | WP-00 |
+| E-08 | Erstes Gastro-Demo: Mobile-, Desktop- oder Web-App (PWA)? | Web-App (PWA): eine Codebasis für Tablet, PC und Handy, kein App-Store | WP-00 |
+| E-09 | Telefonnummer öffentlich zeigen? | Ja, wenn es eine geschäftliche Nummer gibt (schafft Vertrauen bei lokalen Betrieben); sonst nein | WP-00 |
+| E-10 | Statistik-Tool | Plausible (EU-Hosting, einfach, kostenpflichtig); kostenlose Alternative: Umami | WP-13 |
+| E-11 | Terminbuchungs-Tool | Cal.com (kostenloser Tarif, Open Source) | WP-13 |
+| E-12 | Versprochene Antwortzeit auf Anfragen | „innerhalb von 1–2 Werktagen“ (steht in Kontakt-Sektion und Danke-Seite) | WP-00 |
+| E-13 | Angebotsform und Rechte am Ergebnis | Festpreis-Angebot nach dem Erstgespräch; Kunden erhalten nach Bezahlung die Rechte an der für sie entwickelten Lösung (steht in Ablauf und FAQ) | WP-00 |
+| E-14 | Rollen und Kurzbios von Tony und Julian | **Eure Angaben** (in `src/i18n/de/about.ts` sind dafür Lücken markiert) | WP-00 |
+
+## 16. Änderungsregeln
+
+Ab Version 1.0 ist diese Spec **festgeschrieben**. So bleibt die Umsetzung bei dem, was geplant ist:
+
+1. **Neue Ideen** während der Umsetzung kommen als Issue mit dem Label `idee` in die Sammlung für V2. Sie werden **nicht** in laufende Pakete eingebaut, auch keine Kleinigkeiten.
+2. **Passt etwas in der Spec nicht** (Lücke, Widerspruch, technisch unmöglich): Arbeit an der Stelle anhalten, Issue mit dem Label `spec-frage` anlegen, gemeinsam entscheiden. Dann zuerst die Spec per PR ändern, danach den Code.
+3. **Spec-Änderungen** (auch an Props, Textschlüsseln, Token-Namen, Dateiliste) nur per PR mit dem Titel `spec: …`, den **beide** freigeben. Die Version steigt (1.1, 1.2, …) und kommt in die Änderungshistorie.
+4. **Kein Spec-Thema** sind: Textkorrekturen innerhalb einer eigenen Textdatei, neue Projekte in `src/content/projects/`, Fehlerbehebungen ohne Schnittstellenänderung.
+
+## 17. Änderungshistorie
 
 | Version | Datum | Änderung |
 |---|---|---|
 | 0.1 | 06.10.2026 | Erster Entwurf: Anforderungen, Arbeitspakete, Workflow |
+| 0.2 | 06.10.2026 | Grundprinzip „erst festlegen, dann bauen“: vollständiges Gerüst mit festen Schnittstellen, feste Konventionen, Phase 0, Vorschläge zu allen Entscheidungen (E-12 bis E-14 neu), Änderungsregeln |

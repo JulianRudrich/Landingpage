@@ -40,3 +40,8 @@ npm run check && npm run lint && npm run format:check && npm run build
 ```
 
 In VS Code schlägt das Projekt beim Öffnen die passenden Erweiterungen vor (Astro, Tailwind, ESLint, Prettier).
+
+**Gut zu wissen**
+
+- Alle Seiten-URLs enden mit `/` (z. B. `/impressum/`). Im Dev-Server ergibt `/impressum` ohne `/` absichtlich eine 404-Seite, damit falsch geschriebene interne Links sofort auffallen. Auf der Live-Seite leitet Netlify automatisch um.
+- Unter `/styleguide/` sieht man alle UI-Bausteine und Icons auf einen Blick.

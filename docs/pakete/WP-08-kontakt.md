@@ -4,11 +4,11 @@
 |---|---|
 | **Owner** | Julian ([@JulianRudrich](https://github.com/JulianRudrich)) |
 | **Reviewer** | Tony ([@tonytonym21](https://github.com/tonytonym21)) |
-| **Release** | V1.0 |
+| **Release** | V1.0, Phase 1 (nach Freigabe der Spec v1.0) |
 | **Aufwand** | L (ca. 12–24 h) |
 | **Branch** | `julian/wp-08-kontakt` |
 | **Issue** | [#11](https://github.com/JulianRudrich/Landingpage/issues/11) |
-| **Abhängig von** | WP-03; WP-02 (Netlify-Site, um die Zustellung zu testen) |
+| **Abhängig von** | Freigabe der Spec v1.0 (WP-00 + Design aus WP-03 Teil A); WP-03; WP-02 (Netlify-Site, um die Zustellung zu testen) |
 | **Blockiert** | – |
 | **Anforderungen** | FA-11, FA-12, FA-13, FA-14, FA-15 aus [SPECS.md](../../SPECS.md) |
 
@@ -21,12 +21,12 @@ Die wichtigste Sektion für unser Geschäft: Aus einem Besucher wird eine Anfrag
 **Gehört dazu**
 
 1. **Sektion** `Contact.astro` (`#kontakt`)
-   - `SectionHeading` (Entwurf: „Lassen Sie uns sprechen“ / „Erzählen Sie uns kurz von Ihrem Betrieb. Wir melden uns innerhalb von 1–2 Werktagen.“)
+   - `SectionHeading` mit `t.contact.eyebrow`, `title`, `lead`
    - Zwei Spalten (mobil untereinander): Formular und direkte Kontaktwege
-   - Direkt: E-Mail (`mailto:`), Telefon (`tel:`, nur wenn `site.phone` gesetzt), Terminbuchungs-Button (nur wenn `site.bookingUrl` gesetzt, kommt mit WP-13)
+   - Direkter Draht (`t.contact.direct`): E-Mail (`mailto:`, Icon `mail`), Telefon (`tel:`, Icon `phone`, nur wenn `site.phone` gesetzt), `Button` „Termin für ein Erstgespräch buchen“ mit `external` und Icon `calendar-check` (nur wenn `site.bookingUrl` gesetzt, kommt mit WP-13)
 2. **Formular** `ContactForm.astro` über **Netlify Forms**
-   - `<form name="kontakt" method="POST" action="/danke" data-netlify="true" netlify-honeypot="website">` plus `<input type="hidden" name="form-name" value="kontakt">`
-   - Felder:
+   - `<form name="kontakt" method="POST" action="/danke/" data-netlify="true" netlify-honeypot="website">` plus `<input type="hidden" name="form-name" value="kontakt">`
+   - Felder (Beschriftungen, Optionen und Fehlermeldungen aus `t.contact.form`):
 
      | Feld | Typ | Pflicht | `autocomplete` |
      |---|---|---|---|
@@ -36,14 +36,15 @@ Die wichtigste Sektion für unser Geschäft: Aus einem Besucher wird eine Anfrag
      | Worum geht es? | `select`: Website, App, KI & Automatisierung, Individuelle Software, Noch unklar | nein | – |
      | Nachricht | `textarea` | ja | – |
 
-   - Honeypot-Feld `website`, visuell versteckt, mit Label „Bitte leer lassen“ und `tabindex="-1"`
-   - Datenschutzhinweis über dem Button (Entwurf): „Mit dem Absenden verarbeiten wir Ihre Angaben, um Ihre Anfrage zu beantworten. Mehr dazu in unserer [Datenschutzerklärung](/datenschutz).“
-   - Absenden-Button „Anfrage senden“
+   - Hinweis `t.contact.form.requiredHint`, Pflichtfelder mit *
+   - Honeypot-Feld `website`, visuell versteckt, Label `t.contact.form.honeypot`, `tabindex="-1"`, `autocomplete="off"`
+   - Datenschutzhinweis über dem Button aus `t.contact.form.privacy` (`before` + Link auf `/datenschutz/` + `after`)
+   - `Button` mit `type="submit"`: `t.contact.form.submit`
 3. **Validierung**
    - HTML-Attribute (`required`, `type="email"`, `minlength` für die Nachricht) als Basis. Ohne JavaScript funktioniert das Formular mit nativer Browser-Validierung.
-   - Kleines Skript für deutsche Fehlermeldungen direkt am Feld (`aria-invalid`, `aria-describedby`); beim Absenden springt der Fokus auf das erste fehlerhafte Feld
-   - Kein `fetch` nötig: Das normale POST geht an Netlify, das danach auf `/danke` weiterleitet
-4. **Danke-Seite** `src/pages/danke.astro` (`noindex`): Bestätigung, Hinweis auf die Antwortzeit, Link zurück zur Startseite.
+   - Kleines normales `<script>` (kein `is:inline`, kein `define:vars`; Fehlertexte über `data-*`-Attribute an das Skript übergeben) für die Meldungen aus `t.contact.form` direkt am Feld (`aria-invalid`, `aria-describedby`); beim Absenden springt der Fokus auf das erste fehlerhafte Feld und `t.contact.form.errorSummary` wird angekündigt
+   - Kein `fetch` nötig: Das normale POST geht an Netlify, das danach auf `/danke/` weiterleitet
+4. **Danke-Seite** `src/pages/danke.astro` (`noindex`, existiert): Texte `t.contact.thanks`, Icon `circle-check`, gestaltet nach Tonys Entwurf.
 5. **Netlify-Einstellungen**: Formular-Benachrichtigung per E-Mail an beide (oder an `hallo@` mit Weiterleitung), Spamfilter aktiv. Eingegangene Anfragen regelmäßig in Netlify löschen, nachdem sie im Postfach sind (Datensparsamkeit).
 6. **WP-10 informieren:** Im Issue [#13](https://github.com/JulianRudrich/Landingpage/issues/13) kommentieren, welche Daten das Formular erhebt und wo sie gespeichert werden (für die Datenschutzerklärung).
 
@@ -54,7 +55,9 @@ Die wichtigste Sektion für unser Geschäft: Aus einem Besucher wird eine Anfrag
 
 ## Dateien
 
-**Besitzt dieses Paket:** `src/components/sections/Contact.astro`, `src/components/contact/*` (u. a. `ContactForm.astro`), `src/pages/danke.astro`, `src/i18n/de/contact.ts`
+> Alle Dateien existieren schon im Gerüst (WP-01) als Grundversion mit fester Schnittstelle; die Texte stehen schon in den Textdateien. Neue gemeinsame Dateien oder Schnittstellen nur per Spec-Änderung ([SPECS §16](../../SPECS.md#16-änderungsregeln)).
+
+**Besitzt dieses Paket:** `src/components/sections/Contact.astro`, `src/components/contact/ContactForm.astro`, `src/pages/danke.astro`, `src/i18n/de/contact.ts`
 
 **Liest/benutzt:** `src/components/ui/*`, `src/layouts/BaseLayout.astro`, `src/config/site.ts`
 
@@ -65,7 +68,7 @@ Die wichtigste Sektion für unser Geschäft: Aus einem Besucher wird eine Anfrag
 - [ ] Ohne JavaScript lässt sich das Formular trotzdem absenden
 - [ ] Ein Honeypot ist vorhanden; es wird kein Captcha-Dienst eingebunden
 - [ ] Der Datenschutzhinweis mit Link steht über dem Button
-- [ ] Nach dem Absenden landet man auf `/danke` (`noindex`)
+- [ ] Nach dem Absenden landet man auf `/danke/` (`noindex`)
 - [ ] Eine Testanfrage über die Deploy-Preview kommt bei beiden per E-Mail an (Screenshot im PR, private Daten geschwärzt)
 - [ ] E-Mail- und Telefon-Link kommen aus `site.ts` und funktionieren am Handy
 - [ ] Der Terminbuchungs-Button erscheint nur, wenn `site.bookingUrl` gesetzt ist

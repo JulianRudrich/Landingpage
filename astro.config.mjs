@@ -12,11 +12,16 @@ const EXCLUDED_FROM_SITEMAP = ['/danke/', '/styleguide/'];
 export default defineConfig({
   // Die Domain wird nur in src/config/site.ts gepflegt (E-02).
   site: site.url,
+
+  // Einheitliche URLs: Jede Seite endet mit "/", z. B. /impressum/. Interne Links bitte genau so schreiben.
+  trailingSlash: 'always',
+
   i18n: {
     locales: ['de'],
     defaultLocale: 'de',
     routing: { prefixDefaultLocale: false },
   },
+
   integrations: [
     sitemap({
       filter: (page) => {
@@ -26,7 +31,14 @@ export default defineConfig({
       },
     }),
   ],
+
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      // Skripte nie inline ins HTML schreiben, sondern immer als Datei unter /_astro/ ausliefern.
+      // Nur so bleibt die Content-Security-Policy "script-src 'self'" aus netlify.toml (WP-02) gültig.
+      // Deshalb in Komponenten auch kein `is:inline` und kein `define:vars` verwenden.
+      assetsInlineLimit: (filePath) => (filePath.endsWith('.js') ? false : undefined),
+    },
   },
 });

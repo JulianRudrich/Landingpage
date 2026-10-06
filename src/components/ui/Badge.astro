@@ -1,0 +1,14 @@
+---
+// Gehört WP-03 (Design-System). Props sind ein Vertrag mit allen Paketen: Änderungen vorher ankündigen.
+// Verwendung u. a. für den Projektstatus (WP-06): live → success, prototyp → warning, konzept → neutral.
+
+interface Props {
+  tone?: 'neutral' | 'success' | 'warning';
+}
+
+const { tone = 'neutral' } = Astro.props;
+---
+
+<span data-tone={tone}>
+  <slot />
+</span>

@@ -1,14 +1,17 @@
 ---
-// Platzhalter – gehört WP-04 (Header & Footer).
-import { site } from '@/config/site';
+// Grundversion – gehört WP-04 (Header & Footer). WP-04 baut hier den Sticky-Header (FA-02) und bindet
+// MobileNav.astro für Bildschirme unter 768 px ein (FA-03). Aktiver Menüpunkt: FA-04.
+import Logo from '@/components/ui/Logo.astro';
 import { useTranslations } from '@/i18n';
 
 const t = useTranslations(Astro.currentLocale);
 ---
 
 <header>
-  <a href="/">{site.name}</a>
-  <nav aria-label={t.navigation.label}>
+  <a href="/">
+    <Logo />
+  </a>
+  <nav aria-label={t.navigation.mainLabel}>
     <ul>
       {t.navigation.items.map((item) => (
         <li>

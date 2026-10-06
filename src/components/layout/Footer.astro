@@ -1,5 +1,5 @@
 ---
-// Platzhalter – gehört WP-04 (Header & Footer).
+// Grundversion – gehört WP-04 (Header & Footer). WP-04 ergänzt Claim, Kontakt, Navigation und Profile (FA-16).
 import { site } from '@/config/site';
 import { useTranslations } from '@/i18n';
 
@@ -8,17 +8,18 @@ const year = new Date().getFullYear();
 ---
 
 <footer>
-  <nav aria-label={t.navigation.legal.label}>
+  <nav aria-label={t.navigation.footer.legalHeading}>
     <ul>
       <li>
-        <a href="/impressum">{t.navigation.legal.impressum}</a>
+        <a href="/impressum/">{t.navigation.footer.impressum}</a>
       </li>
       <li>
-        <a href="/datenschutz">{t.navigation.legal.datenschutz}</a>
+        <a href="/datenschutz/">{t.navigation.footer.datenschutz}</a>
       </li>
     </ul>
   </nav>
   <p>
-    © {year} {site.name}
+    © {year}
+    {site.name}. {t.navigation.footer.copyright}
   </p>
 </footer>

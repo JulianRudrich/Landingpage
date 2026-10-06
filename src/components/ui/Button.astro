@@ -1,0 +1,54 @@
+---
+// Gehört WP-03 (Design-System). Props sind ein Vertrag mit allen Paketen: Änderungen vorher ankündigen.
+// Grundversion: WP-03 gestaltet die Varianten nach Tonys Entwurf (Tokens primary, on-primary, …).
+import { useTranslations } from '@/i18n';
+
+import Icon from './Icon.astro';
+import type { IconName } from './icons';
+
+interface Props {
+  /** Mit `href` wird ein Link (<a>) gerendert, ohne `href` ein <button> */
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'ghost';
+  size?: 'md' | 'lg';
+  /** Nur für <button>: 'submit' in Formularen */
+  type?: 'button' | 'submit';
+  /** Öffnet in neuem Tab (target="_blank", rel="noopener noreferrer") und ergänzt einen Screenreader-Hinweis */
+  external?: boolean;
+  /** Optionales Icon hinter dem Text */
+  icon?: IconName;
+  class?: string;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  type = 'button',
+  external = false,
+  icon,
+  class: className,
+} = Astro.props;
+const t = useTranslations(Astro.currentLocale);
+const classes = ['inline-flex items-center gap-2', className];
+---
+
+{href ? (
+  <a
+    href={href}
+    class:list={classes}
+    data-variant={variant}
+    data-size={size}
+    target={external ? '_blank' : undefined}
+    rel={external ? 'noopener noreferrer' : undefined}
+  >
+    <slot />
+    {icon && <Icon name={icon} size={18} />}
+    {external && <span class="sr-only">{t.common.externalLinkHint}</span>}
+  </a>
+) : (
+  <button type={type} class:list={classes} data-variant={variant} data-size={size}>
+    <slot />
+    {icon && <Icon name={icon} size={18} />}
+  </button>
+)}
