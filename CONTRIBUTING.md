@@ -35,7 +35,7 @@ Diese Regeln sorgen dafür, dass wir zu zweit parallel arbeiten können, ohne un
 
 - Beispiele: `julian/wp-01-projekt-setup`, `tony/wp-05-hero-leistungen`. Der genaue Name steht in jeder Paket-Spec und im Issue.
 - Kleinkram ohne Paket (Tippfehler, Doku): `<name>/fix-kurzbeschreibung` bzw. `<name>/docs-kurzbeschreibung`.
-- Die alten Branches `tony` und `julian` werden nicht mehr gebraucht und können gelöscht werden.
+- **Keine Branches anlegen, die nur `tony` oder `julian` heißen.** Git kann dann keine `tony/…`- bzw. `julian/…`-Branches mehr anlegen, weil sich die Namen in die Quere kommen.
 
 ## Ablauf für ein Paket
 
