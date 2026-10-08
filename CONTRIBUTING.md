@@ -15,6 +15,8 @@ Diese Regeln sorgen dafür, dass wir zu zweit parallel arbeiten können, ohne un
 - [Branches](#branches)
 - [Ablauf für ein Paket](#ablauf-für-ein-paket)
 - [Wem gehört welche Datei?](#wem-gehört-welche-datei)
+- [Code-Regeln](#code-regeln)
+- [Spec ändern und neue Ideen](#spec-ändern-und-neue-ideen)
 - [Merge-Konflikte lösen](#merge-konflikte-lösen)
 - [Commit-Nachrichten](#commit-nachrichten)
 - [Reviews](#reviews)
@@ -101,12 +103,35 @@ Jede Datei gehört genau einem Paket, siehe [Zuständigkeitsmatrix](docs/pakete/
 | Fall | Regel |
 |---|---|
 | **Eigene Dateien** | frei ändern |
-| **Fremde Dateien** | nur nach Absprache im Issue des Owners (ein kurzer Kommentar reicht), dann als kleiner, eigener Commit |
-| **Gemeinsame Dateien** (`package.json`, `package-lock.json`, `astro.config.mjs`, `SPECS.md`, `CONTRIBUTING.md`, `docs/`) | Änderung im PR-Text erwähnen |
-| **Neue npm-Pakete** | vorher im eigenen Issue ankündigen, damit der andere nicht dasselbe Problem anders löst |
-| **UI-Bausteine** (`src/components/ui/`) | Props sind eine Schnittstelle: Änderungen vorher mit Tony (WP-03) absprechen |
-| **Content-Schema** (`src/content.config.ts`) | Schnittstelle: Änderungen vorher mit Julian (WP-06) absprechen |
+| **Fremde Dateien** | nur, wenn die eigene Paket-Spec (Abschnitt „Ändert nach Absprache“) oder die Zuständigkeitsmatrix (Spalte „Hinweis“) es ausdrücklich erlaubt; dann im Issue des Owners kurz Bescheid geben und als kleinen, eigenen Commit. Sonst: Issue mit Label `spec-frage` |
+| **Gemeinsame Dateien** (`package.json`, `package-lock.json`, `SPECS.md`, `CONTRIBUTING.md`, `docs/`) | Änderung im PR-Text erwähnen |
+| **Neue npm-Pakete** | vorher im eigenen Issue ankündigen, damit der andere nicht dasselbe Problem anders löst. Versionen werden exakt eingetragen (`.npmrc` mit `save-exact=true`, kein `^`) |
+| **UI-Bausteine** (`src/components/ui/`) | Props und Icon-Liste sind Schnittstellen: Änderungen nur per Spec-Änderung (`spec:`-PR, beide geben frei) |
+| **Content-Schema** (`src/content.config.ts`) | Schnittstelle: Änderungen nur per Spec-Änderung (`spec:`-PR, beide geben frei) |
 | **Neue Projekte** (`src/content/projects/`) | darf jeder anlegen, neue Datei = kein Konflikt |
+
+## Code-Regeln
+
+Die festen Konventionen stehen in [SPECS §10](SPECS.md#feste-konventionen). Die wichtigsten für den Alltag:
+
+- **Nur ausfüllen, nicht neu erfinden:** Jede Datei existiert schon mit fester Schnittstelle. Keine neuen gemeinsamen Bausteine, Props, Textschlüssel, Token-Namen oder Icons ohne Spec-Änderung.
+- **Texte** nur aus `src/i18n/de/<bereich>.ts`, **Daten** (Name, E-Mail, URLs) nur aus `src/config/site.ts`. Markenname und Region in Texten als `{name}` / `{region}`, eingesetzt mit `fill()`.
+- **Gestaltung** nur mit Token-Klassen (`bg-surface`, `text-ink`, `bg-primary` …), keine Farbwerte im Code, kein `style`-Attribut, kein `<style>`-Block (eigenes CSS nur in `src/styles/global.css`). Klassen im `class`-Attribut oder in Variablen mit Namen auf `Classes`/`Variants` (z. B. `variantClasses`), nur dort prüft der Linter. `npm run lint` meldet unbekannte Klassen, Farbwerte in eckigen Klammern, doppelte oder widersprüchliche Klassen, `style`-Attribute und `<style>`-Blöcke; `npm run format` sortiert die Klassen.
+- **Interne Links** enden mit `/`: `/impressum/`, `/datenschutz/`, `/#kontakt`.
+- **Skripte** als normales `<script>` **ohne Attribute** in der Komponente, **kein** `is:inline`, **kein** `define:vars`, kein `onclick=` (sonst landet das Skript inline und die Sicherheitsrichtlinie blockiert es auf der Live-Seite). Daten über `data-*`-Attribute an HTML-Elementen übergeben, z. B. am `<form>`, nie am `<script>`-Tag. `npm run lint` meldet Verstöße.
+- **Bilder** über `<Picture>` aus `astro:assets`, nie als `<img>` ohne Größe; immer PNG, JPG oder WebP, nie SVG.
+- **Icons** nur über `<Icon name="…" />` aus der festen Liste; Lucide direkt zu importieren meldet `npm run lint`.
+
+## Spec ändern und neue Ideen
+
+Ab Spec-Version 1.0 gilt [SPECS §16](SPECS.md#16-änderungsregeln):
+
+| Situation | Was tun |
+|---|---|
+| Neue Idee, auch eine kleine | Issue mit Label `idee` anlegen. Sie wird **nicht** in das laufende Paket eingebaut, sondern für V2 gesammelt. |
+| Die Spec passt nicht (Lücke, Widerspruch, technisch nicht möglich) | An der Stelle anhalten, Issue mit Label `spec-frage` anlegen, gemeinsam entscheiden. Erst die Spec per PR ändern, dann den Code. |
+| Spec-Änderung (auch Props, Textschlüssel, Token-Namen, Dateiliste) | PR mit Titel `spec: …`, **beide** geben frei, Version in SPECS.md hochzählen und in der Änderungshistorie eintragen. |
+| Tippfehler im eigenen Text, neues Projekt, Bugfix ohne Schnittstellenänderung | normaler PR, keine Spec-Änderung nötig |
 
 ## Merge-Konflikte lösen
 
@@ -193,6 +218,8 @@ docs(specs): Entscheidungen aus WP-00 eintragen
 | `design` | Schwerpunkt Gestaltung/UI |
 | `inhalt` | Schwerpunkt Texte, Bilder, Recht |
 | `blockiert` | wartet auf etwas; den Grund als Kommentar ins Issue schreiben |
+| `idee` | neue Idee für V2, wird nicht sofort umgesetzt |
+| `spec-frage` | die Spec passt an einer Stelle nicht, muss gemeinsam entschieden werden |
 | `v1.0`, `v1.1` | gehört zu diesem Release |
 
 ## Release: dev → main
@@ -217,7 +244,7 @@ Diese Schritte macht **Julian** (Admin des Repos) einmal in den GitHub-Einstellu
 - Target branches: `main` und `dev` hinzufügen
 - ✅ Restrict deletions
 - ✅ Require a pull request before merging → Required approvals: **1**
-- ✅ Require status checks to pass → Check `build` hinzufügen (erst möglich, nachdem die CI aus WP-02 einmal gelaufen ist; ab V1.1 auch den Quality-Check aus WP-14)
+- ✅ Require status checks to pass → Check `build` hinzufügen (erst möglich, nachdem die CI aus WP-02 einmal gelaufen ist; ab V1.1 auch `quality` aus WP-14)
 - ✅ Block force pushes
 - Bypass: für Notfälle darf der Repo-Admin umgehen, nur nach Absprache
 
@@ -231,7 +258,7 @@ Diese Schritte macht **Julian** (Admin des Repos) einmal in den GitHub-Einstellu
 
 ### Labels
 
-Die Labels `paket`, `orga`, `technik`, `design`, `inhalt`, `v1.0` und `v1.1` existieren bereits. **`blockiert`** einmal unter **Issues → Labels → New label** anlegen.
+Die Labels `paket`, `orga`, `technik`, `design`, `inhalt`, `v1.0` und `v1.1` existieren bereits. **`blockiert`**, **`idee`** und **`spec-frage`** einmal unter **Issues → Labels → New label** anlegen.
 
 ### Project-Board
 

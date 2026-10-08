@@ -1,0 +1,13 @@
+---
+// Platzhalter – gehört WP-12 (Projektdetailseiten, V1.1). Bildergalerie aus dem Feld `gallery`
+// des Content-Schemas; wird nur gerendert, wenn Bilder vorhanden sind.
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  images: { src: ImageMetadata; alt: string }[];
+}
+
+const { images } = Astro.props;
+---
+
+{images.length > 0 && <div data-count={images.length} />}

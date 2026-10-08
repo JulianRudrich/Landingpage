@@ -4,11 +4,11 @@
 |---|---|
 | **Owner** | Tony ([@tonytonym21](https://github.com/tonytonym21)) |
 | **Reviewer** | Julian ([@JulianRudrich](https://github.com/JulianRudrich)) |
-| **Release** | V1.0 |
+| **Release** | V1.0, Phase 1 (nach Freigabe der Spec v1.0) |
 | **Aufwand** | M (ca. 4–12 h) |
 | **Branch** | `tony/wp-05-hero-leistungen` |
 | **Issue** | [#8](https://github.com/JulianRudrich/Landingpage/issues/8) |
-| **Abhängig von** | WP-03 |
+| **Abhängig von** | Freigabe der Spec v1.0 (WP-00 + Design aus WP-03 Teil A); WP-03 |
 | **Blockiert** | – |
 | **Anforderungen** | FA-05, FA-06, D-06 aus [SPECS.md](../../SPECS.md) |
 
@@ -21,34 +21,27 @@ Der erste Eindruck entscheidet. Wer aus einer Akquise-Mail auf die Seite kommt, 
 **Gehört dazu**
 
 1. **Hero** (`#start`, FA-05)
-   - H1 (Kernbotschaft), Subline, primärer CTA „Kostenloses Erstgespräch“ → `#kontakt`, sekundärer CTA „Projekte ansehen“ → `#projekte`
-   - Optional eine Vertrauenszeile unter den Buttons (z. B. „Persönlich · Verständlich · Aus der Region“)
-   - Visual: Mockup eines Gastro-Projekts im Geräterahmen oder ein echtes Foto (D-06). Es ist das LCP-Element: `<Picture>` mit `loading="eager"` und `fetchpriority="high"`.
+   - H1 (`t.hero.title`), Einleitung (`t.hero.lead`), `Button` primär „Kostenloses Erstgespräch“ → `/#kontakt`, `Button` sekundär „Projekte ansehen“ → `/#projekte`
+   - Vertrauenszeile unter den Buttons aus `t.hero.trustPoints` („Persönlich · Verständlich · Aus der Region“)
+   - Visual aus Tonys Design-Entwurf (WP-03 Teil A) in `src/assets/hero/`, Alt-Text `t.hero.imageAlt`. Es ist das LCP-Element: `<Picture>` mit `loading="eager"` und `fetchpriority="high"`.
 2. **Leistungen** (`#leistungen`, FA-06)
    - `SectionHeading` mit Dachzeile, Titel und Einleitung
-   - 4 Karten (L1–L4 aus [SPECS §4](../../SPECS.md#4-leistungsangebot)): Icon, Titel, Kurztext, 3 Nutzenpunkte, optional Link „Anfragen“ → `#kontakt`
-   - Die Karten werden aus einem Array in `services.ts` erzeugt, nicht 4× kopiertes Markup
-   - Raster: mobil 1 Spalte, Tablet 2, Desktop 2 oder 4
-3. Texte finalisieren, passend zu E-04 (Sie/du) aus WP-00.
+   - 4 Karten aus `t.services.items` (L1–L4, [SPECS §4](../../SPECS.md#4-leistungsangebot)): Icon, Titel, Kurztext, 3 Nutzenpunkte
+   - Icons fest nach `id`: L1 `globe`, L2 `tablet-smartphone`, L3 `sparkles`, L4 `code`
+   - Unter den Karten ein `Button` „Unverbindlich anfragen“ (`t.services.cta`) → `/#kontakt`
+   - Die Karten werden aus dem Array erzeugt, nicht 4× kopiertes Markup
+   - Raster und Hintergrund genau nach Tonys Entwurf
 
-**Textentwürfe** (zum Anpassen)
-
-| Element | Entwurf |
-|---|---|
-| H1 | Digitale Lösungen für Gastronomie und lokale Betriebe |
-| Subline | Wir sind Tony und Julian. Wir bauen Websites, Apps und KI-Lösungen, die Ihnen Zeit sparen und mehr Gäste bringen – persönlich, verständlich und aus einer Hand. |
-| CTA 1 | Kostenloses Erstgespräch |
-| CTA 2 | Projekte ansehen |
-| Leistungen, Dachzeile | Leistungen |
-| Leistungen, Titel | Was wir für Sie tun |
-| Leistungen, Einleitung | Vom ersten Online-Auftritt bis zur eigenen App: Wir kümmern uns um die Technik, Sie sich um Ihre Gäste. |
+**Texte:** stehen vollständig in `src/i18n/de/hero.ts` und `src/i18n/de/services.ts` (in WP-00 bestätigt).
 
 **Gehört nicht dazu**
 
 - Header-Navigation (WP-04)
-- Neue UI-Bausteine. Fehlt einer, in WP-03 ergänzen (Tony ist Owner von beiden).
+- Neue UI-Bausteine oder Icons (nur per Spec-Änderung)
 
 ## Dateien
+
+> Alle Dateien existieren schon im Gerüst (WP-01) als Grundversion mit fester Schnittstelle; die Texte stehen schon in den Textdateien. Neue gemeinsame Dateien oder Schnittstellen nur per Spec-Änderung ([SPECS §16](../../SPECS.md#16-änderungsregeln)).
 
 **Besitzt dieses Paket:** `src/components/sections/Hero.astro`, `src/components/sections/Services.astro`, `src/i18n/de/hero.ts`, `src/i18n/de/services.ts`, `src/assets/hero/*`
 

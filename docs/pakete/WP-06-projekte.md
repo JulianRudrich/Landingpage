@@ -4,11 +4,11 @@
 |---|---|
 | **Owner** | Julian ([@JulianRudrich](https://github.com/JulianRudrich)) |
 | **Reviewer** | Tony ([@tonytonym21](https://github.com/tonytonym21)) |
-| **Release** | V1.0 |
+| **Release** | V1.0, Phase 1 (nach Freigabe der Spec v1.0) |
 | **Aufwand** | M (ca. 4–12 h) |
 | **Branch** | `julian/wp-06-projekte` |
 | **Issue** | [#9](https://github.com/JulianRudrich/Landingpage/issues/9) |
-| **Abhängig von** | WP-03; erstes Projekt aus WP-00 |
+| **Abhängig von** | Freigabe der Spec v1.0 (WP-00 + Design aus WP-03 Teil A); WP-03; erstes Projekt aus WP-00 |
 | **Blockiert** | WP-12 |
 | **Anforderungen** | FA-07, FA-08, NFA-18, D-06, R-07 aus [SPECS.md](../../SPECS.md) |
 
@@ -20,23 +20,25 @@ Unsere Arbeit sichtbar machen, und zwar so, dass ein neues Projekt **nur eine ne
 
 **Gehört dazu**
 
-1. **Content Collection** `projects` in `src/content.config.ts` mit dem Schema unten.
-2. **Sektion** `Projects.astro` (`#projekte`): `SectionHeading` + Kartenraster, `featured` zuerst, dann nach `order` sortiert, max. 6 Karten. Ohne Projekte erscheint ein kurzer Text („Erste Projekte folgen in Kürze“).
+1. **Content Collection** `projects`: Schema ist im Gerüst fertig (siehe Schnittstellen), nichts zu ändern.
+2. **Sektion** `Projects.astro` (`#projekte`): `SectionHeading` + Kartenraster nach Tonys Entwurf, `featured` zuerst, dann nach `order` sortiert, max. 6 Karten. Ohne Projekte erscheint `t.projects.empty`.
 3. **`ProjectCard.astro`**
    - Cover-Bild (`<Picture>`, lazy, feste Maße)
-   - Status-`Badge`: `live` → „Live“, `prototyp` → „Prototyp“, `konzept` → „Konzept“ (R-07: Demos ehrlich kennzeichnen)
+   - Status-`Badge` (Ton und Text siehe Schnittstellen; R-07: Demos ehrlich kennzeichnen)
    - Titel, Branche, Kurzbeschreibung, Tech-Tags
-   - Link „Demo ansehen“ (extern: neuer Tab, `rel="noopener noreferrer"`, Screenreader-Hinweis)
-   - Link „Details“ → `/projekte/<slug>` **nur**, wenn `site.features.projectDetails` `true` ist (das Flag setzt WP-12)
-4. **Erstes Projekt** anlegen, z. B. diese Website selbst (Status `live`) und/oder das erste Gastro-Demo aus WP-00.
+   - Link „Demo ansehen“ als `Button` mit `external` und Icon `external-link`
+   - Link „Details“ → `/projekte/<id>/` **nur**, wenn `site.features.projectDetails` `true` ist (das Flag setzt WP-12)
+4. **Erstes Projekt** `src/content/projects/diese-website.md` (existiert): Texte für Ausgangslage und Lösung schreiben. Screenshot als Cover, `status: live` und den Abschnitt „Ergebnis“ trägst du später laut Release-Checkliste ein ([SPECS §14](../../SPECS.md#14-definition-of-done)), weil es dafür die fertige Seite braucht. Das erste Gastro-Demo (E-08) kommt als weitere Datei dazu, sobald es existiert.
 5. Abschnitt **„Neues Projekt hinzufügen“** (unten) aktuell halten.
 
 **Gehört nicht dazu**
 
-- Detailseiten `/projekte/<slug>` (WP-12)
+- Detailseiten `/projekte/<id>/` (WP-12)
 - Die Demos selbst (eigene Repos)
 
 ## Dateien
+
+> Alle Dateien existieren schon im Gerüst (WP-01) als Grundversion mit fester Schnittstelle; die Texte stehen schon in den Textdateien. Neue gemeinsame Dateien oder Schnittstellen nur per Spec-Änderung ([SPECS §16](../../SPECS.md#16-änderungsregeln)).
 
 **Besitzt dieses Paket:** `src/content.config.ts`, `src/content/projects/*.md`, `src/assets/projects/*`, `src/components/sections/Projects.astro`, `src/components/projects/ProjectCard.astro`, `src/i18n/de/projects.ts`
 
@@ -44,41 +46,32 @@ Unsere Arbeit sichtbar machen, und zwar so, dass ein neues Projekt **nur eine ne
 
 ## Schnittstellen
 
-Das Schema ist ein **Vertrag mit WP-12** (Detailseiten). Änderungen bitte mit Tony absprechen.
+Das Schema steht **fertig** in `src/content.config.ts` (Astro 7: `z` aus `astro/zod`, URLs mit `z.url()`). Verstöße meldet `npm run build` mit einer verständlichen Meldung. Es ist ein **Vertrag mit WP-12** (Detailseiten) und ändert sich nur per Spec-Änderung.
 
-```ts
-// src/content.config.ts – Beispiel, an die aktuelle Astro-Version anpassen
-import { defineCollection, z } from 'astro:content';
-import { glob } from 'astro/loaders';
+| Feld | Typ | Pflicht | Bedeutung |
+|---|---|---|---|
+| `title` | Text, ≤ 60 − 3 − Länge von `site.name` Zeichen (bei „Tony & Julian“: 44) | ja | Projektname (Karte, Detailseite, Seitentitel) |
+| `summary` | Text, ≤ 155 Zeichen | ja | Kartentext und Meta-Description |
+| `industry` | Text | ja | Branche, z. B. „Gastronomie“ |
+| `tech` | Liste von Texten | ja, mind. 1 | eingesetzte Technik |
+| `status` | `live`, `prototyp` oder `konzept` | ja | ehrliche Kennzeichnung (R-07) |
+| `cover` | Bild in `src/assets/projects/`, **PNG, JPG oder WebP** (kein SVG) | ja | Vorschaubild, mind. 1600 px breit |
+| `coverAlt` | Text | ja | Alt-Text zum Cover |
+| `gallery` | Liste aus `{ src: Bild, alt: Text }`, Bilder wie `cover` | nein (Standard: leer) | Galerie der Detailseite (WP-12) |
+| `demoUrl` | URL | nein | laufende Demo |
+| `repoUrl` | URL | nein | öffentlicher Code (Link „Code ansehen“ auf der Detailseite, WP-12) |
+| `featured` | ja/nein | nein (Standard: nein) | steht vorn |
+| `order` | ganze Zahl | nein (Standard: 100) | kleinere Zahl = weiter vorn |
 
-const projects = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
-  schema: ({ image }) =>
-    z.object({
-      title: z.string(),
-      summary: z.string().max(160),                  // Kartentext + Meta-Description
-      industry: z.string(),                          // z. B. "Gastronomie"
-      services: z.array(z.enum(['L1', 'L2', 'L3', 'L4'])).min(1),
-      tech: z.array(z.string()),
-      status: z.enum(['live', 'prototyp', 'konzept']),
-      cover: image(),
-      coverAlt: z.string(),
-      demoUrl: z.string().url().optional(),
-      repoUrl: z.string().url().optional(),
-      featured: z.boolean().default(false),
-      order: z.number().default(100),
-      publishedAt: z.coerce.date(),
-    }),
-});
+**`ProjectCard`-Props** (Vertrag mit WP-12, das die Karte in „Weitere Projekte“ nutzt): `project: CollectionEntry<'projects'>`.
 
-export const collections = { projects };
-```
+**Status → `Badge`-Ton:** `live` → `success`, `prototyp` → `warning`, `konzept` → `neutral`. Beschriftung aus `t.projects.status`.
 
 Der **Markdown-Inhalt** eines Projekts gliedert sich in `## Ausgangslage`, `## Lösung`, `## Ergebnis`. WP-12 zeigt ihn auf der Detailseite an.
 
 ## Neues Projekt hinzufügen
 
-1. Bild nach `src/assets/projects/<slug>.png` (mind. 1600 px breit).
+1. Bild nach `src/assets/projects/<slug>.png` (PNG, JPG oder WebP, mind. 1600 px breit).
 2. Datei `src/content/projects/<slug>.md` anlegen:
 
    ```markdown
@@ -86,14 +79,12 @@ Der **Markdown-Inhalt** eines Projekts gliedert sich in `## Ausgangslage`, `## L
    title: Trattoria Demo – Online-Reservierung
    summary: Reservierungs-Web-App für ein Restaurant, auf Tablet und Handy nutzbar.
    industry: Gastronomie
-   services: [L2]
    tech: [Astro, TypeScript, Supabase]
    status: prototyp
    cover: ../../assets/projects/trattoria-demo.png
    coverAlt: Tablet mit geöffneter Tischübersicht der Reservierungs-App
    demoUrl: https://demo-trattoria.example.com
    order: 10
-   publishedAt: 2026-11-01
    ---
 
    ## Ausgangslage
@@ -109,7 +100,7 @@ Der **Markdown-Inhalt** eines Projekts gliedert sich in `## Ausgangslage`, `## L
 
 ## Akzeptanzkriterien
 
-- [ ] Das Schema ist wie oben umgesetzt (oder begründet erweitert); ein fehlendes Pflichtfeld lässt `npm run build` fehlschlagen (im PR kurz demonstrieren)
+- [ ] Das Schema ist unverändert; ein fehlendes Pflichtfeld lässt `npm run build` fehlschlagen (im PR kurz demonstrieren)
 - [ ] Mindestens ein echtes Projekt ist angelegt; Demos und Konzepte sind deutlich gekennzeichnet
 - [ ] Jede Karte zeigt Bild, Titel, Branche, Kurztext, Tech-Tags, Status-Badge und Demo-Link (falls vorhanden)
 - [ ] Externe Links öffnen im neuen Tab mit `rel="noopener noreferrer"` und einem Hinweis für Screenreader

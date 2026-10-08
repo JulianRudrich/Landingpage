@@ -1,0 +1,18 @@
+---
+// Grundversion – gehört WP-06 (Projekte). Wird auf der Startseite und in "Weitere Projekte" der
+// Detailseiten (WP-12) verwendet. Die Props sind ein Vertrag mit WP-12.
+// WP-06 ergänzt Cover (<Picture>, lazy), Status-Badge, Branche, Kurztext, Tech-Tags, Demo-Link und
+// den Details-Link (nur wenn site.features.projectDetails = true; Ziel: /projekte/<id>/).
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+---
+
+<article>
+  <h3>{project.data.title}</h3>
+  <p>{project.data.summary}</p>
+</article>

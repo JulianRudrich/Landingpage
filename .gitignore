@@ -1,0 +1,28 @@
+# Build
+dist/
+.astro/
+
+# Abhängigkeiten
+node_modules/
+
+# Logs
+npm-debug.log*
+
+# Umgebungsvariablen – nie committen (das Repo ist öffentlich)
+.env
+.env.*
+
+# Netlify CLI
+.netlify/
+
+# Ausgaben der Qualitäts-Tools (WP-14)
+.lighthouseci/
+playwright-report/
+test-results/
+
+# Temporäre Arbeitskopien von Claude Code (Subagenten)
+.claude/worktrees/
+
+# Betriebssystem & Editoren
+.DS_Store
+.idea/

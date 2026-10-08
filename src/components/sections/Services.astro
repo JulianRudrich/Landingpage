@@ -1,0 +1,18 @@
+---
+// Grundversion – gehört WP-05 (Hero & Leistungen). WP-05 rendert hier die vier Karten aus
+// t.services.items (FA-06). Icons je Leistung (fest): L1 globe, L2 tablet-smartphone, L3 sparkles, L4 code.
+import Section from '@/components/ui/Section.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<Section id="leistungen" labelledby="leistungen-titel">
+  <SectionHeading
+    id="leistungen-titel"
+    eyebrow={t.services.eyebrow}
+    title={t.services.title}
+    lead={t.services.lead}
+  />
+</Section>

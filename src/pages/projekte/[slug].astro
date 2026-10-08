@@ -1,0 +1,10 @@
+---
+// Platzhalter – gehört WP-12 (Projektdetailseiten, V1.1). Bis dahin werden keine Detailseiten erzeugt.
+// WP-12: getStaticPaths aus getCollection('projects') (slug = entry.id), Inhalt über render(entry),
+// Aufbau: ProjectHeader, Cover, <Prose><Content /></Prose>, Technik, ProjectGallery, weitere Projekte (ProjectCard), CTA.
+// SEO: <BaseLayout title={data.title} description={data.summary} image={data.cover} imageAlt={data.coverAlt} type="article">.
+// Danach in src/config/site.ts features.projectDetails = true setzen.
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (() => []) satisfies GetStaticPaths;
+---

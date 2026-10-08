@@ -1,0 +1,18 @@
+---
+// Gehört WP-08 (Kontakt-Sektion & Formular). Ziel nach dem Absenden des Formulars (action="/danke/").
+import Container from '@/components/ui/Container.astro';
+import { useTranslations } from '@/i18n';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<BaseLayout title={t.seo.danke.title} description={t.seo.danke.description} noindex>
+  <Container>
+    <h1>{t.contact.thanks.title}</h1>
+    <p>{t.contact.thanks.text}</p>
+    <p>
+      <a href="/">{t.contact.thanks.backLink}</a>
+    </p>
+  </Container>
+</BaseLayout>

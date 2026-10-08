@@ -4,46 +4,72 @@
 |---|---|
 | **Owner** | Tony ([@tonytonym21](https://github.com/tonytonym21)) + Julian ([@JulianRudrich](https://github.com/JulianRudrich)), gemeinsam |
 | **Reviewer** | gegenseitig |
-| **Release** | V1.0 |
+| **Release** | V1.0, **Phase 0 (Festlegen)** |
 | **Aufwand** | M (überwiegend ohne Code) |
 | **Branch** | `julian/wp-00-entscheidungen` (nur zum Eintragen der Ergebnisse) |
 | **Issue** | [#3](https://github.com/JulianRudrich/Landingpage/issues/3) |
-| **Abhängig von** | – |
-| **Liefert zu** | WP-02 (Domain, E-Mail), WP-06 (erstes Projekt), WP-07 (Fotos, Bios), WP-09 (Name, Region), WP-10 (Impressumsdaten), WP-11 (FAQ-Antworten) |
-| **Anforderungen** | E-01 bis E-09, R-06, R-09 aus [SPECS.md](../../SPECS.md) |
+| **Abhängig von** | – (die Werte in `site.ts` und den Textdateien setzen voraus, dass WP-01 gemerged ist) |
+| **Liefert zu** | Freigabe der Spec v1.0; WP-02 (Domain, E-Mail), WP-06 (erstes Projekt), WP-07 (Fotos, Rollen, Bios), WP-09 (Name, Region), WP-10 (Impressumsdaten) |
+| **Anforderungen** | E-01 bis E-09, E-12 bis E-15, R-06, R-09 aus [SPECS.md](../../SPECS.md) |
 
 ## Ziel
 
-Alle Entscheidungen treffen und Inhalte liefern, die die anderen Pakete brauchen. Das Paket läuft **parallel** zu allem anderen. Je früher es fertig ist, desto weniger Platzhalter bleiben übrig.
+Alle Entscheidungen treffen und alle Inhalte bestätigen, **bevor** die Sektionen gebaut werden. Zusammen mit Tonys abgenommenem Design-Entwurf (WP-03, Teil A) ist dieses Paket die Voraussetzung dafür, dass die Spec als v1.0 festgeschrieben wird ([SPECS §16](../../SPECS.md#16-änderungsregeln)).
+
+Für fast alles gibt es schon einen konkreten Vorschlag, und die Texte im Gerüst sind danach geschrieben. Ihr müsst nur bestätigen oder ändern. Selbst wählen müsst ihr nur: **Name (E-01), Domain (E-02), Region (E-05), Rollen und Bios (E-14)**.
 
 > ⚠️ **Das Repo ist öffentlich.** Tragt hier nur ein, was auch auf der Website stehen darf. Private Daten (z. B. Steuernummer, Privatadresse, wenn eine Geschäftsadresse genutzt wird) gehören nicht ins Repo.
 
 ## Entscheidungen
 
-Details und Empfehlungen: [SPECS.md, Abschnitt 15](../../SPECS.md#15-offene-entscheidungen).
+Begründungen: [SPECS.md, Abschnitt 15](../../SPECS.md#15-offene-entscheidungen). In die Spalte „Ergebnis“ „wie Vorschlag“ oder eure Abweichung eintragen.
 
-| ID | Frage | Ergebnis | Entschieden am |
-|---|---|---|---|
-| E-01 | Markenname / Wortmarke | _offen_ | |
-| E-02 | Domain | _offen_ | |
-| E-03 | E-Mail-Anbieter und Adressen | _offen_ | |
-| E-04 | Ansprache „Sie“ oder „du“ | _offen_ (Empfehlung: „Sie“) | |
-| E-05 | Region bzw. Stadt für lokales SEO | _offen_ | |
-| E-06 | Preise auf der Seite zeigen? | _offen_ (Empfehlung: V1.0 ohne Preise) | |
-| E-07 | Rechtsform und Gewerbeanmeldung | _offen_ | |
-| E-08 | Erstes Gastro-Demo: Mobile-, Desktop- oder Web-App (PWA)? | _offen_ (Empfehlung: PWA) | |
-| E-09 | Telefonnummer öffentlich zeigen? | _offen_ | |
+| ID | Frage | Vorschlag | Ergebnis | Entschieden am |
+|---|---|---|---|---|
+| E-01 | Markenname / Wortmarke | **eure Wahl** (Arbeitstitel „Tony & Julian“) | _offen_ | |
+| E-02 | Domain | **eure Wahl**, `.de` | _offen_ | |
+| E-03 | E-Mail-Adressen | `hallo@` öffentlich (Formular, leitet an beide weiter), dazu `tony@`, `julian@` | _offen_ | |
+| E-04 | Ansprache | „Sie“ | _offen_ | |
+| E-05 | Region für lokales SEO | **eure Heimatstadt** + ca. 50 km | _offen_ | |
+| E-06 | Preise auf der Seite | V1.0 ohne Preise | _offen_ | |
+| E-07 | Rechtsform | GbR (vorher beraten lassen) | _offen_ | |
+| E-08 | Erstes Gastro-Demo | Web-App (PWA) | _offen_ | |
+| E-09 | Telefonnummer öffentlich | ja, wenn geschäftliche Nummer vorhanden | _offen_ | |
+| E-12 | Versprochene Antwortzeit | „innerhalb von 1–2 Werktagen“ | _offen_ | |
+| E-13 | Angebotsform, Rechte am Ergebnis | Festpreis nach Erstgespräch; Kunde erhält nach Bezahlung die Rechte | _offen_ | |
+| E-14 | Rollen und Kurzbios | **eure Angaben** | _offen_ | |
+| E-15 | Speicherdauer von Anfragen | Netlify-Eingänge nach Übernahme ins Postfach löschen, spätestens nach 30 Tagen; E-Mails ohne Auftrag 6 Monate nach dem letzten Kontakt löschen, mit Auftrag gesetzliche Fristen | _offen_ | |
+
+E-10 (Statistik-Tool) und E-11 (Terminbuchung) entscheidet WP-13 in V1.1.
+
+## Textvorschläge bestätigen
+
+Alle sichtbaren Texte der Website stehen schon im Gerüst. Lest sie einmal gemeinsam und **beschließt**, was sich ändern soll. Die Beschlüsse kommen als Kommentar ins Issue [#3](https://github.com/JulianRudrich/Landingpage/issues/3). Eingetragen werden sie vom Owner der Datei, als erster Commit seines Pakets (Textänderungen innerhalb der eigenen Datei sind keine Spec-Änderung). Ist sein Paket schon gemerged (z. B. WP-09 aus Phase 0), trägt er sie in einem kleinen eigenen PR nach (`content(<bereich>): …`, `Refs #3`). So ändert niemand fremde Dateien.
+
+| Datei | Inhalt | Owner |
+|---|---|---|
+| `src/i18n/de/hero.ts` | Kernbotschaft, Einleitung, Buttons | Tony (WP-05) |
+| `src/i18n/de/services.ts` | Leistungen L1–L4 mit je 3 Nutzenpunkten | Tony (WP-05) |
+| `src/i18n/de/process.ts` | 4 Schritte des Ablaufs | Tony (WP-07) |
+| `src/i18n/de/about.ts` | Einleitung, **Lücken für Rollen und Bios (E-14)** | Tony (WP-07) |
+| `src/i18n/de/projects.ts` | Projekte-Sektion, Status-Beschriftungen | Julian (WP-06) |
+| `src/i18n/de/contact.ts` | Kontakt, Formular, Fehlermeldungen, Danke-Seite | Julian (WP-08) |
+| `src/i18n/de/faq.ts` | 8 Fragen und Antworten (V1.1) | Julian (WP-11) |
+| `src/i18n/de/navigation.ts` | Menü und Footer | Tony (WP-04) |
+| `src/i18n/de/common.ts` | Skip-Link, Hinweis für externe Links | Tony (WP-03) |
+| `src/i18n/de/legal.ts` | Überschriften der Rechtsseiten, 404-Seite | Tony (WP-10) |
+| `src/i18n/de/projectDetail.ts` | Projektdetailseiten (V1.1) | Tony (WP-12) |
+| `src/i18n/de/seo.ts` | Seitentitel und Beschreibungen für Google | Julian (WP-09) |
 
 ## Inhalte liefern
 
 | Inhalt | Format | Für Paket |
 |---|---|---|
-| Porträtfotos von Tony und Julian | Hochformat, mind. 1200 px breit, ruhiger Hintergrund, **gleicher Stil für beide** (gleiches Licht, gleicher Ausschnitt) | WP-07 |
-| Rolle, Kurzbio (2–3 Sätze), Profil-Links (LinkedIn, GitHub) | Text | WP-07 |
-| Markenname, Domain, E-Mail-Adressen, Region | Text → `src/config/site.ts` | WP-02, WP-09, alle |
+| Porträtfotos von Tony und Julian | Hochformat, mind. 1200 px breit, ruhiger Hintergrund, **gleicher Stil für beide** (gleiches Licht, gleicher Ausschnitt), Dateinamen `tony.jpg` und `julian.jpg` | WP-07 |
+| Rolle und Kurzbio (2–3 Sätze) je Person (E-14), LinkedIn-Profil je Person, ein gemeinsames GitHub-Profil (falls vorhanden) | Text | WP-07, WP-04 |
+| Markenname, Name laut Impressum (mit Rechtsform), Domain, E-Mail, Telefon, Region, Geschäftsanschrift, volle Namen der Inhaber | Text → `src/config/site.ts` | alle |
 | Impressumsdaten: Namen, ladungsfähige Anschrift, E-Mail, Telefon, Rechtsform, ggf. USt-IdNr. | Text, an Tony | WP-10 |
-| Erstes Projekt für die Projekte-Sektion (mind. 1: z. B. diese Website selbst oder das erste Gastro-Demo) | Stichpunkte, an Julian | WP-06 |
-| Antworten für die FAQ (Preise, Dauer, Betreuung, Eigentum am Code) | Stichpunkte, an Julian | WP-11 (V1.1) |
+| Erstes Gastro-Demo (E-08): Name und Kurzbeschreibung, sobald es existiert | Stichpunkte, an Julian | WP-06 |
 
 ## Organisatorisches (ohne Code)
 
@@ -55,17 +81,18 @@ Details und Empfehlungen: [SPECS.md, Abschnitt 15](../../SPECS.md#15-offene-ents
 ## Wo die Ergebnisse landen
 
 1. Tabelle **Entscheidungen** oben ausfüllen.
-2. [SPECS.md, Abschnitt 15](../../SPECS.md#15-offene-entscheidungen) aktualisieren und die Spec auf Version 1.0 heben.
-3. Sobald WP-01 gemerged ist: Werte in `src/config/site.ts` eintragen (Name, Domain, E-Mail, Telefon, Region, Social-Links).
-4. Fotos und Bios an Tony (WP-07), Impressumsdaten an Tony (WP-10), Projektidee an Julian (WP-06) übergeben. Die Paket-Owner committen die Inhalte in ihren eigenen Dateien.
+2. [SPECS.md, Abschnitt 15](../../SPECS.md#15-offene-entscheidungen) aktualisieren.
+3. Werte in `src/config/site.ts` eintragen: `name`, `legalName`, **`url` (Domain, ohne `www`)**, `email`, `phone`, `region`, `address`, `founders`, `social`. Die Domain wird **nur hier** eingetragen; WP-02 prüft sie nur. `themeColor` trägt Tony in WP-03 Teil B aus seinem Design ein.
+4. Fotos, Rollen und Bios an Tony (WP-07), Impressumsdaten an Tony (WP-10) übergeben. Die Owner tragen sie in ihre Dateien ein.
+5. Wenn zusätzlich Tonys Design abgenommen ist: SPECS.md auf **Version 1.0** setzen (Status „festgeschrieben“). Ab dann gelten die Änderungsregeln.
 
 ## Akzeptanzkriterien
 
-- [ ] E-01 bis E-09 sind entschieden und oben eingetragen
+- [ ] E-01 bis E-09 und E-12 bis E-15 sind entschieden und oben eingetragen
+- [ ] Alle Textdateien aus „Textvorschläge bestätigen“ sind gemeinsam gelesen; beschlossene Änderungen stehen im Issue #3
 - [ ] Domain ist registriert, E-Mail-Postfächer funktionieren
-- [ ] Fotos und Bios sind an WP-07 übergeben
+- [ ] Fotos, Rollen und Bios sind an WP-07 übergeben
 - [ ] Impressumsdaten sind an WP-10 übergeben
-- [ ] Mindestens ein Projekt ist für WP-06 beschrieben
-- [ ] `src/config/site.ts` enthält echte Werte statt Platzhalter
-- [ ] SPECS.md Abschnitt 15 ist aktualisiert, Version 1.0
+- [ ] `src/config/site.ts` enthält echte Werte statt Platzhalter (außer `themeColor`, den setzt WP-03)
+- [ ] SPECS.md Abschnitt 15 ist aktualisiert; mit abgenommenem Design: Version 1.0
 - [ ] Organisatorische Punkte oben sind abgehakt

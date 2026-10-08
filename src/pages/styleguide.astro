@@ -1,0 +1,62 @@
+---
+// Gehört WP-03 (Design-System). Interne Übersicht aller UI-Bausteine (noindex, nicht in der Sitemap).
+// Ausnahme von FA-20: Die Beschriftungen hier sind interne Entwickler-Texte und stehen direkt im Code.
+import Badge from '@/components/ui/Badge.astro';
+import Button from '@/components/ui/Button.astro';
+import Card from '@/components/ui/Card.astro';
+import Container from '@/components/ui/Container.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { icons, type IconName } from '@/components/ui/icons';
+import Logo from '@/components/ui/Logo.astro';
+import Section from '@/components/ui/Section.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import { useTranslations } from '@/i18n';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const t = useTranslations(Astro.currentLocale);
+const iconNames = Object.keys(icons) as IconName[];
+---
+
+<BaseLayout title={t.seo.styleguide.title} description={t.seo.styleguide.description} noindex>
+  <Container>
+    <h1>Styleguide</h1>
+    <Logo />
+  </Container>
+
+  <Section id="sg-buttons" labelledby="sg-buttons-titel">
+    <SectionHeading id="sg-buttons-titel" eyebrow="Bausteine" title="Buttons" />
+    <Button href="/#kontakt">Primary</Button>
+    <Button href="/#projekte" variant="secondary">
+      Secondary
+    </Button>
+    <Button variant="ghost">Ghost</Button>
+    <Button href="https://example.com" external icon="external-link">
+      Extern
+    </Button>
+  </Section>
+
+  <Section id="sg-badges" labelledby="sg-badges-titel" tone="muted">
+    <SectionHeading id="sg-badges-titel" title="Badges und Karten" />
+    <Badge tone="success">Live</Badge>
+    <Badge tone="warning">Prototyp</Badge>
+    <Badge>Konzept</Badge>
+    <Card>
+      <p>Karte</p>
+    </Card>
+  </Section>
+
+  <Section id="sg-icons" labelledby="sg-icons-titel">
+    <SectionHeading
+      id="sg-icons-titel"
+      title="Icons"
+      lead="Feste Liste aus src/components/ui/icons.ts"
+    />
+    <ul>
+      {iconNames.map((name) => (
+        <li>
+          <Icon name={name} /> {name}
+        </li>
+      ))}
+    </ul>
+  </Section>
+</BaseLayout>

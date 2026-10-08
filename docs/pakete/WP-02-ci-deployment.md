@@ -4,7 +4,7 @@
 |---|---|
 | **Owner** | Julian ([@JulianRudrich](https://github.com/JulianRudrich)) |
 | **Reviewer** | Tony ([@tonytonym21](https://github.com/tonytonym21)) |
-| **Release** | V1.0 |
+| **Release** | V1.0, Phase 0 (Festlegen; keine Design-Abhängigkeit) |
 | **Aufwand** | M (ca. 4–12 h) |
 | **Branch** | `julian/wp-02-ci-deployment` |
 | **Issue** | [#5](https://github.com/JulianRudrich/Landingpage/issues/5) |
@@ -36,6 +36,7 @@ Das Paket darf in **zwei PRs** geliefert werden:
    - Security-Header für `/*` (Vorschlag unten)
    - Cache-Header für `/_astro/*`: `public, max-age=31536000, immutable`
 4. **Branch-Schutz** einrichten, wie in [CONTRIBUTING.md](../../CONTRIBUTING.md#einmalige-einrichtung) beschrieben (Julian ist Admin). Den Pflicht-Check `build` erst hinzufügen, nachdem die CI einmal gelaufen ist.
+5. **Nichts extra für die Statistik:** Netlify setzt beim Build die Variable `CONTEXT` (`production`, `deploy-preview`, `branch-deploy`). WP-13 nutzt sie, damit die Statistik nur auf der Live-Seite zählt.
 
 **Vorschlag Security-Header** (in der Deploy-Preview prüfen, dass die Browser-Konsole keine CSP-Fehler zeigt):
 
@@ -50,14 +51,14 @@ Das Paket darf in **zwei PRs** geliefert werden:
     Content-Security-Policy = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'"
 ```
 
-Falls Astro Skripte inline ausgibt und die CSP sie blockiert: Hashes ergänzen oder Astros eigene CSP-Unterstützung nutzen, statt `'unsafe-inline'` für Skripte zu erlauben. Die Statistik-Domain ergänzt später WP-13.
+`script-src 'self'` funktioniert, weil das Gerüst (WP-01) in `astro.config.mjs` dafür sorgt, dass Astro Skripte immer als Datei unter `/_astro/` ausliefert und nie inline ins HTML schreibt. Voraussetzung ist die Konvention „`<script>` ohne Attribute, kein `is:inline`, kein `define:vars`, keine `onclick`-Handler“ ([SPECS §10](../../SPECS.md#feste-konventionen)); `npm run lint` prüft sie. **Nicht** `'unsafe-inline'` für Skripte erlauben und **keine** Skript-Hashes pflegen. Astros eigene CSP-Unterstützung hilft hier nicht: Sie setzt nur ein zusätzliches `<meta>`-Tag, der Header gilt trotzdem. Die Statistik-Domain ergänzt später WP-13.
 
 ### Teil B – Domain & E-Mail
 
-5. Domain in Netlify verbinden (Netlify-DNS oder A/CNAME beim Registrar), HTTPS über Let's Encrypt aktivieren, `www` auf die Hauptdomain umleiten (oder umgekehrt, Hauptsache einheitlich).
-6. E-Mail-DNS laut Anbieter aus WP-00: **SPF**, **DKIM**, **DMARC**. DMARC zunächst mit `p=none` und Berichtsadresse, nach 2–4 Wochen ohne Probleme auf `p=quarantine`.
-7. In `astro.config.mjs` `site` auf die echte Domain setzen (abgesprochene Ausnahme, die Datei gehört WP-01).
-8. Im README einen kurzen Abschnitt „Deployment“ ergänzen (welcher Branch wohin deployt).
+6. Domain in Netlify verbinden (Netlify-DNS oder A/CNAME beim Registrar), HTTPS über Let's Encrypt aktivieren, `www.<domain>` per 301 auf `<domain>` umleiten (E-02: Hauptadresse ohne `www`).
+7. E-Mail-DNS laut Anbieter aus WP-00: **SPF**, **DKIM**, **DMARC**. DMARC zunächst mit `p=none` und Berichtsadresse, nach 2–4 Wochen ohne Probleme auf `p=quarantine`.
+8. Prüfen, dass `url` in `src/config/site.ts` die echte Domain enthält. **Eingetragen wird sie nur von WP-00**; WP-02 ändert `site.ts` nicht (sonst Merge-Konflikt mit WP-00, die Zeilen liegen direkt nebeneinander). `astro.config.mjs` übernimmt den Wert automatisch als `site`.
+9. Im README einen kurzen Abschnitt „Deployment“ ergänzen (welcher Branch wohin deployt).
 
 **Gehört nicht dazu**
 
@@ -69,11 +70,13 @@ Falls Astro Skripte inline ausgibt und die CSP sie blockiert: Hashes ergänzen o
 
 **Besitzt dieses Paket:** `.github/workflows/ci.yml`, `netlify.toml`
 
-**Ändert nach Absprache:** `astro.config.mjs` (nur `site`), `README.md` (Abschnitt „Deployment“)
+**Ändert nach Absprache:** `README.md` (Abschnitt „Deployment“)
+
+**Liest/benutzt:** `src/config/site.ts` (`url`), `.nvmrc`, `package.json`-Skripte
 
 ## Schnittstellen
 
-- CI-Job-Name `build` ist der Pflicht-Check im Branch-Schutz. Bitte nicht umbenennen, ohne den Branch-Schutz mit anzupassen.
+- CI-Job-Name `build` ist der Pflicht-Check im Branch-Schutz und steht fest; Änderung nur per Spec-Änderung ([SPECS §16](../../SPECS.md#16-änderungsregeln)).
 - URLs der Umgebungen: siehe [SPECS §10](../../SPECS.md#umgebungen).
 
 ## Akzeptanzkriterien
@@ -86,7 +89,6 @@ Falls Astro Skripte inline ausgibt und die CSP sie blockiert: Hashes ergänzen o
 - [ ] Branch-Schutz für `main` und `dev` ist aktiv, inklusive Pflicht-Check `build`
 
 **Teil B**
-- [ ] Domain ist verbunden, HTTPS aktiv, `www` leitet um
-- [ ] `main` ist unter der Domain erreichbar
+- [ ] Domain ist in Netlify verbunden, HTTPS aktiv, `www.<domain>` leitet auf `<domain>` um (die Seite selbst ist erst nach dem Release-PR `dev` → `main` live; das prüft die Release-Checkliste in [SPECS §14](../../SPECS.md#14-definition-of-done))
 - [ ] SPF, DKIM und DMARC sind gesetzt; mail-tester.com zeigt ≥ 9/10
-- [ ] `site` in `astro.config.mjs` zeigt auf die echte Domain
+- [ ] `url` in `src/config/site.ts` zeigt auf die echte Domain (Sitemap und Canonical-URLs nutzen sie)

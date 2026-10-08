@@ -1,0 +1,19 @@
+---
+// Gehört WP-10 (Impressum, Datenschutz & 404). Der Rechtstext steht in src/legal/impressum.md.
+import Container from '@/components/ui/Container.astro';
+import Prose from '@/components/ui/Prose.astro';
+import { useTranslations } from '@/i18n';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Content } from '@/legal/impressum.md';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<BaseLayout title={t.seo.impressum.title} description={t.seo.impressum.description}>
+  <Container>
+    <h1>{t.legal.impressum.title}</h1>
+    <Prose>
+      <Content />
+    </Prose>
+  </Container>
+</BaseLayout>
