@@ -8,7 +8,7 @@
 | **Aufwand** | M (ca. 4–12 h) |
 | **Branch** | `julian/wp-09-seo-meta` |
 | **Issue** | [#12](https://github.com/JulianRudrich/Landingpage/issues/12) |
-| **Abhängig von** | WP-01; Markenname und Region aus WP-00 |
+| **Abhängig von** | WP-01; Markenname und Region aus WP-00; Favicon und Vorschaubild aus Tonys Design (WP-03 Teil A) |
 | **Blockiert** | – |
 | **Anforderungen** | NFA-09, NFA-10, NFA-11, NFA-12 aus [SPECS.md](../../SPECS.md) |
 
@@ -22,8 +22,9 @@ Lokale Betriebe sollen uns bei Google finden, und unsere Links sollen in Mails, 
 
 1. **`SEO.astro`** ausbauen. Die Props stehen fest (`export interface Props`, siehe Schnittstellen).
    - `<title>` (Muster siehe 2.), `<meta name="description">`, Canonical-URL (`new URL(Astro.url.pathname, Astro.site)`, endet mit `/`), `robots`-Meta bei `noindex`. **Seiten mit `noindex` bekommen weder Canonical noch `og:url`** (die 404-Seite hätte sonst die nicht existierende URL `/404/`).
-   - Open Graph: `og:title`, `og:description`, `og:url`, `og:image` (absolute URL; aus `image` über `getImage()`, sonst `/og-image.png`), `og:image:alt` (`imageAlt` bzw. `t.seo.defaultImageAlt`), `og:type` (`type`, Standard `website`), `og:locale=de_DE`, `og:site_name`
+   - Open Graph: `og:title`, `og:description`, `og:url`, `og:image` (absolute URL; aus `image` über `getImage({ src: image, width: 1200, height: 630, fit: 'cover', format: 'jpg' })`, also mittig auf 1200 × 630 zugeschnitten und als JPG, weil nicht jede Plattform WebP-Vorschauen zeigt; ohne `image` `/og-image.png`), `og:image:width` 1200, `og:image:height` 630, `og:image:alt` (`imageAlt` bzw. `t.seo.defaultImageAlt`), `og:type` (`type`, Standard `website`), `og:locale=de_DE`, `og:site_name`
    - `twitter:card=summary_large_image`
+   - **Alle Texte laufen durch `fill()`**: `<title>`, Description, `og:title`, `og:description`, `og:image:alt` und die JSON-LD-`description` (sie dürfen `{name}` und `{region}` enthalten)
    - Favicon-Links, `apple-touch-icon`, `<meta name="theme-color" content={site.themeColor}>`; der Link auf das Web-Manifest steht schon
 2. **Title-Muster** (die Grundversion setzt es schon um): `fill(title)` + „ | {site.name}“. Wird das länger als 60 Zeichen, entfällt der Markenname. Die Startseite nimmt `seo.home.titleWithRegion`, sobald `site.region` gesetzt ist (entscheidet `index.astro` schon), sonst `seo.home.title`. Markenname und Region stehen in Texten nur als `{name}` / `{region}`.
 3. **`src/i18n/de/seo.ts`** (existiert): Titel und Descriptions für `home`, `impressum`, `datenschutz`, `danke`, `notFound`, `styleguide`; dazu `defaultImageAlt` und `organizationDescription`. Detailseiten setzt WP-12 aus den Projektdaten.
@@ -59,4 +60,5 @@ Lokale Betriebe sollen uns bei Google finden, und unsere Links sollen in Mails, 
 - [ ] `sitemap-index.xml` enthält nur indexierbare Seiten; `robots.txt` verweist darauf
 - [ ] Die Link-Vorschau (z. B. in WhatsApp oder auf opengraph.xyz) zeigt Titel, Text und Bild
 - [ ] Das Favicon erscheint im Browser-Tab und als Homescreen-Icon
+- [ ] Im Build steht nirgends `{name}` oder `{region}` (`grep -rE '\{(name|region)\}' dist` findet nichts)
 - [ ] Lighthouse SEO ≥ 95

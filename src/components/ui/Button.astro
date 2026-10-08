@@ -1,8 +1,8 @@
 ---
 // Gehört WP-03 (Design-System). Props sind ein Vertrag mit allen Paketen: Änderungen nur per Spec-Änderung (SPECS.md §16).
 // Grundversion: WP-03 gestaltet die Varianten nach Tonys Entwurf (Tokens primary, on-primary, …).
-// Button reicht KEINE weiteren HTML-Attribute durch (aria-*, data-*, id). Wer so etwas braucht (z. B. der
-// Burger-Button in WP-04), baut ein eigenes <button> mit Token-Klassen.
+// `aria-*`- und `data-*`-Attribute reicht Button an <a> bzw. <button> durch. Andere Attribute (id, onclick …)
+// gibt es nicht: `npm run check` bzw. `npm run lint` melden sie.
 import { useTranslations } from '@/i18n';
 
 import Icon from './Icon.astro';
@@ -28,6 +28,8 @@ type Props = (LinkProps | ActionProps) & {
   /** Optionales Icon hinter dem Text */
   icon?: IconName;
   class?: string;
+  /** Wird durchgereicht, z. B. `aria-describedby` oder `data-track` */
+  [attribute: `aria-${string}` | `data-${string}`]: string | boolean | undefined;
 };
 
 const {
@@ -38,17 +40,19 @@ const {
   size = 'md',
   icon,
   class: className,
+  ...passthrough
 } = Astro.props;
 const t = useTranslations(Astro.currentLocale);
 const classes = ['inline-flex items-center gap-2', className];
+// Die Varianten stehen als data-* am Element, damit WP-03 sie mit `data-[variant=primary]:…` gestalten kann
+const attributes = { ...passthrough, 'data-variant': variant, 'data-size': size };
 ---
 
 {href ? (
   <a
+    {...attributes}
     href={href}
     class:list={classes}
-    data-variant={variant}
-    data-size={size}
     target={external ? '_blank' : undefined}
     rel={external ? 'noopener noreferrer' : undefined}
   >
@@ -57,7 +61,7 @@ const classes = ['inline-flex items-center gap-2', className];
     {external && <span class="sr-only">{t.common.externalLinkHint}</span>}
   </a>
 ) : (
-  <button type={type} class:list={classes} data-variant={variant} data-size={size}>
+  <button {...attributes} type={type} class:list={classes}>
     <slot />
     {icon && <Icon name={icon} size={18} />}
   </button>

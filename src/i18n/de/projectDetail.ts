@@ -1,7 +1,7 @@
 // Texte der Projektdetailseiten – gehört WP-12 (Projektdetailseiten, V1.1).
 export const projectDetail = {
   breadcrumbLabel: 'Brotkrümelnavigation',
-  breadcrumbHome: 'Start',
+  breadcrumbHome: 'Startseite',
   breadcrumbProjects: 'Projekte',
   demoLink: 'Demo ansehen',
   /** Link zu `repoUrl`, nur wenn gesetzt */

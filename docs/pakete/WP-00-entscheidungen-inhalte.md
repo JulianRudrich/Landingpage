@@ -44,7 +44,7 @@ E-10 (Statistik-Tool) und E-11 (Terminbuchung) entscheidet WP-13 in V1.1.
 
 ## Textvorschläge bestätigen
 
-Alle sichtbaren Texte der Website stehen schon im Gerüst. Lest sie einmal gemeinsam und **beschließt**, was sich ändern soll. Die Beschlüsse kommen als Kommentar ins Issue [#3](https://github.com/JulianRudrich/Landingpage/issues/3). Eingetragen werden sie vom Owner der Datei, als erster Commit seines Pakets (Textänderungen innerhalb der eigenen Datei sind keine Spec-Änderung). So ändert niemand fremde Dateien.
+Alle sichtbaren Texte der Website stehen schon im Gerüst. Lest sie einmal gemeinsam und **beschließt**, was sich ändern soll. Die Beschlüsse kommen als Kommentar ins Issue [#3](https://github.com/JulianRudrich/Landingpage/issues/3). Eingetragen werden sie vom Owner der Datei, als erster Commit seines Pakets (Textänderungen innerhalb der eigenen Datei sind keine Spec-Änderung). Ist sein Paket schon gemerged (z. B. WP-09 aus Phase 0), trägt er sie in einem kleinen eigenen PR nach (`content(<bereich>): …`, `Refs #3`). So ändert niemand fremde Dateien.
 
 | Datei | Inhalt | Owner |
 |---|---|---|
@@ -82,7 +82,7 @@ Alle sichtbaren Texte der Website stehen schon im Gerüst. Lest sie einmal gemei
 
 1. Tabelle **Entscheidungen** oben ausfüllen.
 2. [SPECS.md, Abschnitt 15](../../SPECS.md#15-offene-entscheidungen) aktualisieren.
-3. Werte in `src/config/site.ts` eintragen: `name`, `legalName`, **`url` (Domain, ohne `www`)**, `email`, `phone`, `region`, `address`, `founders`, `social`. Die Domain wird **nur hier** eingetragen; WP-02 prüft sie nur. `themeColor` kommt aus Tonys Design (WP-03 Teil A).
+3. Werte in `src/config/site.ts` eintragen: `name`, `legalName`, **`url` (Domain, ohne `www`)**, `email`, `phone`, `region`, `address`, `founders`, `social`. Die Domain wird **nur hier** eingetragen; WP-02 prüft sie nur. `themeColor` trägt Tony in WP-03 Teil B aus seinem Design ein.
 4. Fotos, Rollen und Bios an Tony (WP-07), Impressumsdaten an Tony (WP-10) übergeben. Die Owner tragen sie in ihre Dateien ein.
 5. Wenn zusätzlich Tonys Design abgenommen ist: SPECS.md auf **Version 1.0** setzen (Status „festgeschrieben“). Ab dann gelten die Änderungsregeln.
 
@@ -93,6 +93,6 @@ Alle sichtbaren Texte der Website stehen schon im Gerüst. Lest sie einmal gemei
 - [ ] Domain ist registriert, E-Mail-Postfächer funktionieren
 - [ ] Fotos, Rollen und Bios sind an WP-07 übergeben
 - [ ] Impressumsdaten sind an WP-10 übergeben
-- [ ] `src/config/site.ts` enthält echte Werte statt Platzhalter
+- [ ] `src/config/site.ts` enthält echte Werte statt Platzhalter (außer `themeColor`, den setzt WP-03)
 - [ ] SPECS.md Abschnitt 15 ist aktualisiert; mit abgenommenem Design: Version 1.0
 - [ ] Organisatorische Punkte oben sind abgehakt

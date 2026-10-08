@@ -30,7 +30,7 @@ Das Projekt aufsetzen und das **vollständige Gerüst** anlegen: **jede Datei vo
 3. ESLint 10 (`eslint-plugin-astro`, `typescript-eslint`, Barrierefreiheits-Regeln über `eslint-plugin-jsx-a11y-x`) und Prettier (Astro-Plugin; Markdown ausgenommen). `npm run format` führt danach `eslint --fix` aus.
 4. **Guards für die festen Konventionen** ([SPECS §10](../../SPECS.md#feste-konventionen)) über `eslint-plugin-better-tailwindcss` und ESLint-Regeln: unbekannte Klassen, Farbwerte in eckigen Klammern, doppelte oder widersprüchliche Klassen, falsche Klassen-Reihenfolge, `is:inline`, `define:vars`, direkte Lucide-Importe. In `global.css` ist Tailwinds Standard-Farbpalette abgeschaltet.
 5. npm-Skripte (siehe unten), `.nvmrc` mit Node 24, `engines` passend zur strengsten Abhängigkeit, Alias `@/*` → `src/*`.
-6. `.editorconfig`, `.gitignore` (inkl. Ausgaben der Qualitäts-Tools aus WP-14 und `.claude/worktrees/`), `.vscode/extensions.json`.
+6. `.editorconfig`, `.gitignore` (inkl. Ausgaben der Qualitäts-Tools aus WP-14 und `.claude/worktrees/`), `.vscode/extensions.json`, `.npmrc` mit `save-exact=true` (neue Abhängigkeiten landen ohne `^` in `package.json`).
 7. Icon-Paket `@lucide/astro` (für die feste Icon-Liste von WP-03).
 8. **Das vollständige Gerüst** (Tabelle unten), mit allen Texten als Vorschlag (Ansprache „Sie“).
 9. i18n-Grundlage mit Schutz gegen `as const` und dem Helfer `fill()` für `{name}`/`{region}` (siehe Schnittstellen).
@@ -43,7 +43,7 @@ Das Projekt aufsetzen und das **vollständige Gerüst** anlegen: **jede Datei vo
 
 ## Dateien
 
-**Besitzt dieses Paket:** `package.json`, `package-lock.json`, `astro.config.mjs`, `tsconfig.json`, `eslint.config.js`, `.prettierrc`, `.prettierignore`, `.editorconfig`, `.nvmrc`, `.gitignore`, `.vscode/extensions.json`, `src/pages/index.astro`, `src/i18n/index.ts`, `src/i18n/de/index.ts`
+**Besitzt dieses Paket:** `package.json`, `package-lock.json`, `astro.config.mjs`, `tsconfig.json`, `eslint.config.js`, `.prettierrc`, `.prettierignore`, `.editorconfig`, `.nvmrc`, `.npmrc`, `.gitignore`, `.vscode/extensions.json`, `src/pages/index.astro`, `src/i18n/index.ts`, `src/i18n/de/index.ts`
 
 **Legt für andere Pakete an** (Stand im Gerüst: „Grundversion“ = funktioniert schlicht und ungestaltet, „Platzhalter“ = nur Schnittstelle bzw. gibt noch nichts aus):
 
@@ -126,7 +126,7 @@ Bereichsdateien **ohne** `as const`, sonst wären die Typen die deutschen Texte 
 | `preview` | `astro preview` |
 | `check` | `astro check` |
 | `lint` | `eslint .` |
-| `format` | `prettier --write .` |
+| `format` | `prettier --write . && eslint --fix .` |
 | `format:check` | `prettier --check .` |
 
 ## Akzeptanzkriterien

@@ -51,14 +51,14 @@ Das Paket darf in **zwei PRs** geliefert werden:
     Content-Security-Policy = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'"
 ```
 
-`script-src 'self'` funktioniert, weil das Gerüst (WP-01) in `astro.config.mjs` dafür sorgt, dass Astro Skripte immer als Datei unter `/_astro/` ausliefert und nie inline ins HTML schreibt. Voraussetzung ist die Konvention „kein `is:inline`, kein `define:vars`“ ([SPECS §10](../../SPECS.md#feste-konventionen)). **Nicht** `'unsafe-inline'` für Skripte erlauben und **keine** Skript-Hashes pflegen. Astros eigene CSP-Unterstützung hilft hier nicht: Sie setzt nur ein zusätzliches `<meta>`-Tag, der Header gilt trotzdem. Die Statistik-Domain ergänzt später WP-13.
+`script-src 'self'` funktioniert, weil das Gerüst (WP-01) in `astro.config.mjs` dafür sorgt, dass Astro Skripte immer als Datei unter `/_astro/` ausliefert und nie inline ins HTML schreibt. Voraussetzung ist die Konvention „`<script>` ohne Attribute, kein `is:inline`, kein `define:vars`, keine `onclick`-Handler“ ([SPECS §10](../../SPECS.md#feste-konventionen)); `npm run lint` prüft sie. **Nicht** `'unsafe-inline'` für Skripte erlauben und **keine** Skript-Hashes pflegen. Astros eigene CSP-Unterstützung hilft hier nicht: Sie setzt nur ein zusätzliches `<meta>`-Tag, der Header gilt trotzdem. Die Statistik-Domain ergänzt später WP-13.
 
 ### Teil B – Domain & E-Mail
 
-5. Domain in Netlify verbinden (Netlify-DNS oder A/CNAME beim Registrar), HTTPS über Let's Encrypt aktivieren, `www` auf die Hauptdomain umleiten (oder umgekehrt, Hauptsache einheitlich).
-6. E-Mail-DNS laut Anbieter aus WP-00: **SPF**, **DKIM**, **DMARC**. DMARC zunächst mit `p=none` und Berichtsadresse, nach 2–4 Wochen ohne Probleme auf `p=quarantine`.
-7. Prüfen, dass `url` in `src/config/site.ts` die echte Domain enthält. **Eingetragen wird sie nur von WP-00**; WP-02 ändert `site.ts` nicht (sonst Merge-Konflikt mit WP-00, die Zeilen liegen direkt nebeneinander). `astro.config.mjs` übernimmt den Wert automatisch als `site`.
-8. Im README einen kurzen Abschnitt „Deployment“ ergänzen (welcher Branch wohin deployt).
+6. Domain in Netlify verbinden (Netlify-DNS oder A/CNAME beim Registrar), HTTPS über Let's Encrypt aktivieren, `www.<domain>` per 301 auf `<domain>` umleiten (E-02: Hauptadresse ohne `www`).
+7. E-Mail-DNS laut Anbieter aus WP-00: **SPF**, **DKIM**, **DMARC**. DMARC zunächst mit `p=none` und Berichtsadresse, nach 2–4 Wochen ohne Probleme auf `p=quarantine`.
+8. Prüfen, dass `url` in `src/config/site.ts` die echte Domain enthält. **Eingetragen wird sie nur von WP-00**; WP-02 ändert `site.ts` nicht (sonst Merge-Konflikt mit WP-00, die Zeilen liegen direkt nebeneinander). `astro.config.mjs` übernimmt den Wert automatisch als `site`.
+9. Im README einen kurzen Abschnitt „Deployment“ ergänzen (welcher Branch wohin deployt).
 
 **Gehört nicht dazu**
 
@@ -76,7 +76,7 @@ Das Paket darf in **zwei PRs** geliefert werden:
 
 ## Schnittstellen
 
-- CI-Job-Name `build` ist der Pflicht-Check im Branch-Schutz. Bitte nicht umbenennen, ohne den Branch-Schutz mit anzupassen.
+- CI-Job-Name `build` ist der Pflicht-Check im Branch-Schutz und steht fest; Änderung nur per Spec-Änderung ([SPECS §16](../../SPECS.md#16-änderungsregeln)).
 - URLs der Umgebungen: siehe [SPECS §10](../../SPECS.md#umgebungen).
 
 ## Akzeptanzkriterien

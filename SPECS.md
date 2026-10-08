@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| **Version** | 0.3 (Entwurf, Phase 0 „Festlegen“) |
-| **Stand** | 06.10.2026 |
+| **Version** | 0.4 (Entwurf, Phase 0 „Festlegen“) |
+| **Stand** | 08.10.2026 |
 | **Autoren** | Tony ([@tonytonym21](https://github.com/tonytonym21)), Julian ([@JulianRudrich](https://github.com/JulianRudrich)) |
 | **Status** | Alle Vorschläge stehen. Wird als **v1.0 festgeschrieben**, sobald die Entscheidungen in [WP-00](docs/pakete/WP-00-entscheidungen-inhalte.md) getroffen und Tonys Design-Entwurf ([WP-03](docs/pakete/WP-03-design-system.md)) abgenommen sind. |
 
@@ -127,7 +127,7 @@ Wir können vieles. Für eine klare Botschaft in der Akquise führen **L1 bis L3
 | `/impressum/` | Impressum | V1.0 | ja | WP-10 |
 | `/datenschutz/` | Datenschutzerklärung | V1.0 | ja | WP-10 |
 | `/404.html` | Fehlerseite für alle unbekannten URLs | V1.0 | `noindex` | WP-10 |
-| `/projekte/<slug>/` | Projekt-Detailseite (Case Study) | V1.1 | ja | WP-12 |
+| `/projekte/<id>/` | Projekt-Detailseite (Case Study) | V1.1 | ja | WP-12 |
 | `/gastronomie/` | Branchen-Landingpage für gezielte Akquise | V2 | ja | – |
 | `/en/…` | Englische Version | V2 | ja | – |
 | `/blog/…` | Artikel für SEO | V2 | ja | – |
@@ -200,7 +200,7 @@ Priorität nach MoSCoW: **M** = Must, **S** = Should, **C** = Could, **W** = Won
 | NFA-06 | Barrierefreiheit | `prefers-reduced-motion` wird respektiert | M | Bei aktivierter Systemeinstellung keine Animationen | WP-03 |
 | NFA-07 | Responsive | Mobile-first, 360 px bis 1920 px ohne horizontales Scrollen | M | Test bei 360, 768, 1280 und 1920 px | WP-03 (Basis), alle |
 | NFA-08 | Kompatibilität | Jeweils letzte 2 Versionen von Chrome, Edge, Firefox, Safari (macOS + iOS) und Samsung Internet | M | Manueller Test vor jedem Release | alle; Test WP-14 |
-| NFA-09 | SEO | Pro Seite eigener `<title>` (≤ 60 Zeichen) und Description (≤ 155 Zeichen), Canonical-URL, `lang="de"` | M | Lighthouse SEO ≥ 95 | WP-09 |
+| NFA-09 | SEO | Pro Seite eigener `<title>` (≤ 60 Zeichen) und Description (≤ 155 Zeichen), Canonical-URL auf indexierbaren Seiten, `lang="de"` | M | Lighthouse SEO ≥ 95 | WP-09 |
 | NFA-10 | SEO | Strukturierte Daten (JSON-LD `ProfessionalService` mit Region) | S | Google Rich Results Test ohne Fehler | WP-09 |
 | NFA-11 | SEO | `sitemap.xml` und `robots.txt`; `noindex`-Seiten nicht in der Sitemap | M | Beide Dateien sind erreichbar und korrekt | WP-09 |
 | NFA-12 | SEO | Open-Graph- und Twitter-Meta-Tags, OG-Bild 1200 × 630 px | S | Link-Vorschau in WhatsApp und LinkedIn ist korrekt | WP-09 |
@@ -227,7 +227,7 @@ Priorität nach MoSCoW: **M** = Must, **S** = Should, **C** = Could, **W** = Won
 | D-06 | Bildsprache: echte Fotos von Tony & Julian, Projekt-Screenshots in Geräterahmen; keine generischen Stockfotos | S | WP-05, WP-06, WP-07 |
 | D-07 | Icons aus Lucide, nur die feste Liste in `src/components/ui/icons.ts`, als Inline-SVG gerendert | S | WP-03 |
 | D-08 | Animationen dezent (≤ 300 ms, nur `opacity`/`transform`), Inhalte nie nur per Animation sichtbar | C | WP-03 |
-| D-09 | Vor der Umsetzung ein vollständiger Design-Entwurf für Mobil und Desktop (WP-03 Teil A „Design-Abgabe“), vom anderen abgenommen; für V1.1 eine eigene Abgabe vor Phase 2 | M | WP-03 |
+| D-09 | Vor der Umsetzung ein vollständiger Design-Entwurf für Mobil und Desktop (WP-03 Teil A „Design-Abgabe“), vom anderen abgenommen; für V1.1 eine eigene Abgabe zu Beginn von Phase 2 (WP-03 Teil A2), vor WP-11 und WP-12 | M | WP-03 |
 
 ## 10. Technische Architektur
 
@@ -239,7 +239,7 @@ Priorität nach MoSCoW: **M** = Must, **S** = Should, **C** = Could, **W** = Won
 | Styling | Tailwind CSS | Design-Tokens an einer Stelle, schnelle Umsetzung, kein CSS-Wildwuchs |
 | Sprache | TypeScript (`strict`) | Fehler früh finden; Props von Komponenten sind dokumentiert |
 | Paketmanager | npm; Node 24 (LTS), festgehalten in `.nvmrc` | Standard, keine Extra-Installation |
-| Code-Qualität | ESLint (mit `eslint-plugin-astro` und Barrierefreiheits-Regeln), Prettier (mit Astro- und Tailwind-Plugin) | Einheitlicher Stil, keine Format-Diskussionen im Review |
+| Code-Qualität | ESLint (mit `eslint-plugin-astro`, Barrierefreiheits-Regeln und `eslint-plugin-better-tailwindcss` für Token-Klassen und Klassen-Reihenfolge), Prettier (mit Astro-Plugin) | Einheitlicher Stil, keine Format-Diskussionen im Review |
 | Hosting | Netlify | Kostenloser Tarif, Auto-Deploy aus GitHub, Deploy-Preview pro PR, integrierte Formulare, AVV verfügbar |
 | Formulare | Netlify Forms | Kein eigenes Backend nötig, Spamfilter, E-Mail-Benachrichtigung |
 | CI | GitHub Actions | Prüft jeden PR vor dem Merge |
@@ -256,7 +256,7 @@ Priorität nach MoSCoW: **M** = Must, **S** = Should, **C** = Could, **W** = Won
 
 ### Ordnerstruktur (Zielbild)
 
-Das Gerüst aus WP-01 enthält **jede Datei von V1.0 und V1.1** mit fester Schnittstelle. Welche Datei welchem Paket gehört, steht in der [Zuständigkeitsmatrix](docs/pakete/README.md#zuständigkeitsmatrix). Nur reine Konfigurationsdateien ohne Schnittstelle (`netlify.toml`, Workflows unter `.github/workflows/`, `lighthouserc.json`) legt ihr Paket selbst an; ihr Inhalt ist in der jeweiligen Paket-Spec vorgegeben.
+Das Gerüst aus WP-01 enthält **jede Datei von V1.0 und V1.1** mit fester Schnittstelle. Welche Datei welchem Paket gehört, steht in der [Zuständigkeitsmatrix](docs/pakete/README.md#zuständigkeitsmatrix). Nur Dateien ohne Schnittstelle legt ihr Paket selbst an, ihr Inhalt ist in der jeweiligen Paket-Spec vorgegeben: Konfiguration und Tests (`netlify.toml`, Workflows, `lighthouserc.json`, `playwright.config.ts`, `tests/`, `docs/qa/`) und Grafiken aus Tonys Design (Favicons, Vorschaubild, Bilder für Hero und Team). Die vollständige Liste steht in Regel 4 der [Zuständigkeitsmatrix](docs/pakete/README.md#zuständigkeitsmatrix).
 
 ```text
 .
@@ -268,7 +268,7 @@ Das Gerüst aus WP-01 enthält **jede Datei von V1.0 und V1.1** mit fester Schni
 ├── docs/pakete/              eine Spec pro Arbeitspaket
 ├── public/                   favicon.svg, später weitere Icons und OG-Bild (WP-09)
 ├── src/
-│   ├── assets/               Bilder: hero/, team/, projects/ (werden von Astro optimiert)
+│   ├── assets/               Bilder: hero/, team/, projects/, styleguide/ (Astro optimiert sie)
 │   ├── components/
 │   │   ├── layout/           Header, MobileNav, Footer, SEO, Analytics
 │   │   ├── sections/         Hero, Services, Projects, Process, About, Faq, Contact
@@ -283,7 +283,7 @@ Das Gerüst aus WP-01 enthält **jede Datei von V1.0 und V1.1** mit fester Schni
 │   ├── layouts/              BaseLayout
 │   ├── legal/                Impressum und Datenschutzerklärung als Markdown
 │   ├── pages/                index, impressum, datenschutz, danke, 404, styleguide,
-│   │                         robots.txt, projekte/[slug]
+│   │                         robots.txt, site.webmanifest, projekte/[slug]
 │   └── styles/global.css     Tailwind + Design-Tokens
 ├── astro.config.mjs
 ├── netlify.toml              (WP-02)
@@ -298,10 +298,10 @@ Das Gerüst aus WP-01 enthält **jede Datei von V1.0 und V1.1** mit fester Schni
 |---|---|---|
 | **Schnittstellen** | Props aller Komponenten, das Content-Schema, alle Textschlüssel und die Token-Namen stehen im Gerüst fest. Wer sie ändern will, braucht eine Spec-Änderung ([Abschnitt 16](#16-änderungsregeln)). | Niemand muss Dateien anderer anfassen. Falsche Props, Icons und Schema-Werte meldet `npm run check`. |
 | **Dateien** | Neue Dateien nur als interne Hilfsdatei des eigenen Pakets in dessen Ordner (im PR erwähnen) oder als Inhalt (neues Projekt, Bild). Keine neuen gemeinsamen Bausteine ohne Spec-Änderung. | Die Struktur bleibt so, wie sie geplant ist. |
-| **URLs** | Jede Seite endet mit `/` (`trailingSlash: 'always'`), interne Links genau so schreiben: `/impressum/`, `/#kontakt`. Im Dev-Server ergibt `/impressum` ohne `/` absichtlich 404. | Einheitliche Canonical-URLs, Sitemap und Links. |
-| **Skripte** | Normale `<script>`-Tags in Komponenten, **kein** `is:inline` und **kein** `define:vars`; Daten über `data-*`-Attribute übergeben. `astro.config.mjs` sorgt dafür, dass Skripte immer als Datei ausgeliefert werden. | Die Content-Security-Policy `script-src 'self'` (WP-02) bleibt gültig. |
+| **URLs** | Jede Seite endet mit `/` (`trailingSlash: 'always'`), interne Links genau so und immer wurzelrelativ schreiben, nie mit Domain: `/impressum/`, `/#kontakt`. Im Dev-Server ergibt `/impressum` ohne `/` absichtlich 404. | Einheitliche Canonical-URLs, Sitemap und Links. |
+| **Skripte** | Normale `<script>`-Tags in Komponenten, **ohne Attribute** (jedes Attribut außer `src` macht ein Skript inline), **kein** `is:inline`, **kein** `define:vars`, keine Inline-Handler wie `onclick`. Daten über `data-*`-Attribute an HTML-Elementen übergeben (z. B. am `<form>`), nie am `<script>`-Tag. `astro.config.mjs` sorgt dafür, dass Skripte immer als Datei ausgeliefert werden. Ausnahmen: JSON-LD in `SEO.astro` (WP-09) und das externe Statistik-Skript in `Analytics.astro` (WP-13). `npm run lint` meldet Verstöße. | Die Content-Security-Policy `script-src 'self'` (WP-02) bleibt gültig. |
 | **Icons** | Nur die feste Liste aus `src/components/ui/icons.ts`; Lucide direkt zu importieren meldet `npm run lint`. Profil-Links (LinkedIn, GitHub) als Text, ohne Markenlogos. | Einheitliches Bild; Lucide enthält keine Markenlogos. |
-| **Design** | Nur Token-Klassen aus `src/styles/global.css` (z. B. `bg-surface`, `text-ink`, `bg-primary`), keine Farbwerte im Code. Tailwinds Standard-Farbpalette ist abgeschaltet; unbekannte Klassen, Farbwerte in eckigen Klammern und eine falsche Klassen-Reihenfolge meldet `npm run lint` (`npm run format` sortiert automatisch). | Ein Design-Wechsel passiert an genau einer Stelle. |
+| **Design** | Nur Token-Klassen aus `src/styles/global.css` (z. B. `bg-surface`, `text-ink`, `bg-primary`), keine Farbwerte im Code, kein `style`-Attribut, kein `<style>`-Block in Komponenten (eigenes CSS nur in `global.css`, WP-03). Klassen stehen im `class`-Attribut oder in Variablen, deren Name auf `Classes` oder `Variants` endet (z. B. `variantClasses = { primary: '…' }`). Tailwinds Standard-Farbpalette ist abgeschaltet. `npm run lint` meldet dort unbekannte Klassen, Farbwerte in eckigen Klammern (Hex, Farbfunktionen, Farbnamen), doppelte und widersprüchliche Klassen, eine falsche Reihenfolge sowie `style`-Attribute und `<style>`-Blöcke (`npm run format` sortiert automatisch). | Ein Design-Wechsel passiert an genau einer Stelle. |
 | **Markenname und Region in Texten** | Nie fest eintragen, sondern als Platzhalter `{name}` bzw. `{region}`; `fill()` aus `src/i18n` setzt die Werte aus `site.ts` ein (`SEO.astro` macht das für Titel und Description automatisch). | Die Daten stehen nur in `site.ts`. |
 | **Rechtstexte** | Ausnahme: `src/legal/*.md` enthält Namen, Anschrift und Kontakt im Wortlaut (aus WP-00), weil Rechtstexte als Dokument gepflegt werden. | Generator-Texte bleiben unverändert prüfbar. |
 | **Statistik** | Das Skript läuft nur auf der Live-Seite: `Analytics.astro` prüft die Netlify-Variable `CONTEXT === 'production'`, nicht nur `import.meta.env.PROD` (das gilt auch für Deploy-Previews und Staging). | Tests und Previews verfälschen die Zahlen nicht. |
@@ -340,7 +340,7 @@ Das Gerüst aus WP-01 enthält **jede Datei von V1.0 und V1.1** mit fester Schni
 |---|---|---|
 | **0 – Festlegen** | WP-00: alle Entscheidungen treffen und die Textvorschläge bestätigen. WP-03 Teil A: Tony liefert den Design-Entwurf, Julian nimmt ihn ab. Parallel: WP-01 (Gerüst), WP-02 (CI, Netlify, Domain und E-Mail-DNS), WP-09 (SEO; Favicon und Vorschaubild erst nach der Design-Abnahme). | **🔒 Spec v1.0 festgeschrieben** |
 | **1 – Bauen (V1.0)** | Alle übrigen V1.0-Pakete füllen das Gerüst aus, genau nach Spec und Design. Danach die Release-Checkliste ([Abschnitt 14](#14-definition-of-done)) und der Release-PR `dev` → `main`. | **🚀 Release V1.0, Go-live** |
-| **2 – Ausbau (V1.1)** | Zuerst WP-03 Teil A2 (Design-Abgabe V1.1: FAQ und Projektdetailseite), dann WP-11 bis WP-14 (WP-14 nach WP-12). | **Release V1.1** |
+| **2 – Ausbau (V1.1)** | WP-13 startet sofort. WP-03 Teil A2 (Design-Abgabe V1.1: FAQ und Projektdetailseite) kommt zu Beginn, danach WP-11 und WP-12; WP-14 nach WP-12. | **Release V1.1** |
 
 Kein Paket der Phase 1 beginnt mit dem Gestalten von Sektionen, bevor der Design-Entwurf abgenommen ist. Aufgaben, die die Live-Seite brauchen (Domain auf `main`, Search Console), stehen in der Release-Checkliste und nicht in den Paketen.
 
@@ -350,7 +350,7 @@ Kein Paket der Phase 1 beginnt mit dem Gestalten von Sektionen, bevor der Design
 |---|---|---|---|
 | **V1.0 – MVP / Go-live** | One-Pager mit allen Sektionen außer FAQ, Kontaktformular, Rechtsseiten, 404, SEO-Grundlagen, CI und Deployment auf eigener Domain | WP-00 bis WP-10 | [#1](https://github.com/JulianRudrich/Landingpage/issues/1) |
 | **V1.1 – Ausbau** | FAQ, Projektdetailseiten, Statistik, Terminbuchung, automatische Qualitätschecks | WP-11 bis WP-14 | [#2](https://github.com/JulianRudrich/Landingpage/issues/2) |
-| **V2 – Wachstum** | Englische Version, Branchenseite `/gastronomie`, Kundenstimmen, Blog, Preispakete | noch nicht geplant | – |
+| **V2 – Wachstum** | Englische Version, Branchenseite `/gastronomie/`, Kundenstimmen, Blog, Preispakete | noch nicht geplant | – |
 
 **Out of Scope:** CMS (Inhalte liegen als Dateien im Repo), Login, Shop, Kundenportal, Dark Mode.
 
@@ -388,6 +388,7 @@ Jede Anforderung ist mindestens einem Paket zugeordnet, damit nichts verloren ge
 - [ ] Nur Dateien geändert, die dem Paket gehören (Ausnahmen nur, wenn die Paket-Spec oder die Zuständigkeitsmatrix sie nennt)
 - [ ] `npm run check`, `npm run lint`, `npm run format:check` und `npm run build` sind lokal und in der CI grün
 - [ ] Keine fest eingebauten sichtbaren Texte (FA-20), keine Farbwerte außerhalb der Tokens (D-01)
+- [ ] Die bis dahin in [#3](https://github.com/JulianRudrich/Landingpage/issues/3) beschlossenen Textänderungen an den eigenen Textdateien sind eingetragen
 - [ ] In der Deploy-Preview mobil (360 px) und am Desktop geprüft
 - [ ] Per Tastatur bedienbar, Fokus sichtbar
 - [ ] Review vom anderen bestanden
@@ -400,7 +401,9 @@ Jede Anforderung ist mindestens einem Paket zugeordnet, damit nichts verloren ge
 - [ ] Getestet auf einem echten iPhone (Safari), einem Android-Gerät (Chrome) und am Desktop in Chrome, Firefox und Safari oder Edge
 - [ ] Eine Testanfrage über das Live-Formular kommt bei beiden an
 - [ ] Network-Tab: keine Requests an Drittanbieter; Application-Tab: keine Cookies
-- [ ] Alle Links funktionieren, keine Platzhalter („Lorem ipsum“, „TODO“) mehr sichtbar
+- [ ] Alle Links funktionieren, keine Platzhalter („Lorem ipsum“, „TODO“, „[…]“, „Platzhalter“) mehr sichtbar
+- [ ] Nur V1.0, vor dem Release-PR: Das Projekt `diese-website` bekommt einen Screenshot der fertigen Seite aus der Deploy-Preview von `dev` als Cover (gleicher Dateiname), einen passenden `coverAlt` und `status: live` (Julian als Owner von WP-06, eigener kleiner PR)
+- [ ] Nur V1.1: Der Abschnitt „Ergebnis“ von `diese-website` ist geschrieben (Ladezeit, Lighthouse-Werte, erste Anfragen; Julian)
 - [ ] Impressum und Datenschutzerklärung sind final
 - [ ] Abschnitte 8 und 9 der Datenschutzerklärung entsprechen dem, was wirklich läuft (V1.0: „derzeit nicht im Einsatz“)
 - [ ] Release-PR `dev` → `main` ist gemerged und getaggt (z. B. `v1.0.0`)
@@ -445,3 +448,4 @@ Ab Version 1.0 ist diese Spec **festgeschrieben**. So bleibt die Umsetzung bei d
 | 0.1 | 06.10.2026 | Erster Entwurf: Anforderungen, Arbeitspakete, Workflow |
 | 0.2 | 06.10.2026 | Grundprinzip „erst festlegen, dann bauen“: vollständiges Gerüst mit festen Schnittstellen, feste Konventionen, Phase 0, Vorschläge zu allen Entscheidungen (E-12 bis E-14 neu), Änderungsregeln |
 | 0.3 | 06.10.2026 | Ergebnisse der unabhängigen Prüfung: Konventionen werden per Lint/Check erzwungen, Datenquellen für SEO und Statistik festgelegt, offene Punkte in WP-04 und WP-09 bis WP-14 entschieden, E-15 neu, Design-Abgabe V1.1, Phasen und Release-Checkliste präzisiert |
+| 0.4 | 08.10.2026 | Zweite Prüfung: Lint meldet auch Attribute an `<script>`, Inline-Handler, `style` und weitere Farbwerte; `Button` reicht `aria-*`/`data-*` durch; `themeColor` setzt WP-03; Link-Check schließt die eigene Domain aus; OG-Bild 1200 × 630 als JPG; Breadcrumb „Startseite“; Design V1.1 mit eigenem Issue #20; Release-Checkliste um das erste Projekt ergänzt |

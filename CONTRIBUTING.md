@@ -104,8 +104,8 @@ Jede Datei gehört genau einem Paket, siehe [Zuständigkeitsmatrix](docs/pakete/
 |---|---|
 | **Eigene Dateien** | frei ändern |
 | **Fremde Dateien** | nur, wenn die eigene Paket-Spec (Abschnitt „Ändert nach Absprache“) oder die Zuständigkeitsmatrix (Spalte „Hinweis“) es ausdrücklich erlaubt; dann im Issue des Owners kurz Bescheid geben und als kleinen, eigenen Commit. Sonst: Issue mit Label `spec-frage` |
-| **Gemeinsame Dateien** (`package.json`, `package-lock.json`, `astro.config.mjs`, `SPECS.md`, `CONTRIBUTING.md`, `docs/`) | Änderung im PR-Text erwähnen |
-| **Neue npm-Pakete** | vorher im eigenen Issue ankündigen, damit der andere nicht dasselbe Problem anders löst |
+| **Gemeinsame Dateien** (`package.json`, `package-lock.json`, `SPECS.md`, `CONTRIBUTING.md`, `docs/`) | Änderung im PR-Text erwähnen |
+| **Neue npm-Pakete** | vorher im eigenen Issue ankündigen, damit der andere nicht dasselbe Problem anders löst. Versionen werden exakt eingetragen (`.npmrc` mit `save-exact=true`, kein `^`) |
 | **UI-Bausteine** (`src/components/ui/`) | Props und Icon-Liste sind Schnittstellen: Änderungen nur per Spec-Änderung (`spec:`-PR, beide geben frei) |
 | **Content-Schema** (`src/content.config.ts`) | Schnittstelle: Änderungen nur per Spec-Änderung (`spec:`-PR, beide geben frei) |
 | **Neue Projekte** (`src/content/projects/`) | darf jeder anlegen, neue Datei = kein Konflikt |
@@ -116,9 +116,9 @@ Die festen Konventionen stehen in [SPECS §10](SPECS.md#feste-konventionen). Die
 
 - **Nur ausfüllen, nicht neu erfinden:** Jede Datei existiert schon mit fester Schnittstelle. Keine neuen gemeinsamen Bausteine, Props, Textschlüssel, Token-Namen oder Icons ohne Spec-Änderung.
 - **Texte** nur aus `src/i18n/de/<bereich>.ts`, **Daten** (Name, E-Mail, URLs) nur aus `src/config/site.ts`. Markenname und Region in Texten als `{name}` / `{region}`, eingesetzt mit `fill()`.
-- **Gestaltung** nur mit Token-Klassen (`bg-surface`, `text-ink`, `bg-primary` …), keine Farbwerte im Code. `npm run lint` meldet unbekannte Klassen und Farbwerte; `npm run format` sortiert die Klassen.
+- **Gestaltung** nur mit Token-Klassen (`bg-surface`, `text-ink`, `bg-primary` …), keine Farbwerte im Code, kein `style`-Attribut, kein `<style>`-Block (eigenes CSS nur in `src/styles/global.css`). Klassen im `class`-Attribut oder in Variablen mit Namen auf `Classes`/`Variants` (z. B. `variantClasses`), nur dort prüft der Linter. `npm run lint` meldet unbekannte Klassen, Farbwerte in eckigen Klammern, doppelte oder widersprüchliche Klassen, `style`-Attribute und `<style>`-Blöcke; `npm run format` sortiert die Klassen.
 - **Interne Links** enden mit `/`: `/impressum/`, `/datenschutz/`, `/#kontakt`.
-- **Skripte** als normales `<script>` in der Komponente, **kein** `is:inline` und **kein** `define:vars` (sonst blockiert die Sicherheitsrichtlinie das Skript auf der Live-Seite). Daten über `data-*`-Attribute übergeben.
+- **Skripte** als normales `<script>` **ohne Attribute** in der Komponente, **kein** `is:inline`, **kein** `define:vars`, kein `onclick=` (sonst landet das Skript inline und die Sicherheitsrichtlinie blockiert es auf der Live-Seite). Daten über `data-*`-Attribute an HTML-Elementen übergeben, z. B. am `<form>`, nie am `<script>`-Tag. `npm run lint` meldet Verstöße.
 - **Bilder** über `<Picture>` aus `astro:assets`, nie als `<img>` ohne Größe; immer PNG, JPG oder WebP, nie SVG.
 - **Icons** nur über `<Icon name="…" />` aus der festen Liste; Lucide direkt zu importieren meldet `npm run lint`.
 

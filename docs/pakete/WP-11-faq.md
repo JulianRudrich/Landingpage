@@ -8,7 +8,7 @@
 | **Aufwand** | S (bis ca. 4 h) |
 | **Branch** | `julian/wp-11-faq` |
 | **Issue** | [#14](https://github.com/JulianRudrich/Landingpage/issues/14) |
-| **Abhängig von** | WP-03 inkl. Design V1.1 (Teil A2, abgenommen); Antworten aus WP-00; Start nach dem Go-live von V1.0 |
+| **Abhängig von** | WP-03 inkl. Design V1.1 (Teil A2, [#20](https://github.com/JulianRudrich/Landingpage/issues/20), abgenommen); Antworten aus WP-00; Start nach dem Go-live von V1.0 |
 | **Blockiert** | – |
 | **Anforderungen** | FA-21 aus [SPECS.md](../../SPECS.md) |
 

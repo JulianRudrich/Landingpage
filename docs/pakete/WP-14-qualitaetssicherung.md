@@ -31,7 +31,10 @@ Die Qualitätsziele aus der Spec **automatisch absichern**: Jeder PR wird auf Pe
    - `playwright.config.ts`: nur Chromium, `webServer` = `npm run preview -- --port 4321`, `baseURL` = `http://localhost:4321`
    - `tests/a11y.spec.ts`: für jede der vier URLs `new AxeBuilder({ page }).analyze()`, Verstöße mit `impact` `serious` oder `critical` lassen den Test fehlschlagen; die Liste der Verstöße steht in der Fehlermeldung
    - im Workflow vorher `npx playwright install --with-deps chromium`, dann `npx playwright test`
-4. **Link-Check** mit `lycheeverse/lychee-action` über `./dist/**/*.html`, Argumente `--root-dir ./dist --max-retries 3 --retry-wait-time 5 --accept 200..=299,429,999 --no-progress` (LinkedIn antwortet Bots mit 999)
+4. **Link-Check** mit `lycheeverse/lychee-action`:
+   - Vorher die eigene Domain aus dem Build lesen: `echo "SITE_HOST=$(sed -n 's|^Sitemap: https\?://\([^/]*\)/.*|\1|p' dist/robots.txt)" >> "$GITHUB_ENV"`
+   - `args`: `--root-dir ${{ github.workspace }}/dist --exclude '^https?://(www\.)?${{ env.SITE_HOST }}/' --max-retries 3 --retry-wait-time 5 --accept 200..=299,429,999 --no-progress './dist/**/*.html'` (LinkedIn antwortet Bots mit 999)
+   - Warum der Ausschluss: Canonical, `og:url`, `og:image` und JSON-LD zeigen absolut auf die Live-Seite, neue Seiten gibt es dort aber erst nach dem nächsten Release. Interne Links sind wurzelrelativ ([SPECS §10](../../SPECS.md#feste-konventionen)) und werden über `--root-dir` gegen `dist/` geprüft.
 5. **Manuelle Audit-Checkliste** `docs/qa/audit-checkliste.md`
    - Kompletter Tastatur-Durchlauf (Tab-Reihenfolge, Fokus sichtbar, keine Falle)
    - Screenreader: VoiceOver (iOS/macOS) oder NVDA (Windows), TalkBack (Android)

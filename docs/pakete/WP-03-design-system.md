@@ -9,7 +9,7 @@
 | **Branch** | `tony/wp-03-design-system` (für Teil B; Teil A wird im Issue abgegeben) |
 | **Issue** | [#6](https://github.com/JulianRudrich/Landingpage/issues/6) |
 | **Abhängig von** | Teil A: nichts, kann sofort starten. Teil B: WP-01 und Freigabe der Spec v1.0. Teil A2 (Design V1.1): Go-live von V1.0 |
-| **Blockiert** | Teil A: die Freigabe der Spec v1.0 und damit alle Sektions-Pakete (WP-04 bis WP-08, WP-10). Teil A2: WP-11 und WP-12 |
+| **Blockiert** | Teil A: die Freigabe der Spec v1.0 und damit alle Sektions-Pakete (WP-04 bis WP-08, WP-10), außerdem Favicon und Vorschaubild in WP-09. Teil A2: WP-11 und WP-12 |
 | **Anforderungen** | D-01 bis D-05, D-07 bis D-09, NFA-04, NFA-05, NFA-06, NFA-07, NFA-14, R-05 aus [SPECS.md](../../SPECS.md) |
 
 ## Ziel
@@ -35,7 +35,7 @@ Die **Namen** stehen fest in `src/styles/global.css`. Für jeden Namen einen Wer
 | Schriften | `font-sans` (Text), `font-display` (Überschriften; darf dieselbe sein). Höchstens 2 Familien, beide müssen bei [Fontsource](https://fontsource.org) verfügbar sein. Benötigte Schriftstärken angeben. |
 | Formen | `radius-control` (Buttons, Felder), `radius-card` (Karten), `shadow-card` |
 | Raster | `container-site` (max. Inhaltsbreite), `spacing-section` (Abstand je Sektion), `--header-height` |
-| Browserleiste | `themeColor` (Hex-Wert für `theme-color` und Web-Manifest; wird in `src/config/site.ts` eingetragen) |
+| Browserleiste | `themeColor` (Hex-Wert für `theme-color` und Web-Manifest; Tony trägt ihn in Teil B in `src/config/site.ts` ein) |
 
 **Pflicht-Kontraste ≥ 4,5 : 1** (mit einem Kontrast-Checker prüfen und in der Abgabe nennen):
 
@@ -78,14 +78,14 @@ Button `primary` / `secondary` / `ghost` in den Zuständen normal, Hover, Fokus.
 - [ ] Bausteine und Bilder aus Punkt 3 und 4 vorhanden
 - [ ] Julian hat im Issue zugestimmt. Zusammen mit WP-00 ist damit die Spec v1.0 freigegeben ([SPECS §12](../../SPECS.md#12-releases--scope)).
 
-## Teil A2: Design-Abgabe V1.1 (vor Phase 2)
+## Teil A2: Design-Abgabe V1.1 (zu Beginn von Phase 2)
 
 Nach dem Go-live von V1.0 und **bevor** WP-11 und WP-12 starten, liefert Tony nach denselben Regeln wie in Teil A:
 
 - Projektdetailseite (Handy und Desktop): Breadcrumb, Kopfbereich, Cover, Text, Technik, Galerie, „Weitere Projekte“, Abschluss-Box
 - FAQ-Sektion (Handy und Desktop): geschlossen, eine Antwort offen, Fokus
 
-Abnahme durch Julian im Issue [#6](https://github.com/JulianRudrich/Landingpage/issues/6) (eigene Checkbox), danach können WP-11 und WP-12 starten.
+Abgabe und Abnahme durch Julian im eigenen Issue [#20](https://github.com/JulianRudrich/Landingpage/issues/20) unter V1.1 (#6 ist mit Teil B schon geschlossen). Danach können WP-11 und WP-12 starten.
 
 ## Teil B: Umsetzung (Phase 1)
 
@@ -96,14 +96,17 @@ Abnahme durch Julian im Issue [#6](https://github.com/JulianRudrich/Landingpage/
 5. **`BaseLayout`** gestalten (Skip-Link sichtbar bei Fokus). Die Props bleiben die von `SEO.astro`.
 6. **Styleguide** (`/styleguide/`) zeigt alle Bausteine in allen Varianten, damit die anderen Pakete nachsehen können.
 7. **Bild-Muster** im Styleguide zeigen, mit dem Beispielbild `src/assets/styleguide/beispiel.png`: `<Picture>` aus `astro:assets`, `formats={['avif', 'webp']}`, `widths` und `sizes`, `loading="lazy"` (nur das LCP-Bild im Hero bekommt `loading="eager"` und `fetchpriority="high"`). Bilder immer als PNG, JPG oder WebP, nie als SVG.
+8. **`themeColor`** aus Teil A in `src/config/site.ts` eintragen (nur dieses Feld).
 
 **Gehört nicht dazu:** Aufbau und Logik von Header und Footer (WP-04), Inhalte der Sektionen (WP-05 bis WP-08).
 
 ## Dateien
 
-**Besitzt dieses Paket** (alle existieren schon als Grundversion): `src/styles/global.css`, `src/layouts/BaseLayout.astro`, `src/components/ui/Container.astro`, `Section.astro`, `SectionHeading.astro`, `Button.astro`, `Card.astro`, `Badge.astro`, `Icon.astro`, `icons.ts`, `Logo.astro`, `Prose.astro`, `src/pages/styleguide.astro`, `src/i18n/de/common.ts`
+**Besitzt dieses Paket** (alle existieren schon als Grundversion): `src/styles/global.css`, `src/layouts/BaseLayout.astro`, `src/components/ui/Container.astro`, `Section.astro`, `SectionHeading.astro`, `Button.astro`, `Card.astro`, `Badge.astro`, `Icon.astro`, `icons.ts`, `Logo.astro`, `Prose.astro`, `src/pages/styleguide.astro`, `src/i18n/de/common.ts`, `src/assets/styleguide/*`
 
 **Liest/benutzt:** `src/config/site.ts` (Name für `Logo`), `src/components/layout/SEO.astro` (Props-Typ)
+
+**Ändert nach Absprache:** `src/config/site.ts` (nur `themeColor`, Teil B Punkt 8)
 
 ## Schnittstellen
 
@@ -114,7 +117,7 @@ Die Props sind ein **Vertrag** mit allen Paketen und ändern sich nur per Spec-�
 | `Container` | `as?: 'div' \| 'section' \| 'header' \| 'footer' \| 'nav'`, `class?` | max. Breite (`max-w-site`) und seitlicher Innenabstand |
 | `Section` | `id: string`, `labelledby: string`, `tone?: 'default' \| 'muted' \| 'inverted'`, `class?` | `<section>` mit Anker, einheitlichem Abstand (`py-section`) und `Container` |
 | `SectionHeading` | `id: string`, `eyebrow?`, `title: string`, `lead?`, `align?: 'left' \| 'center'`, `level?: 1 \| 2` | einheitliche Überschrift; `id` = `labelledby` der Section |
-| `Button` | `href?`, `variant?: 'primary' \| 'secondary' \| 'ghost'`, `size?: 'md' \| 'lg'`, `type?: 'button' \| 'submit'`, `external?`, `icon?: IconName`, `class?` | mit `href` ein Link, sonst `<button>`; `external` öffnet in neuem Tab mit Screenreader-Hinweis |
+| `Button` | **entweder** Link: `href: string`, `external?` **oder** Schaltfläche: `type?: 'button' \| 'submit'` (dann kein `href`, kein `external`); dazu immer `variant?: 'primary' \| 'secondary' \| 'ghost'`, `size?: 'md' \| 'lg'`, `icon?: IconName`, `class?` | mit `href` ein Link, sonst `<button>`; `external` öffnet in neuem Tab mit Screenreader-Hinweis. `aria-*`- und `data-*`-Attribute werden durchgereicht, andere (`id` …) meldet `npm run check`. Die Variante steht als `data-variant`/`data-size` am Element, gestalten mit `data-[variant=primary]:…` |
 | `Card` | `as?: 'article' \| 'div' \| 'li'`, `class?` | Fläche mit `rounded-card` |
 | `Badge` | `tone?: 'neutral' \| 'success' \| 'warning'` | Projektstatus: live → `success`, prototyp → `warning`, konzept → `neutral` |
 | `Icon` | `name: IconName`, `size?`, `label?`, `class?` | Inline-SVG; ohne `label` dekorativ |

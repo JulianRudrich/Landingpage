@@ -9,7 +9,7 @@
 | **Branch** | `julian/wp-08-kontakt` |
 | **Issue** | [#11](https://github.com/JulianRudrich/Landingpage/issues/11) |
 | **Abhängig von** | Freigabe der Spec v1.0 (WP-00 + Design aus WP-03 Teil A); WP-03; WP-02 (Netlify-Site, um die Zustellung zu testen) |
-| **Blockiert** | – |
+| **Blockiert** | WP-10 (Angaben zum Formular für die Datenschutzerklärung) |
 | **Anforderungen** | FA-11, FA-12, FA-13, FA-14, FA-15 aus [SPECS.md](../../SPECS.md) |
 
 ## Ziel
@@ -42,7 +42,7 @@ Die wichtigste Sektion für unser Geschäft: Aus einem Besucher wird eine Anfrag
    - `Button` mit `type="submit"`: `t.contact.form.submit`
 3. **Validierung**
    - HTML-Attribute (`required`, `type="email"`, `minlength` für die Nachricht) als Basis. Ohne JavaScript funktioniert das Formular mit nativer Browser-Validierung.
-   - Kleines normales `<script>` (kein `is:inline`, kein `define:vars`; Fehlertexte über `data-*`-Attribute an das Skript übergeben) für die Meldungen aus `t.contact.form` direkt am Feld (`aria-invalid`, `aria-describedby`); beim Absenden springt der Fokus auf das erste fehlerhafte Feld und `t.contact.form.errorSummary` wird angekündigt
+   - Kleines normales `<script>` ohne Attribute (kein `is:inline`, kein `define:vars`; die Fehlertexte stehen als `data-*`-Attribute am `<form>` bzw. an den Feldern, nie am `<script>`-Tag) für die Meldungen aus `t.contact.form` direkt am Feld (`aria-invalid`, `aria-describedby`); beim Absenden springt der Fokus auf das erste fehlerhafte Feld und `t.contact.form.errorSummary` wird angekündigt
    - Kein `fetch` nötig: Das normale POST geht an Netlify, das danach auf `/danke/` weiterleitet
 4. **Danke-Seite** `src/pages/danke.astro` (`noindex`, existiert): Texte `t.contact.thanks`, Icon `circle-check`, gestaltet nach Tonys Entwurf.
 5. **Netlify-Einstellungen**: Formular-Benachrichtigung per E-Mail an `hallo@` (leitet an beide weiter, E-03), Spamfilter aktiv. Eingegangene Anfragen in Netlify löschen, sobald sie im Postfach sind, spätestens nach 30 Tagen (E-15).

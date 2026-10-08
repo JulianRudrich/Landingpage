@@ -26,7 +26,7 @@ Besucher finden sich auf jeder Seite sofort zurecht: Ein schlanker Header bringt
    - CTA-Button „Projekt anfragen“ → `/#kontakt`
    - `position: sticky; top: 0`, Höhe = `--header-height` aus WP-03, Hintergrund deckend (Text darunter darf nicht durchscheinen)
 2. **Mobile Navigation (FA-03)** unter 768 px
-   - Burger-Button als **eigenes** `<button type="button">` in `MobileNav.astro` (nicht der Baustein `Button`, der keine `aria-*`-Attribute durchreicht), mit `Icon` `menu` bzw. `x`, Token-Klassen nach dem Handy-Entwurf, `aria-controls`, `aria-expanded` und zugänglichem Namen (`t.navigation.menuOpen` / `menuClose`)
+   - Burger-Button als **eigenes** `<button type="button">` in `MobileNav.astro` (nicht der Baustein `Button`: reiner Icon-Button, dessen Icon und Name das Skript umschaltet), mit `Icon` `menu` bzw. `x`, Token-Klassen nach dem Handy-Entwurf, `aria-controls`, `aria-expanded` und zugänglichem Namen (`t.navigation.menuOpen` / `menuClose`)
    - Schließt mit Esc, nach Klick auf einen Link und bei Klick außerhalb
    - Beim Öffnen springt der Fokus auf den ersten Link, beim Schließen zurück auf den Button
    - Kleines normales `<script>` in `MobileNav.astro`, ohne Framework (< 2 KB). **Kein** `is:inline`, **kein** `define:vars` ([SPECS §10](../../SPECS.md#feste-konventionen)).
@@ -55,7 +55,7 @@ Besucher finden sich auf jeder Seite sofort zurecht: Ein schlanker Header bringt
 
 ## Schnittstellen
 
-- Anker-IDs der Sektionen: siehe [SPECS §6](../../SPECS.md#6-aufbau-der-startseite). Bitte nicht in der Navigation umbenennen, ohne die Sektionen mit anzupassen.
+- Anker-IDs der Sektionen: siehe [SPECS §6](../../SPECS.md#6-aufbau-der-startseite). Sie stehen fest; Änderung nur per Spec-Änderung ([SPECS §16](../../SPECS.md#16-änderungsregeln)).
 - `--header-height` kommt aus Tonys Design-Entwurf (WP-03 Teil A) und steht in `global.css`.
 - Texte: `t.navigation` (`mainLabel`, `items`, `cta`, `menuOpen`, `menuClose`, `footer.*`). Icons für das Burger-Menü: `menu` und `x`.
 

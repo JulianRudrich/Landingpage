@@ -1,6 +1,6 @@
 ---
-# Gehört WP-06 (Projekte). Erstes Projekt: die Landingpage selbst. Nach dem Go-live status auf "live" setzen
-# und das Platzhalter-Cover durch einen echten Screenshot ersetzen (gleicher Dateiname, PNG).
+# Gehört WP-06 (Projekte). Erstes Projekt: die Landingpage selbst. Screenshot als Cover (gleicher Dateiname, PNG),
+# status "live" und der Abschnitt "Ergebnis" kommen laut Release-Checkliste dazu (SPECS.md §14).
 title: Diese Website
 summary: Unsere eigene Landingpage – schnell, barrierefrei und ohne Cookie-Banner, gebaut mit Astro und Tailwind CSS.
 industry: Eigenes Projekt
@@ -21,4 +21,4 @@ order: 90
 
 ## Ergebnis
 
-[Wird nach dem Go-live ergänzt: Ladezeit, Lighthouse-Werte, erste Anfragen.]
+[Wird vor dem Release V1.1 ergänzt: Ladezeit, Lighthouse-Werte, erste Anfragen.]

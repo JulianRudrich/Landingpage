@@ -28,7 +28,7 @@ Unsere Arbeit sichtbar machen, und zwar so, dass ein neues Projekt **nur eine ne
    - Titel, Branche, Kurzbeschreibung, Tech-Tags
    - Link „Demo ansehen“ als `Button` mit `external` und Icon `external-link`
    - Link „Details“ → `/projekte/<id>/` **nur**, wenn `site.features.projectDetails` `true` ist (das Flag setzt WP-12)
-4. **Erstes Projekt** `src/content/projects/diese-website.md` (existiert): Texte für Ausgangslage und Lösung schreiben; nach dem Go-live `status: live` und das Platzhalter-Cover durch einen Screenshot ersetzen. Das erste Gastro-Demo (E-08) kommt als weitere Datei dazu, sobald es existiert.
+4. **Erstes Projekt** `src/content/projects/diese-website.md` (existiert): Texte für Ausgangslage und Lösung schreiben. Screenshot als Cover, `status: live` und den Abschnitt „Ergebnis“ trägst du später laut Release-Checkliste ein ([SPECS §14](../../SPECS.md#14-definition-of-done)), weil es dafür die fertige Seite braucht. Das erste Gastro-Demo (E-08) kommt als weitere Datei dazu, sobald es existiert.
 5. Abschnitt **„Neues Projekt hinzufügen“** (unten) aktuell halten.
 
 **Gehört nicht dazu**

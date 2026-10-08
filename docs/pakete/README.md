@@ -18,14 +18,14 @@ Hier steht, **wer was baut** und **welche Datei wem gehört**. Jedes Paket hat e
 | [WP-06](WP-06-projekte.md) | Projekte | Julian | Tony | V1.0 | M | WP-03 | [#9](https://github.com/JulianRudrich/Landingpage/issues/9) | `julian/wp-06-projekte` |
 | [WP-07](WP-07-ablauf-ueber-uns.md) | Ablauf & Über uns | Tony | Julian | V1.0 | M | WP-03 (+ Fotos aus WP-00) | [#10](https://github.com/JulianRudrich/Landingpage/issues/10) | `tony/wp-07-ablauf-ueber-uns` |
 | [WP-08](WP-08-kontakt.md) | Kontakt-Sektion & Formular | Julian | Tony | V1.0 | L | WP-03, WP-02 | [#11](https://github.com/JulianRudrich/Landingpage/issues/11) | `julian/wp-08-kontakt` |
-| [WP-09](WP-09-seo-meta.md) | SEO & Meta | Julian | Tony | V1.0 | M | WP-01 (+ Name/Region aus WP-00) | [#12](https://github.com/JulianRudrich/Landingpage/issues/12) | `julian/wp-09-seo-meta` |
+| [WP-09](WP-09-seo-meta.md) | SEO & Meta | Julian | Tony | V1.0 | M | WP-01 (+ Name/Region aus WP-00, Favicon/Vorschaubild aus WP-03 Teil A) | [#12](https://github.com/JulianRudrich/Landingpage/issues/12) | `julian/wp-09-seo-meta` |
 | [WP-10](WP-10-rechtliches-404.md) | Impressum, Datenschutz & 404 | Tony | Julian | V1.0 | M | WP-03, WP-08 (Formulardaten) (+ Impressumsdaten aus WP-00) | [#13](https://github.com/JulianRudrich/Landingpage/issues/13) | `tony/wp-10-rechtliches-404` |
 | [WP-11](WP-11-faq.md) | FAQ | Julian | Tony | V1.1 | S | WP-03 (inkl. Design V1.1) | [#14](https://github.com/JulianRudrich/Landingpage/issues/14) | `julian/wp-11-faq` |
 | [WP-12](WP-12-projektdetailseiten.md) | Projektdetailseiten | Tony | Julian | V1.1 | M | WP-06, WP-03 (inkl. Design V1.1) | [#15](https://github.com/JulianRudrich/Landingpage/issues/15) | `tony/wp-12-projektdetailseiten` |
 | [WP-13](WP-13-analytics-terminbuchung.md) | Analytics & Terminbuchung | Julian | Tony | V1.1 | S | WP-02 | [#16](https://github.com/JulianRudrich/Landingpage/issues/16) | `julian/wp-13-analytics-termin` |
 | [WP-14](WP-14-qualitaetssicherung.md) | Qualitätssicherung | Tony | Julian | V1.1 | M | WP-02, WP-12 | [#17](https://github.com/JulianRudrich/Landingpage/issues/17) | `tony/wp-14-qualitaetssicherung` |
 
-**Release-Issues:** [#1 V1.0 – MVP / Go-live](https://github.com/JulianRudrich/Landingpage/issues/1) · [#2 V1.1 – Ausbau](https://github.com/JulianRudrich/Landingpage/issues/2). Dort sind die Pakete als Sub-Issues angehängt, mit Fortschrittsbalken.
+**Release-Issues:** [#1 V1.0 – MVP / Go-live](https://github.com/JulianRudrich/Landingpage/issues/1) · [#2 V1.1 – Ausbau](https://github.com/JulianRudrich/Landingpage/issues/2). Dort sind die Pakete als Sub-Issues angehängt, mit Fortschrittsbalken. WP-03 Teil A2 (Design V1.1) hat ein eigenes Issue unter V1.1: [#20](https://github.com/JulianRudrich/Landingpage/issues/20).
 
 **Aufwand:** S ≈ bis 4 h · M ≈ 4–12 h · L ≈ 12–24 h (grobe Schätzung, reine Arbeitszeit)
 
@@ -75,6 +75,7 @@ graph TD
   WP08 -.->|Formulardaten| WP10
   WP12 --> WP14
   WP03 -.->|Design V1.1| WP11 & WP12
+  WP03 -.->|Favicon, OG-Bild| WP09
 
   classDef julian fill:#dbeafe,stroke:#1d4ed8,color:#0b1b3f
   classDef tony fill:#fde68a,stroke:#b45309,color:#3b2405
@@ -92,7 +93,7 @@ Durchgezogene Pfeile bedeuten „braucht den gemergten Code“, gestrichelte Pfe
 | **🔒 Freigabe** | nimmt Tonys Design ab | – | Spec v1.0 festschreiben ([SPECS §16](../../SPECS.md#16-änderungsregeln)) |
 | **1 – Bauen (V1.0)** | WP-06 Projekte, WP-08 Kontakt | WP-03 Teil B: Tokens und Bausteine umsetzen, dann WP-04 Header & Footer, WP-05 Hero & Leistungen, WP-07 Ablauf & Über uns, WP-10 Rechtliches | gegenseitig reviewen |
 | **🚀 Release V1.0** | Release-Checkliste ([SPECS §14](../../SPECS.md#14-definition-of-done)), danach Search Console (WP-09) | Release-Checkliste | Go-live |
-| **2 – Ausbau (V1.1)** | WP-11 FAQ, WP-13 Analytics & Terminbuchung | zuerst WP-03 Teil A2 (Design V1.1), dann WP-12 Detailseiten, danach WP-14 Qualitätssicherung | Julian nimmt Design V1.1 ab |
+| **2 – Ausbau (V1.1)** | WP-13 Analytics & Terminbuchung (sofort), WP-11 FAQ (nach Design V1.1) | zu Beginn WP-03 Teil A2 (Design V1.1), dann WP-12 Detailseiten, danach WP-14 Qualitätssicherung | Julian nimmt Design V1.1 ab |
 
 ## Zuständigkeitsmatrix
 
@@ -109,8 +110,8 @@ Durchgezogene Pfeile bedeuten „braucht den gemergten Code“, gestrichelte Pfe
 |---|---|---|---|
 | `package.json`, `package-lock.json` | WP-01 | Julian | Gemeinsam genutzt: Neue Abhängigkeiten (z. B. Schriften in WP-03) im eigenen Issue ankündigen; Lockfile-Konflikte nach [CONTRIBUTING](../../CONTRIBUTING.md#merge-konflikte-lösen) lösen |
 | `astro.config.mjs` | WP-01 | Julian | `site` kommt aus `src/config/site.ts` (`url`); Skripte werden immer als Datei ausgeliefert (CSP) |
-| `tsconfig.json`, `eslint.config.js`, `.prettierrc`, `.prettierignore`, `.editorconfig`, `.nvmrc`, `.gitignore`, `.vscode/extensions.json` | WP-01 | Julian | Ausgaben der Qualitäts-Tools (WP-14) sind schon ignoriert |
-| `src/config/site.ts` | WP-00 | beide | Werte aus WP-00, auch `url` (= Domain). Danach setzt WP-13 `bookingUrl` und `analytics`, WP-12 `features.projectDetails` |
+| `tsconfig.json`, `eslint.config.js`, `.prettierrc`, `.prettierignore`, `.editorconfig`, `.nvmrc`, `.npmrc`, `.gitignore`, `.vscode/extensions.json` | WP-01 | Julian | Ausgaben der Qualitäts-Tools (WP-14) sind schon ignoriert |
+| `src/config/site.ts` | WP-00 | beide | Werte aus WP-00, auch `url` (= Domain). `themeColor` setzt WP-03 (Teil B) aus dem Design; später setzt WP-13 `bookingUrl` und `analytics`, WP-12 `features.projectDetails` |
 | `netlify.toml` | WP-02 | Julian | legt WP-02 an; CSP-Ergänzung für die Statistik durch WP-13 |
 | `.github/workflows/ci.yml` | WP-02 | Julian | legt WP-02 an |
 | `.github/workflows/quality.yml` und im Hauptordner `lighthouserc.json`, `playwright.config.ts`, `tests/a11y.spec.ts` | WP-14 | Tony | legt WP-14 an; neue Dev-Abhängigkeiten im Issue ankündigen |

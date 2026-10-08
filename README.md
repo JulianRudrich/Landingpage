@@ -30,7 +30,7 @@ npm run dev     # Entwicklungsserver auf http://localhost:4321
 | `npm run preview` | den Build lokal ansehen |
 | `npm run check` | Astro- und TypeScript-Prüfung |
 | `npm run lint` | ESLint, inklusive Barrierefreiheits-Regeln |
-| `npm run format` | Code automatisch formatieren (Prettier) |
+| `npm run format` | Code formatieren (Prettier) und Tailwind-Klassen sortieren (ESLint `--fix`) |
 | `npm run format:check` | nur prüfen, ob alles formatiert ist |
 
 **Vor jedem Push** müssen diese vier Befehle fehlerfrei durchlaufen:
