@@ -250,6 +250,10 @@ Diese Schritte macht **Julian** (Admin des Repos) einmal in den GitHub-Einstellu
 - ✅ Block force pushes
 - Bypass: für Notfälle darf der Repo-Admin umgehen, nur nach Absprache
 
+### Standard-Branch
+
+**Settings → General → Default branch** → auf **`dev`** umstellen. Nur dann schließt `Closes #N` das Issue beim Merge nach `dev` automatisch (GitHub wertet die Schlüsselwörter nur für den Standard-Branch aus), und neue PRs zielen von selbst auf `dev`. Der Release-PR geht weiterhin von `dev` nach `main`.
+
 ### Merge-Einstellungen
 
 **Settings → General → Pull Requests**

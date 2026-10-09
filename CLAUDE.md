@@ -27,11 +27,11 @@ Die vollständige Liste steht in `SPECS.md`, Abschnitt 10 „Feste Konventionen�
 
 - Texte nur aus `src/i18n/de/<bereich>.ts`, nie fest in Komponenten. Textdateien **ohne** `as const`.
 - Daten (Name, E-Mail, Telefon, URLs) nur aus `src/config/site.ts`.
-- Gestaltung nur mit Token-Klassen aus `src/styles/global.css` (z. B. `bg-surface`, `text-ink`, `bg-primary`), keine Farbwerte im Code.
+- Gestaltung nur mit Token-Klassen aus `src/styles/global.css` (z. B. `bg-surface`, `text-ink`, `bg-primary`), keine Farbwerte im Code, kein `style`-Attribut, kein `<style>`-Block. Klassen im `class`-Attribut oder in Variablen mit Namen auf `Classes`/`Variants`.
 - Bausteine aus `src/components/ui/` mit ihren festen Props benutzen; Icons nur aus `src/components/ui/icons.ts`.
 - Interne Links enden mit `/`: `/impressum/`, `/datenschutz/`, `/#kontakt`.
-- Skripte als normales `<script>` in der Komponente, **kein** `is:inline`, **kein** `define:vars`; Daten über `data-*`-Attribute.
-- Bilder über `<Picture>` aus `astro:assets`.
+- Skripte als normales `<script>` **ohne Attribute** in der Komponente, **kein** `is:inline`, **kein** `define:vars`, kein `onclick`. Daten über `data-*`-Attribute an HTML-Elementen (z. B. am `<form>`), nie am `<script>`-Tag.
+- Bilder als PNG, JPG oder WebP (nie SVG), eingebunden über `<Picture>` aus `astro:assets`.
 
 ## Git & GitHub
 
@@ -48,7 +48,7 @@ Die vollständige Liste steht in `SPECS.md`, Abschnitt 10 „Feste Konventionen�
 npm run check && npm run lint && npm run format:check && npm run build
 ```
 
-Alle vier müssen fehlerfrei durchlaufen.
+Alle vier müssen fehlerfrei durchlaufen. `npm run format` formatiert und sortiert die Tailwind-Klassen automatisch.
 
 ## Wichtige Dokumente
 
