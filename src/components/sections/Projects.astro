@@ -1,0 +1,29 @@
+---
+// Grundversion – gehört WP-06 (Projekte). WP-06 sortiert (featured zuerst, dann order), begrenzt auf
+// 6 Karten, zeigt t.projects.empty ohne Projekte und gestaltet das Raster (FA-07, FA-08).
+import { getCollection } from 'astro:content';
+
+import ProjectCard from '@/components/projects/ProjectCard.astro';
+import Section from '@/components/ui/Section.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+const projects = await getCollection('projects');
+---
+
+<Section id="projekte" labelledby="projekte-titel">
+  <SectionHeading
+    id="projekte-titel"
+    eyebrow={t.projects.eyebrow}
+    title={t.projects.title}
+    lead={t.projects.lead}
+  />
+  <ul>
+    {projects.map((project) => (
+      <li>
+        <ProjectCard project={project} />
+      </li>
+    ))}
+  </ul>
+</Section>

@@ -1,0 +1,15 @@
+---
+// Gehört WP-03 (Design-System). Props sind ein Vertrag mit allen Paketen: Änderungen nur per Spec-Änderung (SPECS.md §16).
+
+interface Props {
+  /** HTML-Element, Standard: article. In Listen `li` verwenden. */
+  as?: 'article' | 'div' | 'li';
+  class?: string;
+}
+
+const { as: Tag = 'article', class: className } = Astro.props;
+---
+
+<Tag class:list={['rounded-card border border-border', className]}>
+  <slot />
+</Tag>

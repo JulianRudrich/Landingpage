@@ -1,0 +1,20 @@
+---
+// Grundversion – gehört WP-08 (Kontakt-Sektion & Formular). WP-08 ergänzt die direkten Kontaktwege
+// (t.contact.direct; E-Mail und Telefon aus site.ts, Termin-Button nur wenn site.bookingUrl gesetzt).
+import ContactForm from '@/components/contact/ContactForm.astro';
+import Section from '@/components/ui/Section.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<Section id="kontakt" labelledby="kontakt-titel">
+  <SectionHeading
+    id="kontakt-titel"
+    eyebrow={t.contact.eyebrow}
+    title={t.contact.title}
+    lead={t.contact.lead}
+  />
+  <ContactForm />
+</Section>

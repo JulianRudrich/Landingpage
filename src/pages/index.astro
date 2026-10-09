@@ -1,0 +1,28 @@
+---
+// Startseite (WP-01): setzt nur die Sektionen zusammen und muss danach nicht mehr geändert werden.
+// Inhalte und Gestaltung stecken in den einzelnen Sektions-Komponenten.
+import About from '@/components/sections/About.astro';
+import Contact from '@/components/sections/Contact.astro';
+import Faq from '@/components/sections/Faq.astro';
+import Hero from '@/components/sections/Hero.astro';
+import Process from '@/components/sections/Process.astro';
+import Projects from '@/components/sections/Projects.astro';
+import Services from '@/components/sections/Services.astro';
+import { site } from '@/config/site';
+import { useTranslations } from '@/i18n';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const t = useTranslations(Astro.currentLocale);
+// Mit festgelegter Region (E-05) enthält der Titel die Region, sonst nicht.
+const title = site.region ? t.seo.home.titleWithRegion : t.seo.home.title;
+---
+
+<BaseLayout title={title} description={t.seo.home.description}>
+  <Hero />
+  <Services />
+  <Projects />
+  <Process />
+  <About />
+  <Faq />
+  <Contact />
+</BaseLayout>

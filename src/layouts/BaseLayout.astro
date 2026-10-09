@@ -1,0 +1,38 @@
+---
+// Grundgerüst jeder Seite – gehört WP-03 (Design-System & BaseLayout).
+// Die Props sind genau die von SEO.astro (Vertrag von WP-09) und werden unverändert durchgereicht;
+// Änderungen daran nur per Spec-Änderung (SPECS.md §16).
+// Zusätzliche Head-Inhalte einer einzelnen Seite: <Fragment slot="head">…</Fragment>
+import Analytics from '@/components/layout/Analytics.astro';
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import SEO, { type Props as SeoProps } from '@/components/layout/SEO.astro';
+import { defaultLocale, useTranslations } from '@/i18n';
+import '@/styles/global.css';
+
+type Props = SeoProps;
+
+const lang = Astro.currentLocale ?? defaultLocale;
+const t = useTranslations(Astro.currentLocale);
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <SEO {...Astro.props} />
+    <Analytics />
+    <slot name="head" />
+  </head>
+  <body>
+    <a href="#inhalt" class="sr-only focus:not-sr-only">
+      {t.common.skipLink}
+    </a>
+    <Header />
+    <main id="inhalt" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

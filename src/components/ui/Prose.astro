@@ -1,0 +1,15 @@
+---
+// Gehört WP-03 (Design-System). Rahmen für gerenderten Markdown-Inhalt: Rechtstexte (WP-10) und
+// Projekt-Fallstudien (WP-12). WP-03 gestaltet hier Überschriften, Absätze, Listen und Links zentral,
+// damit WP-10 und WP-12 nichts selbst stylen müssen.
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={['prose-content', className]}>
+  <slot />
+</div>

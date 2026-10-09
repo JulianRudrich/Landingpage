@@ -4,11 +4,11 @@
 |---|---|
 | **Owner** | Tony ([@tonytonym21](https://github.com/tonytonym21)) |
 | **Reviewer** | Julian ([@JulianRudrich](https://github.com/JulianRudrich)) |
-| **Release** | V1.0 |
+| **Release** | V1.0, Phase 1 (nach Freigabe der Spec v1.0) |
 | **Aufwand** | M (ca. 4–12 h) |
 | **Branch** | `tony/wp-07-ablauf-ueber-uns` |
 | **Issue** | [#10](https://github.com/JulianRudrich/Landingpage/issues/10) |
-| **Abhängig von** | WP-03; Fotos, Rollen und Bios aus WP-00 |
+| **Abhängig von** | Freigabe der Spec v1.0 (WP-00 + Design aus WP-03 Teil A); WP-03; Fotos, Rollen und Bios aus WP-00 |
 | **Blockiert** | – |
 | **Anforderungen** | FA-09, FA-10, D-06 aus [SPECS.md](../../SPECS.md) |
 
@@ -20,32 +20,22 @@ Kleine Betriebe kaufen bei Menschen, nicht bei Firmen. **Ablauf** nimmt die Angs
 
 **Gehört dazu**
 
-1. **Ablauf** (`#ablauf`, FA-09): `SectionHeading` + 4 Schritte als `<ol>`, jeder mit Nummer, Titel, 1–2 Sätzen und optional einem Icon.
+1. **Ablauf** (`#ablauf`, FA-09): `SectionHeading` + 4 Schritte aus `t.process.steps` als `<ol>`, jeder mit Nummer, Titel, Text und Icon. Icons fest nach Reihenfolge: `message-circle`, `clipboard-list`, `hammer`, `rocket`.
 2. **Über uns** (`#ueber-uns`, FA-10)
-   - Kurze Einleitung (2–3 Sätze: wer wir sind, was uns antreibt)
-   - Zwei gleichwertige Karten für Tony und Julian: Foto, Name, Rolle, Kurzbio, Profil-Links
-   - Optional ein gemeinsames Foto
-   - Die Teamdaten stehen als Array in `about.ts`
-3. Fotos aus WP-00 nach `src/assets/team/` übernehmen und über `<Picture>` einbinden.
+   - `SectionHeading` mit `t.about.eyebrow`, `title`, `lead`
+   - Zwei gleichwertige Karten aus `t.about.team`: Foto, Name, Rolle, Kurzbio, LinkedIn-Link (Text `linkedinLabel`, URL aus `site.social.linkedinTony` bzw. `linkedinJulian`; nur anzeigen, wenn gesetzt)
+3. Fotos aus WP-00 als `src/assets/team/tony.jpg` und `src/assets/team/julian.jpg` ablegen und über `<Picture>` einbinden (Zuordnung über `id`).
 
-**Textentwürfe: Ablauf** (zum Anpassen; „Festpreis“ nur, wenn ihr das so anbieten wollt, siehe E-06)
-
-| # | Titel | Text |
-|---|---|---|
-| 1 | Kostenloses Erstgespräch | Wir hören zu: Was läuft gut, was kostet Sie Zeit? 30 Minuten, unverbindlich. |
-| 2 | Konzept & Angebot | Sie bekommen einen klaren Vorschlag mit transparentem Preis, ohne versteckte Kosten. |
-| 3 | Umsetzung | Wir bauen, Sie sehen regelmäßig Zwischenstände und geben Feedback. |
-| 4 | Start & Betreuung | Wir bringen alles online, zeigen Ihnen die Bedienung und bleiben ansprechbar. |
-
-**Textentwurf: Über uns, Einleitung**
-
-> Wir sind Tony und Julian, zwei Entwickler mit einem Ziel: Technik, die kleinen Betrieben wirklich hilft. Bei uns haben Sie feste Ansprechpartner, die zuhören, verständlich erklären und Lösungen bauen, die im Alltag funktionieren.
+**Texte:** stehen vollständig in `src/i18n/de/process.ts` und `src/i18n/de/about.ts`. In `about.ts` sind Rollen und Bios als Lücken `[…]` markiert; sie kommen aus WP-00 (E-14). „Festpreis“ in Schritt 2 hängt an E-13.
 
 **Gehört nicht dazu**
 
 - Kundenstimmen (erst V2, nur echte)
+- Ein gemeinsames Foto (nicht geplant)
 
 ## Dateien
+
+> Alle Dateien existieren schon im Gerüst (WP-01) als Grundversion mit fester Schnittstelle; die Texte stehen schon in den Textdateien. Neue gemeinsame Dateien oder Schnittstellen nur per Spec-Änderung ([SPECS §16](../../SPECS.md#16-änderungsregeln)).
 
 **Besitzt dieses Paket:** `src/components/sections/Process.astro`, `src/components/sections/About.astro`, `src/i18n/de/process.ts`, `src/i18n/de/about.ts`, `src/assets/team/*`
 

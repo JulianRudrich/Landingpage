@@ -1,0 +1,13 @@
+---
+// Gehört WP-03 (Design-System). Text-Wortmarke aus site.name (D-04); später durch ein SVG-Logo austauschbar.
+// Wird von Header und Footer (WP-04) innerhalb eines Links verwendet, rendert selbst keinen Link.
+import { site } from '@/config/site';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<span class:list={['font-display', className]}>{site.name}</span>

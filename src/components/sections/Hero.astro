@@ -1,0 +1,16 @@
+---
+// Grundversion – gehört WP-05 (Hero & Leistungen). Enthält die einzige H1 der Startseite (FA-05).
+// WP-05 ergänzt die Buttons (primaryCta → /#kontakt, secondaryCta → /#projekte), die Vertrauenszeile
+// (trustPoints) und das Hero-Bild aus src/assets/hero/ (LCP: loading="eager", fetchpriority="high").
+import Container from '@/components/ui/Container.astro';
+import { useTranslations } from '@/i18n';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<section id="start" aria-labelledby="start-titel">
+  <Container>
+    <h1 id="start-titel">{t.hero.title}</h1>
+    <p>{t.hero.lead}</p>
+  </Container>
+</section>

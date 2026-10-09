@@ -4,178 +4,118 @@
 |---|---|
 | **Owner** | Julian ([@JulianRudrich](https://github.com/JulianRudrich)) |
 | **Reviewer** | Tony ([@tonytonym21](https://github.com/tonytonym21)) |
-| **Release** | V1.0 |
+| **Release** | V1.0, Phase 0 (Festlegen) |
 | **Aufwand** | L (ca. 12–24 h) |
 | **Branch** | `julian/wp-01-projekt-setup` |
 | **Issue** | [#4](https://github.com/JulianRudrich/Landingpage/issues/4) |
 | **Abhängig von** | – |
-| **Blockiert** | WP-02, WP-03, WP-09 und damit indirekt alle anderen Pakete |
+| **Blockiert** | alle Pakete außer WP-00 und WP-03 Teil A (Design-Entwurf) |
 | **Anforderungen** | FA-01, FA-20, NFA-16, NFA-18 aus [SPECS.md](../../SPECS.md) |
 
 ## Ziel
 
-Astro + Tailwind + TypeScript aufsetzen und das **komplette Gerüst mit Platzhaltern** anlegen: alle Seiten, Sektionen, Layout-Komponenten und Textdateien, die in der [Zuständigkeitsmatrix](README.md#zuständigkeitsmatrix) stehen. Danach bearbeitet jedes Paket nur noch seine eigenen Dateien, und es entstehen keine Konflikte in gemeinsamen Dateien wie `index.astro`.
-
-> ⚠️ Dieses Paket blockiert alle anderen. Lieber schnell ein solides Gerüst mergen als lange perfektionieren.
+Das Projekt aufsetzen und das **vollständige Gerüst** anlegen: **jede Datei von V1.0 und V1.1** existiert, jede mit ihrer endgültigen Schnittstelle (Props, Content-Schema, Textschlüssel, Token-Namen, Icon-Liste). Danach füllen die Pakete ihre Dateien nur noch aus. Niemand muss eine Datei anlegen, die ein anderer auch braucht, und niemand muss Dateien anderer anfassen. TypeScript prüft, dass sich alle an die Schnittstellen halten.
 
 ## Umfang
 
 **Gehört dazu**
 
-1. Astro-Projekt im Repo-Root (Vorlage „minimal“, TypeScript `strict`).
-2. Tailwind CSS einbinden (`npx astro add tailwind`); `src/styles/global.css` mit dem Tailwind-Import als Platzhalter.
-3. Sitemap-Integration (`npx astro add sitemap`) mit Filter, der `/danke` und `/styleguide` ausschließt.
-4. i18n in `astro.config.mjs`: `locales: ['de']`, `defaultLocale: 'de'`, `routing: { prefixDefaultLocale: false }`.
-5. `site` in `astro.config.mjs` als Platzhalter (`https://example.com`); die echte Domain setzt WP-02.
-6. ESLint (Flat Config) mit `eslint-plugin-astro`, `typescript-eslint` und Barrierefreiheits-Regeln (`jsx-a11y`-Konfiguration aus `eslint-plugin-astro`); Prettier mit `prettier-plugin-astro` und `prettier-plugin-tailwindcss`.
-7. npm-Skripte (siehe Schnittstellen).
-8. `.nvmrc` mit der aktuellen Node-LTS-Hauptversion, passendes `engines`-Feld in `package.json`.
-9. Pfad-Alias `@/*` → `src/*` in `tsconfig.json`.
-10. `.editorconfig`, `.gitignore` (`node_modules`, `dist`, `.astro`, `.env*`, `.netlify`).
-11. Das **Gerüst mit Platzhaltern** (Tabelle unten).
-12. i18n-Grundlage: `src/i18n/index.ts` mit `useTranslations()`, `src/i18n/de/index.ts` als Sammeldatei, eine Platzhalterdatei pro Bereich.
-13. `src/config/site.ts` mit Typ und Platzhalterwerten.
-14. `README.md` um den Abschnitt „Lokale Entwicklung“ ergänzen (Node-Version, Befehle).
+1. Astro 7, Tailwind CSS 4 (über `@tailwindcss/vite`), TypeScript 6 `strict`, alle Versionen exakt gepinnt.
+2. `astro.config.mjs`:
+   - `site` aus `src/config/site.ts` (Domain steht nur dort)
+   - `trailingSlash: 'always'`
+   - i18n (`de` ohne URL-Präfix)
+   - Sitemap ohne `/danke/` und `/styleguide/`
+   - Skripte werden immer als Datei ausgeliefert, nie inline (für die CSP aus WP-02)
+3. ESLint 10 (`eslint-plugin-astro`, `typescript-eslint`, Barrierefreiheits-Regeln über `eslint-plugin-jsx-a11y-x`) und Prettier (Astro-Plugin; Markdown ausgenommen). `npm run format` führt danach `eslint --fix` aus.
+4. **Guards für die festen Konventionen** ([SPECS §10](../../SPECS.md#feste-konventionen)) über `eslint-plugin-better-tailwindcss` und ESLint-Regeln: unbekannte Klassen, Farbwerte in eckigen Klammern, doppelte oder widersprüchliche Klassen, falsche Klassen-Reihenfolge, `is:inline`, `define:vars`, direkte Lucide-Importe. In `global.css` ist Tailwinds Standard-Farbpalette abgeschaltet.
+5. npm-Skripte (siehe unten), `.nvmrc` mit Node 24, `engines` passend zur strengsten Abhängigkeit, Alias `@/*` → `src/*`.
+6. `.editorconfig`, `.gitignore` (inkl. Ausgaben der Qualitäts-Tools aus WP-14 und `.claude/worktrees/`), `.vscode/extensions.json`, `.npmrc` mit `save-exact=true` (neue Abhängigkeiten landen ohne `^` in `package.json`).
+7. Icon-Paket `@lucide/astro` (für die feste Icon-Liste von WP-03).
+8. **Das vollständige Gerüst** (Tabelle unten), mit allen Texten als Vorschlag (Ansprache „Sie“).
+9. i18n-Grundlage mit Schutz gegen `as const` und dem Helfer `fill()` für `{name}`/`{region}` (siehe Schnittstellen).
+10. `README.md`: Abschnitt „Lokale Entwicklung“.
 
 **Gehört nicht dazu**
 
-- Gestaltung, Farben, Schriften (WP-03)
-- CI und Deployment (WP-02)
-- Echte Inhalte (die jeweiligen Pakete)
+- Gestaltung (WP-03) und die eigentliche Umsetzung der Sektionen (WP-04 bis WP-12)
+- `netlify.toml` und CI-Workflow (WP-02), Qualitäts-Workflow (WP-14). Das sind reine Konfigurationsdateien ohne Schnittstelle; ihr Inhalt steht in den jeweiligen Specs.
 
 ## Dateien
 
-**Besitzt dieses Paket:** `package.json`, `package-lock.json`, `astro.config.mjs`, `tsconfig.json`, `eslint.config.js`, `.prettierrc`, `.prettierignore`, `.editorconfig`, `.nvmrc`, `.gitignore`, `src/pages/index.astro`, `src/i18n/index.ts`, `src/i18n/de/index.ts`
+**Besitzt dieses Paket:** `package.json`, `package-lock.json`, `astro.config.mjs`, `tsconfig.json`, `eslint.config.js`, `.prettierrc`, `.prettierignore`, `.editorconfig`, `.nvmrc`, `.npmrc`, `.gitignore`, `.vscode/extensions.json`, `src/pages/index.astro`, `src/i18n/index.ts`, `src/i18n/de/index.ts`
 
-**Legt als Platzhalter an** (gehören danach dem genannten Paket):
+**Legt für andere Pakete an** (Stand im Gerüst: „Grundversion“ = funktioniert schlicht und ungestaltet, „Platzhalter“ = nur Schnittstelle bzw. gibt noch nichts aus):
 
-| Platzhalter | Übernimmt | Inhalt des Platzhalters |
+| Datei | Paket | Stand im Gerüst |
 |---|---|---|
-| `src/layouts/BaseLayout.astro` | WP-03 | Grundgerüst wie unten |
-| `src/styles/global.css` | WP-03 | nur Tailwind-Import |
-| `src/components/ui/` (leer, `.gitkeep`) | WP-03 | – |
-| `src/components/layout/Header.astro`, `Footer.astro` | WP-04 | `<header>`/`<footer>` mit Platzhaltertext |
-| `src/components/layout/SEO.astro` | WP-09 | `<title>` und Description aus Props |
-| `src/components/layout/Analytics.astro` | WP-13 | rendert nichts |
-| `src/components/sections/Hero.astro` | WP-05 | `<section id="start">` mit H1-Platzhalter |
-| `src/components/sections/Services.astro` | WP-05 | `<section id="leistungen">` |
-| `src/components/sections/Projects.astro` | WP-06 | `<section id="projekte">` |
-| `src/components/sections/Process.astro` | WP-07 | `<section id="ablauf">` |
-| `src/components/sections/About.astro` | WP-07 | `<section id="ueber-uns">` |
-| `src/components/sections/Faq.astro` | WP-11 | rendert bis V1.1 nichts |
-| `src/components/sections/Contact.astro` | WP-08 | `<section id="kontakt">` |
-| `src/pages/impressum.astro`, `datenschutz.astro`, `404.astro` | WP-10 | Seite mit Überschrift |
-| `src/pages/danke.astro` | WP-08 | Seite mit Überschrift, `noindex` |
-| `src/i18n/de/common.ts`, `navigation.ts`, `hero.ts`, `services.ts`, `projects.ts`, `process.ts`, `about.ts`, `faq.ts`, `contact.ts`, `seo.ts`, `legal.ts`, `projectDetail.ts` | siehe Matrix | je ein Objekt mit Platzhaltertexten |
-| `src/config/site.ts` | WP-00 | Platzhalterwerte |
-
-Jede Platzhalter-Sektion rendert schon ihr `<section id="…">` mit einer H2 aus ihrer Textdatei. So funktionieren alle Anker (FA-01) vom ersten Tag an.
+| `src/styles/global.css` | WP-03 | alle Token-**Namen** mit neutralen Platzhalterwerten, Fokus-Stil, reduzierte Bewegung |
+| `src/layouts/BaseLayout.astro` | WP-03 | Grundversion: Props = SEO-Props, Skip-Link, Slot `head` |
+| `src/components/ui/Container, Section, SectionHeading, Button, Card, Badge, Icon, Logo, Prose` (`.astro`) | WP-03 | Grundversionen mit endgültigen Props |
+| `src/components/ui/icons.ts` | WP-03 | feste Icon-Liste (19 Icons) |
+| `src/pages/styleguide.astro` | WP-03 | Grundversion: zeigt alle Bausteine und Icons |
+| `src/components/layout/Header.astro`, `Footer.astro` | WP-04 | Grundversion: Navigation bzw. Rechtslinks und © |
+| `src/components/layout/MobileNav.astro` | WP-04 | Platzhalter |
+| `src/components/sections/Hero.astro` | WP-05 | Grundversion: H1 und Einleitung |
+| `src/components/sections/Services.astro` | WP-05 | Grundversion: Überschrift |
+| `src/components/sections/Projects.astro`, `src/components/projects/ProjectCard.astro` | WP-06 | Grundversion: Projektliste aus der Collection |
+| `src/content.config.ts` | WP-06 | **fertiges** Schema (Vertrag mit WP-12) |
+| `src/content/projects/diese-website.md`, `src/assets/projects/diese-website.png` | WP-06 | erstes Projekt mit Platzhalterbild (PNG) |
+| `src/assets/styleguide/beispiel.png` | WP-03 | Beispielbild für das Bild-Muster |
+| `src/components/sections/Process.astro`, `About.astro` | WP-07 | Grundversion: Überschrift |
+| `src/components/sections/Contact.astro` | WP-08 | Grundversion: Überschrift, bindet `ContactForm` ein |
+| `src/components/contact/ContactForm.astro` | WP-08 | Platzhalter |
+| `src/pages/danke.astro` | WP-08 | Grundversion, `noindex` |
+| `src/components/layout/SEO.astro` | WP-09 | Grundversion: Titel mit Markenname, Description, `noindex`, Favicon; **endgültige Props** |
+| `src/pages/robots.txt.ts`, `src/pages/site.webmanifest.ts` | WP-09 | funktionieren bereits (Werte aus `site.ts`) |
+| `public/favicon.svg` | WP-09 | Platzhalter-Monogramm |
+| `src/pages/impressum.astro`, `datenschutz.astro` | WP-10 | Grundversion: H1 + Markdown in `Prose` |
+| `src/legal/impressum.md`, `datenschutz.md` | WP-10 | Gliederung mit markierten Lücken |
+| `src/pages/404.astro` | WP-10 | Grundversion mit Links zu Start und Kontakt |
+| `src/components/sections/Faq.astro` | WP-11 | Platzhalter, gibt nichts aus |
+| `src/pages/projekte/[slug].astro` | WP-12 | Platzhalter, erzeugt keine Seiten |
+| `src/components/projects/ProjectHeader.astro`, `ProjectGallery.astro` | WP-12 | Platzhalter mit endgültigen Props |
+| `src/components/layout/Analytics.astro` | WP-13 | Platzhalter, gibt nichts aus |
+| `src/i18n/de/*.ts` (12 Bereiche) | siehe Matrix | **alle Textschlüssel mit Textvorschlägen** |
+| `src/config/site.ts` | WP-00 | Typ `SiteConfig` und Platzhalterwerte |
+| `src/assets/hero/`, `src/assets/team/` | WP-05, WP-07 | leere Ordner für Bilder |
 
 ## Schnittstellen
 
-**`src/pages/index.astro`** (danach praktisch nie mehr ändern):
+Der Code ist die Quelle der Wahrheit; hier steht das Wichtigste im Überblick.
+
+**Startseite:** `src/pages/index.astro` setzt nur die Sektionen zusammen (Hero, Services, Projects, Process, About, Faq, Contact) und ändert sich danach nicht mehr.
+
+**`BaseLayout`:** Die Props sind genau die von `SEO.astro` (`export interface Props`, Vertrag von WP-09) und werden unverändert durchgereicht:
+
+| Prop | Typ | Bedeutung |
+|---|---|---|
+| `title` | `string` | Seitentitel ohne Markennamen (SEO hängt „ \| {Name}“ an) |
+| `description` | `string` | höchstens 155 Zeichen |
+| `noindex` | `boolean`, optional | `/danke/`, 404, `/styleguide/` |
+| `image` | `ImageMetadata`, optional | Social-Media-Vorschaubild, z. B. Projekt-Cover (WP-12) |
+| `imageAlt` | `string`, optional | Alt-Text zu `image` |
+| `type` | `'website' \| 'article'`, optional | `article` für Projektdetailseiten |
+
+Seitenspezifische Head-Inhalte gehen über `<Fragment slot="head">…</Fragment>`.
+
+**Texte (i18n):** In jeder Komponente:
 
 ```astro
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import Hero from '@/components/sections/Hero.astro';
-import Services from '@/components/sections/Services.astro';
-import Projects from '@/components/sections/Projects.astro';
-import Process from '@/components/sections/Process.astro';
-import About from '@/components/sections/About.astro';
-import Faq from '@/components/sections/Faq.astro';
-import Contact from '@/components/sections/Contact.astro';
 import { useTranslations } from '@/i18n';
-
-const t = useTranslations('de');
+const t = useTranslations(Astro.currentLocale);
 ---
-
-<BaseLayout title={t.seo.home.title} description={t.seo.home.description}>
-  <Hero />
-  <Services />
-  <Projects />
-  <Process />
-  <About />
-  <Faq />
-  <Contact />
-</BaseLayout>
+<h2>{t.services.title}</h2>
 ```
 
-**`BaseLayout.astro`, Props und Grundgerüst** (WP-03 gestaltet es danach):
+Bereichsdateien **ohne** `as const`, sonst wären die Typen die deutschen Texte selbst und eine englische Fassung könnte den Typ `Dictionary` nie erfüllen. `src/i18n/index.ts` prüft das: Bei `as const` meldet `npm run check` einen Fehler. Für Englisch (V2) kommen `'en'` in `locales` (`src/i18n/index.ts` und `astro.config.mjs`) und `src/i18n/en/` dazu.
 
-```astro
----
-import SEO from '@/components/layout/SEO.astro';
-import Analytics from '@/components/layout/Analytics.astro';
-import Header from '@/components/layout/Header.astro';
-import Footer from '@/components/layout/Footer.astro';
-import '@/styles/global.css';
+**`src/config/site.ts`:** `site` mit Typ `SiteConfig`: `name`, `legalName`, `url`, `email`, `phone`, `region`, `address` (`street`, `postalCode`, `locality`), `founders`, `social` (`linkedinTony`, `linkedinJulian`, `github`), `themeColor`, `bookingUrl`, `analytics` (`scriptUrl`, `siteId`), `features.projectDetails`. Leere Strings bedeuten „nicht anzeigen“.
 
-interface Props {
-  title: string;
-  description: string;
-  noindex?: boolean;
-}
-const { title, description, noindex = false } = Astro.props;
----
+**`fill(text)`** aus `src/i18n` ersetzt `{name}` und `{region}` durch die Werte aus `site.ts`. Markenname und Region stehen so nie fest in Textdateien; `SEO.astro` wendet `fill()` auf Titel und Description an.
 
-<!doctype html>
-<html lang="de">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <SEO title={title} description={description} noindex={noindex} />
-    <Analytics />
-  </head>
-  <body>
-    <!-- Skip-Link (Text aus common.ts) -->
-    <Header />
-    <main id="inhalt"><slot /></main>
-    <Footer />
-  </body>
-</html>
-```
-
-**i18n:**
-
-```ts
-// src/i18n/de/hero.ts – eine Datei pro Bereich, gehört dem jeweiligen Paket
-export const hero = {
-  title: 'Platzhalter: Headline (WP-05)',
-} as const;
-
-// src/i18n/de/index.ts – Sammeldatei (WP-01)
-export { common } from './common';
-export { hero } from './hero';
-// … alle Bereiche
-
-// src/i18n/index.ts
-import * as de from './de';
-export type Locale = 'de';
-export type Dictionary = typeof de;
-const dictionaries: Record<Locale, Dictionary> = { de };
-export function useTranslations(locale: Locale = 'de'): Dictionary {
-  return dictionaries[locale];
-}
-```
-
-Für Englisch (V2) kommen `'en'` und `src/i18n/en/` dazu; der Typ `Dictionary` erzwingt vollständige Übersetzungen.
-
-**`src/config/site.ts`:**
-
-```ts
-export const site = {
-  name: 'Tony & Julian',            // E-01
-  url: 'https://example.com',        // E-02
-  email: 'hallo@example.com',        // E-03
-  phone: '',                         // E-09, leer = nicht anzeigen
-  region: '',                        // E-05
-  social: { linkedinTony: '', linkedinJulian: '', github: '' },
-  bookingUrl: '',                    // WP-13, leer = Button ausblenden
-  analytics: { domain: '' },         // WP-13
-  features: { projectDetails: false }, // WP-12 setzt auf true
-} as const;
-```
+**Konventionen** (URLs mit `/` am Ende, keine Inline-Skripte, feste Icons, nur Token-Klassen): [SPECS §10](../../SPECS.md#feste-konventionen).
 
 **npm-Skripte:**
 
@@ -186,17 +126,19 @@ export const site = {
 | `preview` | `astro preview` |
 | `check` | `astro check` |
 | `lint` | `eslint .` |
-| `format` | `prettier --write .` |
+| `format` | `prettier --write . && eslint --fix .` |
 | `format:check` | `prettier --check .` |
 
 ## Akzeptanzkriterien
 
-- [ ] `npm install && npm run dev` startet die Seite lokal; alle Sektionen sind als Platzhalter sichtbar
+- [ ] `npm install && npm run dev` startet die Seite lokal; alle Sektionen sind mit ihren Überschriften sichtbar
 - [ ] `npm run check`, `npm run lint`, `npm run format:check` und `npm run build` laufen fehlerfrei
-- [ ] TypeScript `strict` ist aktiv, der Alias `@/` funktioniert
-- [ ] Alle Dateien aus der Platzhalter-Tabelle existieren
+- [ ] Jede Datei aus der Tabelle oben existiert mit der beschriebenen Schnittstelle
 - [ ] Alle Anker aus [SPECS §6](../../SPECS.md#6-aufbau-der-startseite) funktionieren (z. B. springt `/#kontakt` zur Kontakt-Sektion)
-- [ ] Keine sichtbaren Texte fest in Komponenten; alle kommen aus `src/i18n/de/*`
-- [ ] i18n ist in `astro.config.mjs` konfiguriert (`de`, ohne URL-Präfix)
-- [ ] Die Sitemap schließt `/danke` und `/styleguide` aus
-- [ ] Das README erklärt die lokale Entwicklung (Node-Version, Befehle)
+- [ ] Keine sichtbaren Texte fest in Komponenten (Ausnahme: interne Beschriftungen im Styleguide)
+- [ ] `as const` in einer Textdatei, ein unbekannter Icon-Name, `<Button external>` ohne `href` und ein zu langer Projekttitel lassen `npm run check` bzw. `npm run build` fehlschlagen
+- [ ] Eine unbekannte Klasse (z. B. `bg-surfce`, `bg-red-500`), ein Farbwert wie `text-[#123456]`, `is:inline`, `define:vars` und ein direkter Lucide-Import lassen `npm run lint` fehlschlagen
+- [ ] Ein SVG als Projekt-Cover wird mit einer verständlichen Meldung abgelehnt
+- [ ] Ein Komponenten-`<script>` wird im Build als Datei unter `/_astro/` ausgeliefert, nicht inline
+- [ ] Die Sitemap enthält `/`, `/impressum/`, `/datenschutz/`, aber nicht `/danke/`, `/styleguide/` und 404; `/robots.txt` verweist auf die Sitemap
+- [ ] Das README erklärt die lokale Entwicklung

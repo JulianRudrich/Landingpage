@@ -1,0 +1,23 @@
+---
+// Gehört WP-10 (Impressum, Datenschutz & 404). Netlify liefert diese Seite für unbekannte URLs aus.
+import Container from '@/components/ui/Container.astro';
+import { useTranslations } from '@/i18n';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+<BaseLayout title={t.seo.notFound.title} description={t.seo.notFound.description} noindex>
+  <Container>
+    <h1>{t.legal.notFound.title}</h1>
+    <p>{t.legal.notFound.text}</p>
+    <ul>
+      <li>
+        <a href="/">{t.legal.notFound.homeLink}</a>
+      </li>
+      <li>
+        <a href="/#kontakt">{t.legal.notFound.contactLink}</a>
+      </li>
+    </ul>
+  </Container>
+</BaseLayout>

@@ -1,0 +1,13 @@
+---
+// Platzhalter – gehört WP-12 (Projektdetailseiten, V1.1). Kopfbereich einer Detailseite:
+// Breadcrumb, Titel (H1), Branche, Status-Badge, Kurztext, Buttons "Demo ansehen" und "Ähnliches Projekt anfragen".
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+---
+
+<h1>{project.data.title}</h1>
