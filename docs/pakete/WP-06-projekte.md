@@ -55,7 +55,7 @@ Das Schema steht **fertig** in `src/content.config.ts` (Astro 7: `z` aus `astro/
 | `industry` | Text | ja | Branche, z. B. „Gastronomie“ |
 | `tech` | Liste von Texten | ja, mind. 1 | eingesetzte Technik |
 | `status` | `live`, `prototyp` oder `konzept` | ja | ehrliche Kennzeichnung (R-07) |
-| `cover` | Bild in `src/assets/projects/`, **PNG, JPG oder WebP** (kein SVG) | ja | Vorschaubild, mind. 1600 px breit |
+| `cover` | Bild in `src/assets/projects/`, **PNG, JPG oder WebP** (kein SVG) | ja | Vorschaubild, mind. 1600 px breit, **ohne transparente Flächen** (Geräterahmen auf festem Hintergrund): Die Link-Vorschau der Detailseite wird daraus ein JPG (WP-09), transparente Stellen würden dort schwarz |
 | `coverAlt` | Text | ja | Alt-Text zum Cover |
 | `gallery` | Liste aus `{ src: Bild, alt: Text }`, Bilder wie `cover` | nein (Standard: leer) | Galerie der Detailseite (WP-12) |
 | `demoUrl` | URL | nein | laufende Demo |
