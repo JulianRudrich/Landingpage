@@ -1,12 +1,13 @@
 ---
 // Gehört WP-09 (SEO & Meta). `Props` ist der Vertrag für alle Seiten: BaseLayout (WP-03) übernimmt ihn
 // unverändert. Änderungen an den Props nur per Spec-Änderung (SPECS.md §16).
-// Grundversion: WP-09 ergänzt Canonical-URL, Open Graph, Twitter-Card, Apple-Touch-Icon, theme-color und
-// JSON-LD (nur auf der Startseite). Regeln: docs/pakete/WP-09-seo-meta.md
+// Regeln: docs/pakete/WP-09-seo-meta.md. Favicon-Varianten (.ico, Apple-Touch-Icon) und das Standard-
+// Vorschaubild public/og-image.png kommen nach Tonys Design-Abnahme (WP-03 Teil A).
 import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
 
 import { site } from '@/config/site';
-import { fill } from '@/i18n';
+import { fill, useTranslations } from '@/i18n';
 
 export interface Props {
   /** Seitentitel OHNE Markennamen; darf {name} und {region} enthalten */
@@ -23,16 +24,79 @@ export interface Props {
   type?: 'website' | 'article';
 }
 
-const { title, description, noindex = false } = Astro.props;
+const { title, description, noindex = false, image, imageAlt, type = 'website' } = Astro.props;
+const t = useTranslations(Astro.currentLocale);
 
 /** Titel-Muster "{title} | {name}"; der Markenname entfällt, wenn der Titel sonst länger als 60 Zeichen würde. */
 const pageTitle = fill(title);
 const withBrand = `${pageTitle} | ${site.name}`;
 const fullTitle = withBrand.length <= 60 ? withBrand : pageTitle;
+const metaDescription = fill(description);
+
+// Canonical und og:url nur für indexierbare Seiten (die 404-Seite hätte sonst die URL /404/)
+const canonicalUrl = noindex ? undefined : new URL(Astro.url.pathname, Astro.site).href;
+
+// Vorschaubild: mittig auf 1200 × 630 zugeschnitten und als JPG, weil nicht jede Plattform WebP zeigt
+const ogImage = image
+  ? await getImage({ src: image, width: 1200, height: 630, fit: 'cover', format: 'jpg' })
+  : undefined;
+const ogImageUrl = new URL(ogImage?.src ?? '/og-image.png', Astro.site).href;
+const ogImageAlt = fill(imageAlt ?? t.seo.defaultImageAlt);
+
+/** Strukturierte Daten nur auf der Startseite (NFA-10); leere Werte aus site.ts werden weggelassen */
+function organizationJsonLd() {
+  const { street, postalCode, locality } = site.address;
+  const sameAs = Object.values(site.social).filter(Boolean);
+  const data = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    name: site.name,
+    legalName: site.legalName || undefined,
+    description: fill(t.seo.organizationDescription),
+    url: new URL('/', Astro.site).href,
+    email: site.email || undefined,
+    telephone: site.phone || undefined,
+    areaServed: site.region || undefined,
+    address:
+      street || postalCode || locality
+        ? {
+            '@type': 'PostalAddress',
+            streetAddress: street || undefined,
+            postalCode: postalCode || undefined,
+            addressLocality: locality || undefined,
+            addressCountry: 'DE',
+          }
+        : undefined,
+    founder: site.founders.length
+      ? site.founders.map((name) => ({ '@type': 'Person', name }))
+      : undefined,
+    sameAs: sameAs.length ? sameAs : undefined,
+  };
+  // JSON.stringify lässt undefined-Felder weg; "<" maskieren, damit der Inhalt das <script> nie beenden kann
+  return JSON.stringify(data).replace(/</g, '\\u003c');
+}
+const jsonLd = Astro.url.pathname === '/' ? organizationJsonLd() : undefined;
 ---
 
 <title>{fullTitle}</title>
-<meta name="description" content={fill(description)} />
+<meta name="description" content={metaDescription} />
 {noindex && <meta name="robots" content="noindex" />}
+{canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={metaDescription} />
+{canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={ogImageAlt} />
+<meta property="og:type" content={type} />
+<meta property="og:locale" content="de_DE" />
+<meta property="og:site_name" content={site.name} />
+<meta name="twitter:card" content="summary_large_image" />
+
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content={site.themeColor} />
+
+{jsonLd && <script type="application/ld+json" set:html={jsonLd} />}

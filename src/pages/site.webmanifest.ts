@@ -3,14 +3,14 @@
 import type { APIRoute } from 'astro';
 
 import { site } from '@/config/site';
-import { useTranslations } from '@/i18n';
+import { fill, useTranslations } from '@/i18n';
 
 export const GET: APIRoute = () => {
   const t = useTranslations();
   const manifest = {
     name: site.name,
     short_name: site.name,
-    description: t.seo.organizationDescription,
+    description: fill(t.seo.organizationDescription),
     lang: 'de',
     start_url: '/',
     display: 'browser',
