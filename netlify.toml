@@ -1,0 +1,23 @@
+# Gehört WP-02 (CI & Deployment). Netlify liest die Node-Version aus .nvmrc.
+# Production-Branch (main), Branch-Deploy (dev) und Deploy-Previews werden in der Netlify-Oberfläche eingestellt.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Security-Header für alle Seiten (NFA-15). script-src 'self' funktioniert, weil Skripte nie inline landen
+# (astro.config.mjs und SPECS.md §10). Die Statistik-Domain ergänzt WP-13.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Content-Security-Policy = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'"
+
+# Dateien unter /_astro/ haben einen Hash im Namen und ändern sich nie
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

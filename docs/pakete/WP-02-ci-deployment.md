@@ -31,6 +31,7 @@ Das Paket darf in **zwei PRs** geliefert werden:
 2. **Netlify-Site** mit dem GitHub-Repo verbinden
    - Build-Befehl `npm run build`, Ausgabeordner `dist`
    - Production-Branch: `main`; Branch-Deploys: `dev`; Deploy-Previews für alle PRs
+   - Die Netlify-Werkzeugleiste in Deploy-Previews („Netlify Drawer“) ausschalten: Netlify fügt sie als fremdes Skript ein, die CSP blockiert es und die Konsole zeigt sonst einen CSP-Fehler
 3. **`netlify.toml`**
    - `[build]` mit Befehl und Ausgabeordner
    - Security-Header für `/*` (Vorschlag unten)
