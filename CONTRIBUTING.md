@@ -43,7 +43,7 @@ Diese Regeln sorgen dafür, dass wir zu zweit parallel arbeiten können, ohne un
 
 ### 1. Starten
 
-- Im Issue prüfen: Sind alle Pakete unter „Abhängig von“ erledigt?
+- Im Issue prüfen: Sind alle Pakete unter „Abhängig von“ erledigt? Code-Abhängigkeiten (durchgezogene Pfeile in der [Übersicht](docs/pakete/README.md#reihenfolge)) müssen in `dev` gemerged sein; Entscheidungen (WP-00) und Design (WP-03 Teil A) sperren nur die Teile, die die Paket-Spec daran bindet.
 - Das Issue auf dem Board nach **In Arbeit** ziehen.
 - Branch anlegen:
 
@@ -120,7 +120,7 @@ Die festen Konventionen stehen in [SPECS §10](SPECS.md#feste-konventionen). Die
 - **Texte** nur aus `src/i18n/de/<bereich>.ts`, **Daten** (Name, E-Mail, URLs) nur aus `src/config/site.ts`. Markenname und Region in Texten als `{name}` / `{region}`, eingesetzt mit `fill()`.
 - **Gestaltung** nur mit Token-Klassen (`bg-surface`, `text-ink`, `bg-primary` …), keine Farbwerte im Code, kein `style`-Attribut, kein `<style>`-Block (eigenes CSS nur in `src/styles/global.css`). Klassen im `class`-Attribut oder in Variablen mit Namen auf `Classes`/`Variants` (z. B. `variantClasses`), nur dort prüft der Linter. `npm run lint` meldet unbekannte Klassen, Farbwerte in eckigen Klammern, doppelte oder widersprüchliche Klassen, `style`-Attribute und `<style>`-Blöcke; `npm run format` sortiert die Klassen.
 - **Interne Links** enden mit `/`: `/impressum/`, `/datenschutz/`, `/#kontakt`.
-- **Skripte** als normales `<script>` **ohne Attribute** in der Komponente, **kein** `is:inline`, **kein** `define:vars`, kein `onclick=` (sonst landet das Skript inline und die Sicherheitsrichtlinie blockiert es auf der Live-Seite). Daten über `data-*`-Attribute an HTML-Elementen übergeben, z. B. am `<form>`, nie am `<script>`-Tag. `npm run lint` meldet Verstöße.
+- **Skripte** als normales `<script>` **ohne Attribute** in der Komponente, **kein** `is:inline`, **kein** `define:vars`, kein `onclick=` (sonst landet das Skript inline und die Sicherheitsrichtlinie blockiert es auf der Live-Seite). Daten über `data-*`-Attribute an HTML-Elementen übergeben, z. B. am `<form>`, nie am `<script>`-Tag. Ausnahmen laut SPECS §10: JSON-LD in `SEO.astro` (WP-09) und das externe Statistik-Skript in `Analytics.astro` (WP-13). `npm run lint` meldet Verstöße.
 - **Bilder** über `<Picture>` aus `astro:assets`, nie als `<img>` ohne Größe; immer PNG, JPG oder WebP, nie SVG.
 - **Icons** nur über `<Icon name="…" />` aus der festen Liste; Lucide direkt zu importieren meldet `npm run lint`.
 
@@ -252,7 +252,7 @@ Diese Schritte macht **Julian** (Admin des Repos) einmal in den GitHub-Einstellu
 
 ### Standard-Branch
 
-**Settings → General → Default branch** → auf **`dev`** umstellen. Nur dann schließt `Closes #N` das Issue beim Merge nach `dev` automatisch (GitHub wertet die Schlüsselwörter nur für den Standard-Branch aus), und neue PRs zielen von selbst auf `dev`. Der Release-PR geht weiterhin von `dev` nach `main`.
+**Settings → General → Default branch** → auf **`dev`** umstellen. Nur dann schließt `Closes #N` das Issue beim Merge nach `dev` automatisch (GitHub wertet die Schlüsselwörter nur für den Standard-Branch aus), und neue PRs zielen von selbst auf `dev`. Der Release-PR geht weiterhin von `dev` nach `main`. Erst damit greifen auch die PR- und Issue-Vorlagen aus `.github/`, die GitHub nur aus dem Standard-Branch liest. Achtung beim Verbinden der Netlify-Site (WP-02): Netlify schlägt den Standard-Branch als Production-Branch vor, dort muss trotzdem `main` stehen.
 
 ### Merge-Einstellungen
 
